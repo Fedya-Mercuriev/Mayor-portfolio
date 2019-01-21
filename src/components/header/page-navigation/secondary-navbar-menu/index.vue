@@ -1,5 +1,17 @@
-<template src="./template.pug" lang="pug">
+<template lang="pug">
+    include ../../../../pug-files/mixins/mixins.pug
 
+    ul.secondary-navbar-menu(@hidePickLanguageBlock="")
+        li.secondary-navbar-menu__menu-item
+            form(method="GET")
+                label(for="select-language") Язык
+                select#select-language(v-model="selectedLanguage")
+                    option(disabled value="") "Пожалуйста, выберите язык"
+                    option(v-for="option in availableLanguages" :value="option.data") {{ option.text }}
+            // - Этот блок показывается на десктопной версии
+            PickLanguageBlock
+        li.secondary-navbar-menu__menu-item
+            +linkToNewPage('privacy-policy', "Политика конфиденциальности")(class="secondary-navbar-menu__menu-link")
 </template>
 
 <script>
