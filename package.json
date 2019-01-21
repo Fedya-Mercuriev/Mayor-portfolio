@@ -1,5 +1,5 @@
 {
-  "name": "mayor-portfolio",
+  "text": "mayor-portfolio",
   "version": "1.0.0",
   "description": "A website that stores portfolio and is another work in portfolio itself",
   "main": "index.js",
@@ -22,6 +22,7 @@
   "dependencies": {
     "node-static": "^0.7.11",
     "vue": "^2.5.22",
+    "vue-i18n": "^8.7.0",
     "vue-loader": "^15.5.1"
   },
   "devDependencies": {
@@ -33,7 +34,9 @@
     "node-sass": "^4.11.0",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
+    "raw-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.22",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
     "webpack-merge": "^4.2.1"
