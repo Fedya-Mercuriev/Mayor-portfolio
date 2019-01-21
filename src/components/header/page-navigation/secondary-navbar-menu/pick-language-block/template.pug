@@ -1,0 +1,11 @@
+div.pick-language-block-wrapper
+    a.pick-language-block-wrapper__trigger-pick-language-block(
+    @click.stop="pickLanguageBlockShown = !pickLanguageBlockShown"
+    ) Язык
+    //- Позиционируется фиксированно
+    div.pick-language-block(v-show="pickLanguageBlockShown")
+        a.pick-language-block__close-block-btn(@click.stop="pickLanguageBlockShown = false" role="button") Закрыть окно
+        h4.pick-language-block__block-title Пожалуйста, выберите язык
+        ul.languages-list
+            li.languages-list__menu-item(v-for="item in availableLanguages" @click="pickLanguage")
+                a(:href='"https://" + item.data +".mayor-mayor.com"') {{ item.text }}

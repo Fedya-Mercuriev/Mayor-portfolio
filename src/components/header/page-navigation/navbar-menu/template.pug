@@ -1,4 +1,15 @@
-div.navbar-menu-wrapper
-    ul.navbar-menu
-        li(v-for="(item, index) in menuItems" :menuItem="item")
-    additional-navbar-menu
+nav.page-navigation
+    ul.navigation-menu(@click="updateActiveMenuItems")
+        li(
+        v-for="(item, index) in menuItems"
+        :class="{'navigation-menu__menu-item': true, 'navigation-menu__menu-item--is-current': item.isCurrent}"
+        :key="index"
+        @click="$emit('goToSection', item.text)"
+        )
+            a(:href="item.hash") {{ item.text }}
+        li.secondary-menu-wrapper
+            a.secondary-navbar-menu-wrapper__trigger-additional-menu-btn(
+            @click.stop="secondaryMenuOpened = !secondaryMenuOpened"
+            ) Открыть
+            SecondaryNavbarMenu(v-show="secondaryMenuOpened")
+    a.trigger-mobile-menu(role="button")

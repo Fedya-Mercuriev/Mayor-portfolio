@@ -1,54 +1,48 @@
-<template lang="pug">
-    nav.navbar-menu-wrapper
-    ul(:class="menuBaseClass" @click="updateActiveMenuItem(itemName)")
-        li(:is="NavbarMenuItem" v-for="item in menuItems" :menuItem="menuItemParams") {{ item.text }}}
-        li.secondary-navbar-menu-wrapper
-            additionalNavbarMenu
-        a.trigger-mobile-menu(role="button")
+<template src="./template.pug" lang="pug">
+
 </template>
 
 <script>
-    import NavbarMenuItem from '../navbar-menu-item/index';
-    import additionalNavbarMenu from '../additional-navbar-menu/index';
+    import SecondaryNavbarMenu from '../secondary-navbar-menu/index.vue';
 
     export default {
-        name: "page-navigation",
+        components: {
+            SecondaryNavbarMenu
+        },
         data() {
             return {
-                menuBaseClass: 'navbar-menu',
+                menuBaseClass: 'navigation-menu',
+
                 menuItems: [
                     {
                         text: "Рассуждение",
-                        hash: "make-cn-sites-great",
+                        hash: "#make-cn-sites-better",
                         isCurrent: true
                     }, {
                         text: "Портфолио",
-                        hash: "portfolio",
+                        hash: "#portfolio",
                         isCurrent: false
                     }, {
                         text: "Резюме",
-                        hash: "cv",
+                        hash: "#cv",
                         isCurrent: false
                     }, {
                         text: "Контакты",
-                        hash: "contacts",
+                        hash: "#contacts",
                         isCurrent: false
                     }
                 ],
-                menuItemClass: `${this.menuBaseClass}__menu-item`
+                menuItemClass: `${this.menuBaseClass}__menu-item`,
+                secondaryMenuOpened: false
             }
         },
         computed: {
-            menuItemParams() {
-                let result = {};
-                Object.assign(result, this.menuItems, this.menuItemClass);
-                return result;
-            }
+
         },
         methods: {
-            updateActiveMenuItem(itemName) {
+            updateActiveMenuItems(event) {
                 this.menuItems.forEach((item) => {
-                    if (item.text === itemName) {
+                    if (item.text === event.target.parentElement.innerText) {
                         item.isCurrent = true;
                     } else {
                         if (item.isCurrent) {
@@ -57,10 +51,6 @@
                     }
                 })
             }
-        },
-        components: {
-            NavbarMenuItem,
-            additionalNavbarMenu
         }
     }
 </script>
