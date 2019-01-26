@@ -7,7 +7,7 @@
                 v-for="(item, index) in menuItems"
                 :class="{'navigation-menu__menu-item': true, 'navigation-menu__menu-item--is-current': item.isCurrent}"
                 :key="index"
-                v-on:click="$emit('highlight-item', item.text)"
+                v-on:click="updateActiveMenuItems"
             )
                 a.navigation-menu__menu-link(:href="item.hash")
                     span {{ item.text }}
@@ -40,6 +40,7 @@
     import PickLanguageBlock from '../pick-language-block/index.vue';
 
     export default {
+        name: 'page-navigation',
         components: {
             PickLanguageBlock
         },

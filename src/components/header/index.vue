@@ -1,11 +1,11 @@
 <template lang="pug">
     header.page-header
-        Navbar
+        page-navigation
         div.page-header__inner
 </template>
 
 <script>
-    import Navbar from './page-navigation/navbar/index.vue';
+    import PageNavigation from './page-navigation/navbar/index.vue';
 
     export default {
         // name: "header",
@@ -15,11 +15,14 @@
             }
         },
         components: {
-            Navbar
+            'page-navigation': PageNavigation
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
+    .page-header {
+        padding-top: 60px;
+    }
 </style>

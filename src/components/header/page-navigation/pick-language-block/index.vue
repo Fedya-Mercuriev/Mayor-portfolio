@@ -3,8 +3,12 @@
 </template>
 
 <script>
+    import ModalWindow from './../../../modal-window/index.vue';
     export default {
         props: ['displayChooseLangButton'],
+        components: {
+            ModalWindow
+        },
         data() {
             return {
                 availableLanguages: [
@@ -28,8 +32,8 @@
             pickLanguage(event) {
                 this.$emit('click', event.target.language);
             },
-            hideThisBlock() {
-                this.$emit('hidePickLanguageBlock');
+            hideModalWindow() {
+                this.pickLanguageBlockShown = false;
             },
             displayPickLanguageBlock() {
                 this.pickLanguageBlockShown = !this.pickLanguageBlockShown;
