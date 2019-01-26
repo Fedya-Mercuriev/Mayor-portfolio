@@ -1,4 +1,4 @@
-nav.page-navigation
+nav.page-navigation(v-show="isShown")
     ul.navigation-menu(@click="updateActiveMenuItems")
         li(
         v-for="(item, index) in menuItems"
@@ -6,10 +6,15 @@ nav.page-navigation
         :key="index"
         @click="$emit('goToSection', item.text)"
         )
-            a(:href="item.hash") {{ item.text }}
+            a.navigation-menu__menu-link(:href="item.hash")
+                span {{ item.text }}
         li.secondary-menu-wrapper
-            a.secondary-navbar-menu-wrapper__trigger-additional-menu-btn(
+            a.trigger-additional-menu-btn(
+            :class="{'trigger-additional-menu-btn--is-clicked': secondaryMenuOpened}"
             @click.stop="secondaryMenuOpened = !secondaryMenuOpened"
-            ) Открыть
+            @hidePickLanguageBlock=""
+            )
+                i.icon-dot
+                i.icon-dot
+                i.icon-dot
             SecondaryNavbarMenu(v-show="secondaryMenuOpened")
-    a.trigger-mobile-menu(role="button")
