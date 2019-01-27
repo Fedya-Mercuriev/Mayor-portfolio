@@ -86,11 +86,6 @@
                 secondaryMenuOpened: false
             }
         },
-        computed: {
-            currentLanguage() {
-
-            }
-        },
         methods: {
             updateActiveMenuItems(event) {
                 this.menuItems.forEach((item) => {
@@ -221,6 +216,10 @@
 
         @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
             display: none;
+        }
+
+        label {
+            position: relative;
         }
     }
     

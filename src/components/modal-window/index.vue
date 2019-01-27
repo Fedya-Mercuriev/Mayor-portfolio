@@ -1,20 +1,40 @@
 <template lang="pug">
-    div
-        div.modal-window(v-show="isShown")
-            a.modal-window__close-block-btn(@click.stop="pickLanguageBlockShown = false" role="button") Закрыть окно
+    div(v-show="visible")
+        div.modal-window
+            a.modal-window__close-block-btn(@click.stop="visible = false" role="button") Закрыть окно
             h4.pick-language-block__block-title Пожалуйста, выберите язык
             ul.languages-list
                 li.languages-list__menu-item(v-for="item in availableLanguages" @click="pickLanguage")
                     a(:href='"https://" + item.data +".mayor-mayor.com"') {{ item.text }}
-        div.block-overlay
+        div.block-overlay(v-on:click="hideModalWindow")
 </template>
 
 <script>
     export default {
         props: {
-            isShown: {
+            stateVisible: {
                 type: Boolean,
                 required: true
+            }
+        },
+        date() {
+            return {
+                isVisible: this.stateVisible
+            }
+        },
+        computed: {
+            visible: {
+                get() {
+                    return this.isVisible
+                },
+                set(value) {
+                    this.visible = value;
+                }
+            }
+        },
+        methods: {
+            hideModalWindow() {
+                this.stateVisible = false;
             }
         }
     }
@@ -49,6 +69,7 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.4);
+        cursor: default;
     }
 
 </style>
