@@ -124,6 +124,13 @@
         flex-direction: column;
         width: 100%;
         align-items: center;
+
+        @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+
     }
 
 </style>
