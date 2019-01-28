@@ -1,6 +1,5 @@
 <template lang="pug">
-    include ../../../../pug-files/mixins/mixins.pug
-
+    //include ../../../../pug-files/mixins/mixins.pug
     nav.page-navigation(v-show="isShown")
         ul.navigation-menu(@highlight-item="updateActiveMenuItems", @click="")
             li(

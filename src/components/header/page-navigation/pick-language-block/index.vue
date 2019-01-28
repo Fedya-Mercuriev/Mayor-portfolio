@@ -3,8 +3,8 @@
 </template>
 
 <script>
-    import ChineseCharacter from './../../../../svg/test.svg'
-    import LatinLetter from './../../../../svg/test2.svg'
+    import ChineseCharacter from '../../../../svg/chinese-character.svg'
+    import LatinLetter from '../../../../svg/latin-letter.svg'
 
     export default {
         props: ['displayChooseLangButton'],
@@ -68,53 +68,61 @@
     }
 
     .trigger-pick-language-block {
-        position: absolute;
-        top: 60px;
-        right: 0;
-        box-sizing: border-box;
-        display: block;
-        width: 150px;
-        padding: 15px 0;
-        @include border-radius(7px);
-        background-color: #ffffff;
-        @include transition(background-color 0.3s, color 0.3s);
+        display: none;
 
-        &:hover {
-            background-color: darken(#ffffff, 35%);
-        }
-
-        &:active {
-            background-color: darken(#ffffff, 48%);
-        }
-
-        &__button-text {
+        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            box-sizing: border-box;
             display: block;
-            width: 100%;
-            text-align: center;
+            width: 150px;
+            padding: 15px 0;
+            @include border-radius(7px);
+            background-color: #ffffff;
+            @include transition(background-color 0.3s, color 0.3s);
+
+            &:hover {
+                background-color: darken(#ffffff, 35%);
+            }
+
+            &:active {
+                background-color: darken(#ffffff, 48%);
+            }
+
+            &__button-text {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
         }
     }
 
     .pick-language-block {
-        position: fixed;
-        top: 40%;
-        left: 50%;
-        z-index: 10000;
-        @include transform(translateX(-50%));
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: $pick-lang-block-min-width;
-        padding: 15px;
-        border-radius: 7px;
-        background-color: #ffffff;
-        cursor: default;
-        @include box-shadow(0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12));
+        display: none;
 
-        &__block-title {
-            @include reset-pad-marg();
-            margin-top: 20px;
-            font-size: 24px;
-            text-align: center;
+        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            z-index: 10000;
+            @include transform(translateX(-50%));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: $pick-lang-block-min-width;
+            padding: 15px;
+            border-radius: 7px;
+            background-color: #ffffff;
+            cursor: default;
+            @include box-shadow(0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12));
+
+            &__block-title {
+                @include reset-pad-marg();
+                margin-top: 20px;
+                font-size: 24px;
+                text-align: center;
+            }
         }
     }
 
@@ -234,13 +242,18 @@
     }
 
     .block-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 9999;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.25);
-        cursor: default;
+        display: none;
+
+        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.55);
+            cursor: default;
+        }
     }
 </style>
