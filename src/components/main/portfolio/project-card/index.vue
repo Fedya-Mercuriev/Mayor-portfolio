@@ -7,10 +7,10 @@
         template(v-if="projectData.img")
             div.project-card__img-wrapper
                 img.project-card__img(:src="projectData.img")
-                div.project-card__overlay
+            div.project-card__overlay
         template(v-else)
             div.project-card__overlay
-        template(v-if="isMobile()")
+        template(v-if="isMobile")
             a.project-card__checkout-project-link Кликните еще раз
         template(v-else)
             a.project-card__checkout-project-link Подробнее
@@ -27,15 +27,24 @@
         },
         data() {
             return {
-                isClicked: false
+                isClicked: false,
+                screenSize: null
             }
         },
-        methods: {
-            isMobile() {
-                if (window.clientWidth <= 768) {
-                    return true;
+        beforeMount() {
+            this.screenSize = window.outerWidth
+        },
+        computed: {
+            isMobile: {
+                get() {
+                    if (this.screenSize <= 768) {
+                        return true;
+                    }
+                    return false;
+                },
+                set(value) {
+                    this.screenSize = value;
                 }
-                return false;
             }
         }
     }
@@ -60,11 +69,12 @@
                         0 24px 38px 3px rgba(0,0,0,.14),
                         0 9px 46px 8px rgba(0,0,0,.12)
         );
+        @include transform(scale(1));
+        @include transition(all 0.27s);
 
-        &:nth-last-child(-n+1) {
-            background-color: #5f5f5f;
-        }
+        /*&:nth-last-child(-n+1) {}*/
 
+        // Правила для последней карточки
 
         @media screen and (min-width: map-deep-get($devices, 'mobile-m') + 1px) {
             width: 75%;
@@ -75,9 +85,15 @@
             @include border-radius(7px);
         }
 
+        // Правила для планшета для карточек
+
         @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             width: 45%;
             @include border-radius(12px);
+
+            /*
+                Стили для последних двух карточек
+            */
 
             &:nth-last-child(-n+2) {
                 width: 93%;
@@ -88,16 +104,71 @@
                     padding-bottom: 20%;
                 }
 
-                &--is-clicked {
+                //&--is-clicked {
 
-                    #{$componentBaseClass}__checkout-project-link {
-                        @include transform(translateY(-40px));
+                  //  #{$componentBaseClass}__checkout-project-link {
+                    //    @include transform(translateY(-40px));
+                    //}
+                //}
+            }
+        }
+
+        @media screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            float: left;
+            width: 20%;
+            margin: 15px 20px;
+            cursor: pointer;
+
+            .#{$componentBaseClass}__title {
+                font-size: 1.25em;
+            }
+
+            .#{$componentBaseClass}__checkout-project-link {
+                bottom: -60px;
+            }
+
+            &:hover {
+                @include transform(scale(0.97));
+
+                .#{$componentBaseClass}__overlay {
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+
+                .#{$componentBaseClass}__checkout-project-link {
+                    @include transform(translateY(-80px));
+                }
+            }
+
+            &:nth-last-child(-n+2) {
+                width: 20%;
+
+                &::after {
+                    padding-bottom: 100%;
+                }
+            }
+
+            &:nth-last-child(1) {
+                width: 44%;
+                background-color: #5f5f5f;
+
+                &::after {
+                    padding-bottom: 20%;
+                }
+
+                &:hover {
+
+                    .#{$componentBaseClass}__title {
+                        transform: translateY(-25px);
+                    }
+
+                    .#{$componentBaseClass}__checkout-project-link {
+                        @include transform(translateY(-73px));
                     }
                 }
             }
         }
 
-        &:after {
+        &::after {
             content: "";
             display: block;
             padding-bottom: 100%;
@@ -152,7 +223,12 @@
             @include transition(all 0.3s cubic-bezier(0.250, 0.250, 0.130, 0.910));
         }
 
+        /*
+            Обработка одинарного клика по карточке
+        */
+
         &--clicked {
+            @include transform(scale(0.94));
 
             .#{$componentBaseClass}__overlay {
                 background-color: rgba(0, 0, 0, 0.5);
@@ -177,14 +253,17 @@
         }
     }
 
-</style>
+    .project-card-primary {
 
-<!--isPrimary: true,-->
-<!--title: "Бот для цветочного магазина",-->
-<!--img: "#",-->
-<!--description: "",-->
-<!--stack: ['ES6', 'Telegraf', 'Node.js'],-->
-<!--links: {-->
-<!--checkout: "https://t-do.ru/blumenfrauBot",-->
-<!--github: "https://github.com/Fedya-Mercuriev/bf-bot"-->
-<!--}-->
+        @media screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            width: 35%;
+            margin-top: 0;
+            font-size: 1.7em;
+
+            & .#{$componentBaseClass}__checkout-project-link {
+                font-size: 1em;
+            }
+        }
+    }
+
+</style>

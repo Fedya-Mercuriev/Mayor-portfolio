@@ -131,6 +131,17 @@
             justify-content: space-evenly;
         }
 
+        @media screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            /*flex-direction: row;*/
+            /*flex-wrap: wrap;*/
+            /*align-items: flex-end;*/
+            /*justify-content: space-between;*/
+            display: block;
+            box-sizing: border-box;
+            max-width: 1024px;
+            padding: 0 20px;
+        }
+
     }
 
 </style>
