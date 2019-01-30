@@ -1,7 +1,7 @@
 <template lang="pug">
     div.project-card(
         :class="{'project-card-primary': projectData.isPrimary, 'project-card--clicked': isClicked}",
-        @click="isClicked = !isClicked"
+        @click="processClicks"
     )
         h3.project-card__title {{ projectData.title }}
         template(v-if="projectData.img")
@@ -30,7 +30,7 @@
             }
         },
         beforeMount() {
-            this.screenSize = this.setLinkMsg();
+            //this.screenSize = this.setLinkMsg();
 
             this.setLinkMsg();
         },
@@ -45,6 +45,18 @@
                     this.linkMsg = "Кликните еще раз"
                 } else {
                     this.linkMsg = "Подробнее";
+                }
+            },
+            processClicks() {
+                if (window.outerWidth <= 768) {
+                    if (this.isClicked) {
+                        this.isClicked = false;
+                        this.$emit('checkout-project', this.key);
+                    } else {
+                        this.isClicked = true;
+                    }
+                } else {
+                    this.$emit('checkout-project', this.key);
                 }
             }
         },

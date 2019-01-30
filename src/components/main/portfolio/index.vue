@@ -1,5 +1,5 @@
 <template lang="pug">
-    div#portfolio
+    div#portfolio(@checkout-project="currentlyOpenedProject = openSelectedProject")
         h2.block-title Портфолио
         p.block-description Здесь собрана часть моих работ, которыми можно покичиться
         div.project-cards-wrapper
@@ -9,6 +9,7 @@
                 :projectData="project"
                 @click="currentlyOpenedProject = project"
             )
+
         a.root-link(href="https://github.com/Fedya-Mercuriev?tab=repositories" target="_blank") Больше проектов
 </template>
 
@@ -79,6 +80,11 @@
                     }
                 },
                 currentlyOpenedProject: null
+            }
+        },
+        methods: {
+            openSelectedProject(key) {
+                return this.projects[key];
             }
         }
     }
