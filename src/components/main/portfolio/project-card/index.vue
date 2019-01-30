@@ -10,10 +10,7 @@
             div.project-card__overlay
         template(v-else)
             div.project-card__overlay
-        template(v-if="isMobile")
-            a.project-card__checkout-project-link Кликните еще раз
-        template(v-else)
-            a.project-card__checkout-project-link Подробнее
+        a.project-card__checkout-project-link {{ linkMsg }}
 </template>
 
 <script>
@@ -28,24 +25,31 @@
         data() {
             return {
                 isClicked: false,
-                screenSize: null
+                screenSize: null,
+                linkMsg: "Подробнее"
             }
         },
         beforeMount() {
-            this.screenSize = window.outerWidth
+            this.screenSize = this.setLinkMsg();
+
+            this.setLinkMsg();
         },
-        computed: {
-            isMobile: {
-                get() {
-                    if (this.screenSize <= 768) {
-                        return true;
-                    }
-                    return false;
-                },
-                set(value) {
-                    this.screenSize = value;
+        mounted() {
+            this.$nextTick(function() {
+                window.addEventListener('resize', this.setLinkMsg);
+            })
+        },
+        methods: {
+            setLinkMsg() {
+                if (window.outerWidth <= 768) {
+                    this.linkMsg = "Кликните еще раз"
+                } else {
+                    this.linkMsg = "Подробнее";
                 }
             }
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.setLinkMsg);
         }
     }
 </script>
@@ -258,6 +262,7 @@
         @media screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
             width: 35%;
             margin-top: 0;
+            margin-left: 90px;
             font-size: 1.7em;
 
             & .#{$componentBaseClass}__checkout-project-link {
