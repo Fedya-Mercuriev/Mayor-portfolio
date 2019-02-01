@@ -1,24 +1,26 @@
 <template lang="pug">
-    div#portfolio(@checkout-project="currentlyOpenedProject = openSelectedProject")
+    div#portfolio
         h2.block-title Портфолио
         p.block-description Здесь собрана часть моих работ, которыми можно покичиться
-        div.project-cards-wrapper
+        div.project-cards-wrapper(@click="detectTarget")
             project-card(
                 v-for="(project, key) in projects"
                 key="key"
                 :projectData="project"
-                @click="currentlyOpenedProject = project"
+                @checkout-project="currentlyOpenedProject = project"
             )
-
+        project-view(:projectInfo="currentlyOpenedProject")
         a.root-link(href="https://github.com/Fedya-Mercuriev?tab=repositories" target="_blank") Больше проектов
 </template>
 
 <script>
     import ProjectCard from './project-card/index.vue';
+    import ProjectView from './project-views/index.vue';
 
     export default {
         components: {
-            ProjectCard
+            ProjectCard,
+            ProjectView
         },
         data() {
             return {
@@ -28,7 +30,7 @@
                         isPrimary: true,
                         title: "Бот для цветочного магазина",
                         img: "https://png.pngtree.com/element_origin_min_pic/17/09/11/20d1ee2fbd551c54365fc42fc9768180.jpg",
-                        description: "",
+                        description: "Значимость этих проблем настолько очевидна, что консультация с широким активом в значительной степени обуславливает создание позиций, занимаемых участниками в отношении поставленных задач. Разнообразный и богатый опыт начало повседневной работы по формированию позиции способствует подготовки и реализации новых предложений. Не следует, однако забывать, что дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании позиций, занимаемых участниками в отношении поставленных задач.",
                         stack: ['ES6', 'Telegraf', 'Node.js'],
                         links: {
                             checkout: "https://t-do.ru/blumenfrauBot",
@@ -42,7 +44,7 @@
                         isPrimary: false,
                         title: "Карточки для отображения товаров",
                         img: "#",
-                        description: "",
+                        description: "Описание",
                         stack: ['ES6', 'JQuery', 'Pug', 'SCSS'],
                         links: {
                             checkout: false,
@@ -56,7 +58,7 @@
                         isPrimary: false,
                         title: "JS-реализация игры \"Calculator\" для iOS",
                         img: "https://lh3.googleusercontent.com/6bTb8lOVZ_r2oAVjMfEAPQVqvc_fJeaueqXYbsM6Orq070Fk9Rxzdaxx77j89asBY64",
-                        description: "",
+                        description: "Описание",
                         stack: ['Vanilla JS (ES5)'],
                         links: {
                             checkout: "https://fedya-mercuriev.github.io/calculator-game/",
@@ -70,10 +72,10 @@
                         isPrimary: false,
                         title: "Портфолио",
                         // img: "#",
-                        description: "",
+                        description: "Описание",
                         stack: ['Vue.js', 'ES6', 'Pug', 'SCSS'],
                         links: {
-                            checkout: "https://fedya-mercuriev.github.io/calculator-game/",
+                            checkout: "#",
                             github: "https://github.com/Fedya-Mercuriev/calculator-game"
                         },
                         date: new Date()
@@ -83,8 +85,14 @@
             }
         },
         methods: {
-            openSelectedProject(key) {
-                return this.projects[key];
+            detectTarget(event) {
+                this.$children.forEach((component) => {
+                    if (event.target.parentElement === component.$el) {
+                        console.log("Кликнули по определенной карточке");
+                    } else {
+                        component.isClicked = false
+                    }
+                });
             }
         }
     }
