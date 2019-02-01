@@ -12,7 +12,7 @@
         project-view(
             v-show="projectWindowShown"
             :projectInfo="currentlyOpenedProjectData"
-            @hide-window="projectWindowShown = false"
+            @hide-window="closeProject"
         )
         a.root-link(href="https://github.com/Fedya-Mercuriev?tab=repositories" target="_blank") Больше проектов
 </template>
@@ -93,6 +93,17 @@
             openProject(projectData) {
                 this.currentlyOpenedProjectData = projectData;
                 this.projectWindowShown = true;
+                // Заблокируем пролистывание
+                let blockScroll = this.$parent.controlScroll;
+                blockScroll(true);
+                // document.body.classList.push('block-scroll');
+            },
+            closeProject() {
+                this.projectWindowShown = false;
+                // Разблокируем пролистывание
+                let blockScroll = this.$parent.controlScroll;
+                blockScroll(false);
+
             },
             processCardClicks(event) {
                 this.$children.forEach((component) => {
