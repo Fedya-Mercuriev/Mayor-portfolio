@@ -2,14 +2,18 @@
     div#portfolio
         h2.block-title Портфолио
         p.block-description Здесь собрана часть моих работ, которыми можно покичиться
-        div.project-cards-wrapper(@click="detectTarget")
+        div.project-cards-wrapper(@click="processCardClicks")
             project-card(
                 v-for="(project, key) in projects"
                 key="key"
                 :projectData="project"
-                @checkout-project="currentlyOpenedProject = project"
+                @checkout-project="openProject(project)"
             )
-        project-view(:projectInfo="currentlyOpenedProject")
+        project-view(
+            v-show="projectWindowShown"
+            :projectInfo="currentlyOpenedProjectData"
+            @hide-window="projectWindowShown = false"
+        )
         a.root-link(href="https://github.com/Fedya-Mercuriev?tab=repositories" target="_blank") Больше проектов
 </template>
 
@@ -81,15 +85,18 @@
                         date: new Date()
                     }
                 },
-                currentlyOpenedProject: null
+                currentlyOpenedProjectData: null,
+                projectWindowShown: false
             }
         },
         methods: {
-            detectTarget(event) {
+            openProject(projectData) {
+                this.currentlyOpenedProjectData = projectData;
+                this.projectWindowShown = true;
+            },
+            processCardClicks(event) {
                 this.$children.forEach((component) => {
-                    if (event.target.parentElement === component.$el) {
-                        console.log("Кликнули по определенной карточке");
-                    } else {
+                    if (event.target.parentElement !== component.$el) {
                         component.isClicked = false
                     }
                 });

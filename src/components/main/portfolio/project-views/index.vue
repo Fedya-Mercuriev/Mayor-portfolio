@@ -1,8 +1,8 @@
 <template lang="pug">
     div
-        div.project-view(v-show="!!projectInfo")
+        div.project-view
             div.project-block(v-if="projectInfo")
-                a.close-block-btn(role="button")
+                a.close-block-btn(role="button" @click="hideWindow")
                     i.close-block-btn__stroke
                     i.close-block-btn__stroke
                 div.project-info
@@ -21,7 +21,7 @@
                         volume-link(:link="projectInfo.links.checkout") Посмотреть
                     volume-link(:link="projectInfo.links.github") Github
         div.block-overlay(
-            v-show="!!projectInfo"
+            @click="hideWindow"
         )
 </template>
 
@@ -29,7 +29,17 @@
     export default {
         props: [
             'projectInfo'
-        ]
+        ],
+        data() {
+            return {
+                isVisible: false
+            }
+        },
+        methods: {
+            hideWindow() {
+                this.$emit('hide-window', this)
+            }
+        }
     }
 </script>
 
