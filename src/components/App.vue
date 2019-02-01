@@ -1,5 +1,5 @@
 <template lang="pug">
-    div#app
+    div#app(ref="app")
         Header
         main.main
             Portfolio
@@ -14,6 +14,15 @@
         components: {
             Header,
             Portfolio
+        },
+        methods: {
+            controlScroll(block) {
+                if (block) {
+                    document.body.classList.add('block-scroll');
+                } else {
+                    document.body.classList.remove('block-scroll');
+                }
+            }
         }
     }
 </script>
