@@ -7,3 +7,7 @@ html {
 body {
   background-color: $site-bg;
 }
+
+.block-scroll {
+  overflow: hidden;
+}
