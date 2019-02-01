@@ -96,13 +96,41 @@
         top: 20px;
         right: 20px;
         z-index: 10;
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         @include border-radius(50%);
-        background: pink;
+        background-color: $close-project-btn-bg;
 
         @media screen and( min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             cursor: pointer;
+            @include transition(background-color 0.3s);
+
+            &:hover {
+                background-color: darken($close-project-btn-bg, 20%);
+            }
+        }
+
+        &__stroke {
+            position: absolute;
+            top: 16px;
+            left: 4px;
+            @include transform(rotateZ(45deg));
+            transform-origin: center;
+            display: block;
+            width: 75%;
+            height: 3px;
+            background-color: #000000;
+
+            &:nth-last-child(1) {
+                position: absolute;
+                bottom: 15px;
+                @include transform(rotateZ(-45deg));
+                transform-origin: center;
+                display: block;
+                width: 75%;
+                height: 3px;
+                background-color: #000000;
+            }
         }
     }
 
