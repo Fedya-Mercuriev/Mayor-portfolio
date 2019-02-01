@@ -3,10 +3,24 @@
         h2.block-title Резюме
         p.block-description А это резюме. Да
         div.cv-content-wrapper
+            div(v-for="item in cvData")
+                h3.cv-item-title {{ item.title }}
+
 </template>
 
 <script>
+    import CellList from './items/cell-list/index.vue';
+    import ListWithLinks from './items/list-with-links/index.vue';
+    import OrdinaryList from './items/ordinary-list/index.vue';
+    import TextField from './items/text-field/index.vue';
+
     export default {
+        components: {
+            CellList,
+            ListWithLinks,
+            OrdinaryList,
+            TextField
+        },
         data() {
             return {
                 cvData: {
