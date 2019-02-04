@@ -33,3 +33,10 @@
   -webkit-box-shadow: $shadow;
   box-shadow: $shadow;
 }
+
+@mixin list-padding($top, $bottom, $left, $right) {
+  padding-top: $top * 1px;
+  padding-bottom:  $bottom * 1px;
+  padding-left: $left * 1px;
+  padding-right: $right * 1px;
+}
