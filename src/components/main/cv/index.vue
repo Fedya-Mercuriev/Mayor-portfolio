@@ -219,7 +219,9 @@
     }
 
     .cv-item-description {
+        @include reset-pad-marg();
         padding: 0 10px;
+        margin-bottom: 20px;
         font-size: 1.1em;
         text-align: center;
         color: #000;
