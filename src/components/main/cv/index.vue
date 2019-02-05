@@ -83,7 +83,7 @@
                     graphicSoftware: {
                         title: "Владение графическими ПО",
                         description: "Могу достать иконку и шрифты, только если макет не был прислан в формате *.docx",
-                        data: ["Photoshop", "Sketch", "Figma"]
+                        data: ["Photoshop", "Sketch", "Figma", "Illustrator"]
                     },
                     coreSkills: {
                         title: "Профильные навыки",
@@ -194,6 +194,17 @@
         display: flex;
         flex-direction: column;
         padding: 0 15px;
+
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-around;
+        }
+
+        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            display: block;
+        }
     }
 
     .cv-item-wrapper {
@@ -206,6 +217,29 @@
                         0 24px 38px 3px rgba(0,0,0,0.14),
                         0 9px 46px 8px rgba(0,0,0,0.12)
         );
+
+        &:nth-last-child(1) {
+            @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+                flex-basis: 100%;
+            }
+
+            @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
+                width: 100%
+            }
+        }
+
+
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            flex-basis: 47%;
+        }
+
+        @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
+            float: left;
+            width: 33%;
+            margin-right: 3px;
+            margin-bottom: 10px;
+        }
+
     }
 
     .cv-item-title {
@@ -224,7 +258,7 @@
         margin-bottom: 20px;
         font-size: 1.1em;
         text-align: center;
-        color: #000;
+        color: $cv-item-text-color;
     }
 
     .cv-item-list {
