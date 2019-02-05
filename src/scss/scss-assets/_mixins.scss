@@ -40,3 +40,16 @@
   padding-left: $left * 1px;
   padding-right: $right * 1px;
 }
+
+@mixin graphSoftwareRules($color, $bg, $border-color: false) {
+  @if ($border-color: false) {
+    border: 2px solid $color;
+    color: $color;
+    background-color: $bg;
+  }
+  @else {
+    border: 2px solid $border-color;
+    color: $color;
+    background-color: $bg;
+  }
+}
