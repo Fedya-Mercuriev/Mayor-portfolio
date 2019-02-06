@@ -1,6 +1,6 @@
 <template lang="pug">
     div.cell-list-wrapper
-        ul.cell-list(:style="{width: getWidth() + 'px'}")
+        ul.cell-list(:style="{width: width + 'px'}")
             li.cell-list__item(
                 v-for="item in data"
                 :class="getClassNameByTitle(item)"
@@ -11,9 +11,21 @@
 <script>
     export default {
         props: ['data'],
+        data() {
+            return {
+                width: undefined
+            }
+        },
+        nextTick() {
+            window.addEventListener('resize', this.setWidth());
+            console.log(`Ширина списка: ${this.width}px`);
+        },
+        beforeMount() {
+            this.width = this.setWidth();
+        },
         methods: {
-            getWidth() {
-                return window.clientWidth;
+            setWidth() {
+                this.width = window.outerWidth;
             },
             getClassNameByTitle(title) {
                 let rootTitle = title.split(title.match(/\s?[~`!#$%^&*+=\-\[\]\\';,./{}|\\":<>\?]/))[0],
@@ -36,6 +48,7 @@
         height: 40px;
 
         @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            position: unset;
             height: auto;
         }
     }
