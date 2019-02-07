@@ -3,12 +3,18 @@
         h2.block-title Резюме
         p.block-description А это резюме. Да
         div.cv-content-wrapper
-            div.cv-item-wrapper(v-for="item in cvData")
-                h3.cv-item-title {{ item.title }}
-                p.cv-item-description {{ item.description }}
-                template(v-if="getItemType(item.data) === 'text'")
-                    TextField(:data="item.data" :state="'light'")
-                template(v-else)
+            CVItemWrapper(
+                v-for="(item, key, index) in cvData"
+                :info="item"
+                :number="index"
+                :key="key"
+                @mount-finished="positionChildren($event)"
+            )
+                <!--h3.cv-item-title {{ item.title }}-->
+                <!--p.cv-item-description {{ item.description }}-->
+                <!--template(v-if="getItemType(item.data) === 'text'")-->
+                    <!--TextField(:data="item.data" :state="'light'")-->
+                //template(v-else)
                     CellList(v-if="pickAppropriateList(item) === 'cell'" :data="item.data")
                     ListWithButtons(v-else-if="pickAppropriateList(item) === 'with-buttons'" :data="item.data")
                     OrdinaryList(v-else :data="item.data")
@@ -16,21 +22,114 @@
 </template>
 
 <script>
+
     import Vue from 'vue';
-    import CellList from './items/cell-list/index.vue';
-    import ListWithButtons from './items/list-with-links/index.vue';
-    import OrdinaryList from './items/ordinary-list/index.vue';
-    import TextField from './items/text-field/index.vue';
+    import CVItemWrapper from './item-wrapper/index.vue';
+    // import CellList from './items/cell-list/index.vue';
+    // import ListWithButtons from './items/list-with-links/index.vue';
+    // import OrdinaryList from './items/ordinary-list/index.vue';
+    // import TextField from './items/text-field/index.vue';
+
+    function positionChildrenDecorator() {
+        let positionChildrenMap = [],
+            //index = 0,
+            childNumInMap = 0,
+            index = 0;
+
+        if (window.outerWidth >= 620 && window.outerWidth < 1024) {
+            positionChildrenMap.length = 2;
+        } else if (window.outerWidth >= 1024) {
+            positionChildrenMap.length = 3;
+        }
+
+        for (let i = 0; i <= positionChildrenMap.length - 1; i++) {
+            positionChildrenMap[i] = {x: 0, y: 0};
+        }
+
+        function getPrevCellValue(currentIndex) {
+            if (currentIndex === 0) {
+                return positionChildrenMap[positionChildrenMap.length - 1];
+            } else {
+                return positionChildrenMap[currentIndex - 1];
+            }
+        }
+
+        function isInt(n){
+            return Number(n) === n && n % 1 === 0;
+        }
+
+        return function(args) {
+            let {element} = args,
+                prevCellValue,
+                width = element.clientWidth,
+                height = element.clientHeight;
+
+            if (childNumInMap > positionChildrenMap.length - 1) {
+                childNumInMap = 0;
+                positionChildrenMap.forEach((item) => {
+                    item.x = 0;
+                })
+            }
+
+            // prevCellValue = getPrevCellValue(childNumInMap);
+            element.style.position = 'absolute';
+            element.style.top = '0';
+            element.style.left = '0';
+
+            if (index === 0) {
+                element.style.transform = `translateX(0) translateY(0)`;
+                positionChildrenMap[childNumInMap].x = width + 10;
+                positionChildrenMap[childNumInMap].y = height + 10;
+            } else if (index <= positionChildrenMap.length - 1) {
+                // Тут при позиционировании смотрит только на значение x у предыдущего элемента
+                element.style.transform = `translateX(${positionChildrenMap[childNumInMap - 1].x}px) translateY(0)`;
+                positionChildrenMap[childNumInMap].x = positionChildrenMap[childNumInMap - 1].x + width + 10;
+                positionChildrenMap[childNumInMap].y = height + 10;
+            } else {
+                let transformHoriz = (childNumInMap === 0) ? 0 : positionChildrenMap[childNumInMap - 1].x;
+                // Тут при позиционировании смотрит на значение у предыдущего элемента
+                element.style.transform = `translateX(${transformHoriz}px) translateY(${positionChildrenMap[childNumInMap].y}px)`;
+                positionChildrenMap[childNumInMap].x = transformHoriz + width + 7;
+                positionChildrenMap[childNumInMap].y = positionChildrenMap[childNumInMap].y + height + 10;
+
+            }
+
+            // positionChildrenMap[childNumInMap].x = positionChildrenMap[childNumInMap - 1] + width + 7;
+            // positionChildrenMap[childNumInMap].y = height + 7;
+
+            // if (positionChildrenMap.length === 2) {
+            //     positionChildrenMap[childNumInMap].x = prevCellValue.x + width + 7;
+            //     positionChildrenMap[childNumInMap].y = prevCellValue.y + height + 7;
+            // } else {
+            //     positionChildrenMap[childNumInMap].x = (childNumInMap !== 0 && isInt(childNumInMap / positionChildrenMap.length - 1)) ? 0 : prevCellValue.x + width + 7;
+            //     positionChildrenMap[childNumInMap].y = (index <= positionChildrenMap.length - 1) ? 0 : prevCellValue.y + height + 7;
+            // }
+            // positionChildrenMap[childNumInMap].x = prevCellValue.x + width;
+            // positionChildrenMap[childNumInMap].y = prevCellValue.y + height;
+
+            childNumInMap++;
+            index++;
+
+            // if (childNumInMap === 0) {
+            //     element.setAttribute('style', `transform: translateX(0), translateY(0)`);
+            // } else {
+            //     element.setAttribute('style', `transform: translateX(${positionChildrenMap[childNumInMap].x}px), translateY(${positionChildrenMap[childNumInMap].y}px)`);
+            // }
+        }
+    }
+
 
     export default {
         components: {
-            CellList,
-            ListWithButtons,
-            OrdinaryList,
-            TextField
+            // CellList,
+            // ListWithButtons,
+            // OrdinaryList,
+            // TextField
+            CVItemWrapper
         },
         data() {
             return {
+                childrenPositionMap: [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
                 cvData: {
                     education: {
                         title: "Высшее образование",
@@ -125,6 +224,9 @@
                 }
             }
         },
+        beforeMount() {
+            this.positionChildren = positionChildrenDecorator();
+        },
         methods: {
             getItemType(item) {
                 if (!Array.isArray(item)) {
@@ -135,23 +237,7 @@
                     return 'array';
                 }
             },
-            pickAppropriateList(item) {
-
-                    for (let i = 0; i < item.data.length; i++) {
-                        if (typeof item.data[i] === 'string') {
-                            // Используем cell-list
-                            return "cell";
-                        } else {
-                            for (let key in item.data) {
-                                if (Object.keys(item.data[key]).length > 1) {
-                                    return "with-buttons";
-                                } else {
-                                    return "ordinary";
-                                }
-                            }
-                        }
-                    };
-            }
+            positionChildren() {}
         }
     }
 </script>
@@ -193,6 +279,7 @@
     .cv-content-wrapper {
         display: flex;
         flex-direction: column;
+        max-width: 1024px;
         padding: 0 15px;
 
         @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
@@ -203,67 +290,10 @@
         }
 
         @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            position: relative;
             display: block;
         }
     }
 
-    .cv-item-wrapper {
-        padding-bottom: 20px;
-        @include border-radius(10px);
-        margin-bottom: 20px;
-        background-color: #ffffff;
-        @include box-shadow(
-                        0 11px 15px -7px rgba(0,0,0,0.2),
-                        0 24px 38px 3px rgba(0,0,0,0.14),
-                        0 9px 46px 8px rgba(0,0,0,0.12)
-        );
-
-        &:nth-last-child(1) {
-            @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-                flex-basis: 100%;
-            }
-
-            @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
-                width: 100%
-            }
-        }
-
-
-        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-            flex-basis: 47%;
-        }
-
-        @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
-            float: left;
-            width: 33%;
-            margin-right: 3px;
-            margin-bottom: 10px;
-        }
-
-    }
-
-    .cv-item-title {
-        @include reset-pad-marg();
-        padding: 0 10px;
-        margin-top: 10px;
-        margin-bottom: 15px;
-        text-align: center;
-        font-size: 1.8em;
-        color: $cv-item-text-color;
-    }
-
-    .cv-item-description {
-        @include reset-pad-marg();
-        padding: 0 10px;
-        margin-bottom: 20px;
-        font-size: 1.1em;
-        text-align: center;
-        color: $cv-item-text-color;
-    }
-
-    .cv-item-list {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
+    // ТУТ БЫЛИ СТИЛИ ДЛЯ ВРАППЕРА КОНТЕНТА
 </style>
