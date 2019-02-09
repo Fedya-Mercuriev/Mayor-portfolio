@@ -2,22 +2,8 @@
     div#cv
         h2.block-title Резюме
         p.block-description А это резюме. Да
-        div.cv-content-wrapper
-            CVItemWrapper(
-                v-for="(item, key, index) in cvData"
-                :info="item"
-                :number="index"
-                :key="key"
-                @mount-finished="positionChildren($event)"
-            )
-                <!--h3.cv-item-title {{ item.title }}-->
-                <!--p.cv-item-description {{ item.description }}-->
-                <!--template(v-if="getItemType(item.data) === 'text'")-->
-                    <!--TextField(:data="item.data" :state="'light'")-->
-                //template(v-else)
-                    CellList(v-if="pickAppropriateList(item) === 'cell'" :data="item.data")
-                    ListWithButtons(v-else-if="pickAppropriateList(item) === 'with-buttons'" :data="item.data")
-                    OrdinaryList(v-else :data="item.data")
+        div.cv-content-wrapper(ref="cvItemsContainer")
+
 
 </template>
 
@@ -30,106 +16,39 @@
     // import OrdinaryList from './items/ordinary-list/index.vue';
     // import TextField from './items/text-field/index.vue';
 
-    function positionChildrenDecorator() {
-        let positionChildrenMap = [],
-            //index = 0,
-            childNumInMap = 0,
-            index = 0;
-
-        if (window.outerWidth >= 620 && window.outerWidth < 1024) {
-            positionChildrenMap.length = 2;
-        } else if (window.outerWidth >= 1024) {
-            positionChildrenMap.length = 3;
-        }
-
-        for (let i = 0; i <= positionChildrenMap.length - 1; i++) {
-            positionChildrenMap[i] = {x: 0, y: 0};
-        }
-
-        function getPrevCellValue(currentIndex) {
-            if (currentIndex === 0) {
-                return positionChildrenMap[positionChildrenMap.length - 1];
-            } else {
-                return positionChildrenMap[currentIndex - 1];
-            }
-        }
-
-        function isInt(n){
-            return Number(n) === n && n % 1 === 0;
-        }
-
-        return function(args) {
-            let {element} = args,
-                prevCellValue,
-                width = element.clientWidth,
-                height = element.clientHeight;
-
-            if (childNumInMap > positionChildrenMap.length - 1) {
-                childNumInMap = 0;
-                positionChildrenMap.forEach((item) => {
-                    item.x = 0;
+    function buildCvItemsSection() {
+        if (this.defineIfHasItems()) {
+            this.defineIfIsDesktop()
+                .then(result => {
+                    if (result) {
+                        this.positionItems()
+                    } else {
+                        this.clearItemsStyles();
+                    }
+                });
+        } else {
+            this.placeItems();
+            this.defineIfIsDesktop()
+                .then(result => {
+                    if (result) {
+                        this.positionItems();
+                    } else {
+                        this.clearItemsStyles();
+                    }
                 })
-            }
-
-            // prevCellValue = getPrevCellValue(childNumInMap);
-            element.style.position = 'absolute';
-            element.style.top = '0';
-            element.style.left = '0';
-
-            if (index === 0) {
-                element.style.transform = `translateX(0) translateY(0)`;
-                positionChildrenMap[childNumInMap].x = width + 10;
-                positionChildrenMap[childNumInMap].y = height + 10;
-            } else if (index <= positionChildrenMap.length - 1) {
-                // Тут при позиционировании смотрит только на значение x у предыдущего элемента
-                element.style.transform = `translateX(${positionChildrenMap[childNumInMap - 1].x}px) translateY(0)`;
-                positionChildrenMap[childNumInMap].x = positionChildrenMap[childNumInMap - 1].x + width + 10;
-                positionChildrenMap[childNumInMap].y = height + 10;
-            } else {
-                let transformHoriz = (childNumInMap === 0) ? 0 : positionChildrenMap[childNumInMap - 1].x;
-                // Тут при позиционировании смотрит на значение у предыдущего элемента
-                element.style.transform = `translateX(${transformHoriz}px) translateY(${positionChildrenMap[childNumInMap].y}px)`;
-                positionChildrenMap[childNumInMap].x = transformHoriz + width + 7;
-                positionChildrenMap[childNumInMap].y = positionChildrenMap[childNumInMap].y + height + 10;
-
-            }
-
-            // positionChildrenMap[childNumInMap].x = positionChildrenMap[childNumInMap - 1] + width + 7;
-            // positionChildrenMap[childNumInMap].y = height + 7;
-
-            // if (positionChildrenMap.length === 2) {
-            //     positionChildrenMap[childNumInMap].x = prevCellValue.x + width + 7;
-            //     positionChildrenMap[childNumInMap].y = prevCellValue.y + height + 7;
-            // } else {
-            //     positionChildrenMap[childNumInMap].x = (childNumInMap !== 0 && isInt(childNumInMap / positionChildrenMap.length - 1)) ? 0 : prevCellValue.x + width + 7;
-            //     positionChildrenMap[childNumInMap].y = (index <= positionChildrenMap.length - 1) ? 0 : prevCellValue.y + height + 7;
-            // }
-            // positionChildrenMap[childNumInMap].x = prevCellValue.x + width;
-            // positionChildrenMap[childNumInMap].y = prevCellValue.y + height;
-
-            childNumInMap++;
-            index++;
-
-            // if (childNumInMap === 0) {
-            //     element.setAttribute('style', `transform: translateX(0), translateY(0)`);
-            // } else {
-            //     element.setAttribute('style', `transform: translateX(${positionChildrenMap[childNumInMap].x}px), translateY(${positionChildrenMap[childNumInMap].y}px)`);
-            // }
         }
     }
 
-
     export default {
         components: {
-            // CellList,
-            // ListWithButtons,
-            // OrdinaryList,
-            // TextField
             CVItemWrapper
         },
         data() {
             return {
-                childrenPositionMap: [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
+                positionChildrenMap: [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
+                childrenInstances: [],
+                childNumInMap: 0,
+                index: 0,
                 cvData: {
                     education: {
                         title: "Высшее образование",
@@ -224,8 +143,34 @@
                 }
             }
         },
-        beforeMount() {
-            this.positionChildren = positionChildrenDecorator();
+        mounted() {
+            let ctx = this,
+                buildCvItems = buildCvItemsSection.bind(ctx);
+            this.$nextTick(function() {
+                window.addEventListener('resize', function() {
+                    buildCvItems();
+                })
+            });
+
+            buildCvItems();
+            // if (this.childrenInstances.length === 0) {
+            //     let ItemWrapperComponent = Vue.extend(CVItemWrapper),
+            //         updatedCoordinates;
+            //     for (let item in this.cvData) {
+            //         let itemWrapper = new ItemWrapperComponent({
+            //             propsData: {
+            //                 info: this.cvData[item]
+            //             }
+            //         });
+            //         itemWrapper.$mount();
+            //         this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
+            //         this.childrenInstances.push(itemWrapper);
+            //         updatedCoordinates = itemWrapper.positionSelf(this.getPositionCoordinates());
+            //         this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
+            //         this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
+            //         this.incrementSection();
+            //     }
+            // }
         },
         methods: {
             getItemType(item) {
@@ -237,7 +182,114 @@
                     return 'array';
                 }
             },
-            positionChildren() {}
+            defineIfHasItems() {
+                return (this.childrenInstances.length !== 0);
+                // if (this.childrenInstances.length === 0) {
+                //     return false;
+                // }
+                // return true;
+            },
+            defineIfIsDesktop() {
+                return new Promise(resolve => {
+                    let width = window.outerWidth;
+
+                    if (width >= 768) {
+                        // Данный результат затем будет передан другой функции, которая исходя из
+                        // результата решит нужно ли позиционировать элементы резюме
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            },
+            placeItems() {
+                let itemWrapperComponent = Vue.extend(CVItemWrapper);
+
+                for (let item in this.cvData) {
+                    let itemWrapper = new itemWrapperComponent({
+                        propsData: {
+                            info: this.cvData[item]
+                        }
+                    });
+                    itemWrapper.$mount();
+                    this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
+                    this.childrenInstances.push(itemWrapper);
+                }
+            },
+            positionItems() {
+                let updatedCoordinates;
+
+                // if (this.childrenInstances.length === 0) {
+                //     for (let item in this.cvData) {
+                //         let itemWrapper = new itemWrapperComponent({
+                //             propsData: {
+                //                 info: this.cvData[item]
+                //             }
+                //         });
+                //         itemWrapper.$mount();
+                //         this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
+                //         this.childrenInstances.push(itemWrapper);
+                //         updatedCoordinates = itemWrapper.positionSelf(this.getPositionCoordinates());
+                //         this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
+                //         this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
+                //         this.incrementSection();
+                //     }
+                // }
+
+                this.childrenInstances.forEach(item => {
+                    updatedCoordinates = item.positionSelf(this.getPositionCoordinates());
+                    this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
+                    this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
+                    this.incrementSection();
+                })
+            },
+            getPositionCoordinates() {
+                let Xgap = 10,
+                    Ygap = 30;
+
+                if (this.childNumInMap > this.positionChildrenMap.length - 1) {
+                    this.childNumInMap = 0;
+                    this.positionChildrenMap.forEach((item) => {
+                        item.x = 0;
+                    })
+                }
+
+                if (this.index === 0) {
+                    // this.positionChildrenMap[this.childNumInMap].x = width + Xgap;
+                    // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
+                    return {hor: 0, ver: 0, CSSPosition: 'absolute'};
+
+                } else if (this.index <= this.positionChildrenMap.length - 1) {
+                    let transformHoriz = this.positionChildrenMap[this.childNumInMap - 1].x;
+                    // Тут при позиционировании смотрит только на значение x у предыдущего элемента
+                    // this.positionChildrenMap[this.childNumInMap].x = this.positionChildrenMap[this.childNumInMap - 1].x + width + Xgap;
+                    // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
+                    return {hor: transformHoriz, ver: 0, CSSPosition: 'absolute'}
+
+                } else if (this.index === Object.keys(this.cvData).length - 1) {
+                    let transformVert = this.positionChildrenMap[this.childNumInMap].y + Ygap;
+                    this.index = 0;
+                    this.childNumInMap = 0;
+                    return {hor: 0, ver: transformVert, CSSPosition: 'static'}
+
+                } else {
+                    let transformHoriz = (this.childNumInMap === 0) ? 0 : this.positionChildrenMap[this.childNumInMap - 1].x,
+                        transformVert = this.positionChildrenMap[this.childNumInMap].y;
+                    // Тут при позиционировании смотрит на значение у предыдущего элемента
+                    // this.positionChildrenMap[this.childNumInMap].x = transformHoriz + width + Xgap;
+                    // this.positionChildrenMap[this.childNumInMap].y = this.positionChildrenMap[this.childNumInMap].y + height + Ygap;
+                    return {hor: transformHoriz, ver: transformVert, CSSPosition: 'absolute'};
+                }
+            },
+            incrementSection() {
+                this.childNumInMap++;
+                this.index++;
+            },
+            clearItemsStyles() {
+                this.childrenInstances.forEach(item => {
+                    item.removeCustomStyles();
+                });
+            }
         }
     }
 </script>
@@ -292,6 +344,11 @@
         @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
             position: relative;
             display: block;
+            padding: 0 5px;
+        }
+
+        @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
+            width: 1024px;
         }
     }
 
