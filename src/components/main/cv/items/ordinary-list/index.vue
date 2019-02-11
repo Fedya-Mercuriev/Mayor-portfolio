@@ -24,10 +24,6 @@
             color: #000000;
             background-color: $cv-list-item-bg;
             @include transition(color 0.3s);
-
-            &:hover {
-                color: lighten($cv-list-item-color, 50%);
-            }
         }
     }
 </style>

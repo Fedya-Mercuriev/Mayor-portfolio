@@ -55,9 +55,14 @@
                             0 2px 2px 0 rgba(0,0,0,.14),
                             0 1px 5px 0 rgba(0,0,0,.12)
             );
+            @include transition(all 0.3s);
 
             @media screen and (min-width: map-deep-get($devices, 'mobile-m') + 1px) {
                 font-size: 1em;
+            }
+
+            &:hover {
+                background-color: darken(#ffffff, 8%);
             }
         }
 
