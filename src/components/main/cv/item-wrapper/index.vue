@@ -61,18 +61,20 @@
             positionSelf(position) {
                 let element = this.$el,
                     { hor, ver, CSSPosition } = position,
-                    width = element.clientWidth,
-                    height = element.clientHeight,
-                    XGgap = 10,
+                    blockStyles = {
+                        width: element.clientWidth,
+                        height: element.clientHeight
+                    },
+                    Xgap = 10,
                     Ygap = 30;
 
                 // Добавим стили
                 // this.customStyles.$set(width, `${width}px`);
-                this.customStyles.width = `${width}px`;
-                this.customStyles.height = `${height}px`;
+
                 this.customStyles.position = CSSPosition;
                 this.customStyles.top = 0;
                 this.customStyles.left = 0;
+                blockStyles = this.applyStyles(blockStyles);
                 this.customStyles.transform = `translateX(${hor}px) translateY(${ver}px)`;
                 this.$forceUpdate();
                 // element.style.width = `${width}px`;
@@ -83,9 +85,23 @@
                 // element.style.transform = `translateX(${hor}px) translateY(${ver}px)`;
 
                 return {
-                    hor: hor + width + XGgap,
-                    ver: ver + height + Ygap
+                    hor: hor + blockStyles.width + Xgap,
+                    ver: ver + blockStyles.height + Ygap
                 };
+            },
+            applyStyles(stylesObj) {
+                let element = this.$el,
+                    { width, height } = stylesObj;
+
+                if (!this.customStyles.width && !this.customStyles.height) {
+                    this.customStyles.width = `${width}px`;
+                    this.customStyles.height = `${height}px`;
+                    return {width: width, height: height}
+                } else {
+                    width = parseInt(this.customStyles.width);
+                    height = parseInt(this.customStyles.height);
+                    return {width: width, height: height}
+                }
             },
             removeCustomStyles() {
                 this.customStyles = {};
@@ -122,6 +138,7 @@
 
         @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             flex-basis: 47%;
+
         }
 
         @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
