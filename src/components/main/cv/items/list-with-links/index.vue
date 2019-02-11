@@ -4,6 +4,7 @@
                 a.list-with-buttons__certificate-link(
                     v-if="item.hasCertificate && typeof item.hasCertificate === 'object'"
                     :href="item.hasCertificate.link"
+                    target="_blank"
                 )
                     span.certificate-link-icon
                     span.certificate-link-text посмотреть сертификат

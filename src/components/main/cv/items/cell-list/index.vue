@@ -18,7 +18,6 @@
         },
         nextTick() {
             window.addEventListener('resize', this.setWidth());
-            console.log(`Ширина списка: ${this.width}px`);
         },
         beforeMount() {
             this.width = this.setWidth();
