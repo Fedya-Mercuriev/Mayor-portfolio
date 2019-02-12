@@ -2,6 +2,7 @@
     //include ../../../../pug-files/mixins/mixins.pug
     nav.page-navigation(v-show="isShown")
         ul.navigation-menu(@highlight-item="updateActiveMenuItems", @click="")
+            //- Обычные элементы меню
             li(
                 v-for="(item, index) in menuItems"
                 :class="{'navigation-menu__menu-item': true, 'navigation-menu__menu-item--is-current': item.isCurrent}"
@@ -10,6 +11,7 @@
             )
                 a.navigation-menu__menu-link(:href="item.hash")
                     span {{ item.text }}
+            //- Конец обычных элементов меню
 
             //- Пункт меню для выбора языка (для мобильных устройств)
             li(class="navigation-menu__menu-item mobile-choose-lang")
@@ -116,25 +118,19 @@
         padding-top: 60px;
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
-        background-color: #ffffff;
+        background-color: $navbar-bg;
 
-        /*@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {*/
-            /*backdrop-filter: blur(5px);*/
-            /*-webkit-backdrop-filter: blur(5px);*/
-            /*background-color: rgba(255, 255, 255, 0.4);*/
-        /*}*/
-
-        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
-            position: relative;
-            top: 0;
-            left: 0;
+        @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
+            position: static;
+            /*top: 0;*/
+            /*left: 0;*/
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
             width: auto;
             border-radius: 0;
             padding: 0;
-            background-color: #000000;
+            /*background-color: #000000;*/
         }
     }
 
@@ -146,7 +142,7 @@
         list-style-type: none;
         @include reset-pad-marg();
 
-        @media only screen and (max-width: map-deep-get($devices, 'tablet')) {
+        @media only screen and (max-width: map-deep-get($devices, 'desktop')) {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -154,7 +150,7 @@
             @include reset-pad-marg();
         }
 
-        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+        @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
             position: relative;
             display: flex;
             flex-direction: row;
@@ -168,24 +164,25 @@
             align-items: center;
             width: 100%;
             padding: 23px 0;
+            margin: 0 auto;
             color: $menu-link-color;
 
-            @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
                 display: flex;
                 flex-direction: row;
                 justify-content: stretch;
                 height: 100%;
                 padding: 0 20px;
                 color: #bbbbbb;
-                @include transition(text-shadow 0.4s);
+                /*@include transition(text-shadow 0.4s);*/
+                
+                &:hover {
+                    color: #ffffff;
+                }
             }
 
             &--is-current {
-                color: #000000;
-
-                @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
-                    color: #ffffff;
-                }
+                color: $active-menu-link-color;
             }
         }
 
@@ -198,7 +195,9 @@
             text-shadow: inherit;
             @include transition(color 0.4s);
 
-            @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) and (max-width: map-deep-get($devices, 'tablet')) {
+                font-size: 1.2em;
+
                 &:hover {
                     color: lighten($menu-link-color, 50%);
                 }
@@ -239,7 +238,7 @@
     .trigger-additional-menu-btn {
         display: none;
 
-        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+        @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -248,11 +247,11 @@
             width: 40px;
             height: 40px;
             padding: 8px 0;
-            border-radius: 5px;
+            @include border-radius(50%);
             @include transition(background-color 0.4s);
 
             &--is-clicked {
-                background-color: #ffffff;
+                background-color: #f9aa33;
 
                 .icon-dot {
                     background-color: #000000;

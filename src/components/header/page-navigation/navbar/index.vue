@@ -11,7 +11,8 @@
             return {
                 siteTitles: ["майор-майор", "mayor-mayor", "马约尔–马约尔"],
                 currentIndex: 0,
-                menuIsShown: false
+                menuIsShown: false,
+                blockScroll: false
             }
         },
         beforeMount: function() {
@@ -20,6 +21,14 @@
                 return;
             }
             this.menuIsShown = true;
+        },
+        methods: {
+            controlMenu() {
+                this.menuIsShown = !this.menuIsShown;
+                this.blockScroll = !this.blockScroll;
+                let root = this.$parent.$parent;
+                root.controlScroll(this.blockScroll);
+            }
         }
     }
 </script>
@@ -30,9 +39,11 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 998;
     width: 100%;
     height: 60px;
-    background-color: #000000;
+    padding-top: 15px;
+    background-color: transparent;
 
     @media screen and (max-width: map-deep-get($devices, 'mobile-l')) {
         height: 60px;
@@ -49,10 +60,12 @@
         flex-wrap: nowrap;
         align-items: stretch;
         justify-content: space-between;
-        max-width: 1024px;
+        width: 85%;
         height: inherit;
         padding: 0 20px;
+        @include border-radius(12px);
         @include centrifyBlock();
+        background-color: $navbar-bg;
 
         @media only screen and (max-width: map-deep-get($devices, 'mobile-l')) {
             padding: 0 20px;
@@ -98,21 +111,40 @@
     width: 49px;
     padding: 15px 10px;
 
-    @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
-        display: none;
-    }
-
-    @media only screen and (min-width: map-deep-get($devices, 'tablet')) {
-        padding: 20px 6px;
-    }
-
     @media only screen and (max-width: map-deep-get($devices, 'mobile-l')) {
         padding: 18px 10px;
     }
 
+    @media only screen and (min-width: map-deep-get($devices, 'tablet'))
+    and (max-width: map-deep-get($devices, 'desktop')) {
+        width: 45px;
+        padding: 20px 6px;
+    }
+
+    @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
+        display: none;
+    }
+
+    //@media only screen and (min-width: map-deep-get($devices, 'tablet')) {
+     //   padding: 20px 6px;
+    //}
+
     &--active {
         .mobile-menu-icon-stroke {
-            background-color: #000000;
+            background-color: #f9aa33;
+            @include transition(all 0.3s);
+
+            &:nth-child(1) {
+                @include transform(translateY(8px) rotate(45deg));
+            }
+
+            &:nth-child(2) {
+                opacity: 0;
+            }
+
+            &:nth-child(3) {
+                @include transform(translateY(-8px) rotate(-45deg));
+            }
         }
     }
 }
@@ -121,6 +153,8 @@
     display: block;
     height: 3px;
     background-color: #ffffff;
-    @include transition(background-color 0.3s);
+    opacity: 1;
+    @include transform(translateY(0) rotate(0deg));
+    @include transition(all 0.3s);
 }
 </style>

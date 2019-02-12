@@ -1,5 +1,31 @@
-<template src="./template.pug" lang="pug">
-
+<template lang="pug">
+    div
+        a.trigger-pick-language-block(
+        v-show="displayChooseLangButton"
+        @click.stop="displayPickLanguageBlock"
+        )
+            span.trigger-pick-language-block__button-text Язык
+        //- Позиционируется фиксированно
+        div(v-show="secondaryMenuShown")
+            div.pick-language-block
+                a.close-block-btn(@click.stop="secondaryMenuShown = false" role="button")
+                    i.close-block-btn__stroke
+                    i.close-block-btn__stroke
+                div.block-icon
+                    ChineseCharacter.chinese-character(
+                        :class="{'chinese-character--is-active': hoveredLang === 'zh'}"
+                    )
+                    LatinLetter.latin-letter(
+                        :class="{'latin-letter--is-active': hoveredLang === 'ru' || hoveredLang === 'en'}"
+                    )
+                h4.pick-language-block__block-title Выберите язык
+                ul.languages-list(@mouseleave="hoveredLang = null")
+                    li.languages-list__menu-item(
+                    v-for="item in availableLanguages"
+                    @mouseover="hoveredLang = item.data"
+                    )
+                        a(:href='"https://" + item.data +".mayor-mayor.com"') {{ item.text }}
+            div.block-overlay(@click = "secondaryMenuShown = false")
 </template>
 
 <script>

@@ -24,5 +24,9 @@
 
     .page-header {
         padding-top: 60px;
+
+        @media screen and (min-width: map-deep-get($devices, 'tablet')) {
+            padding-top: 66px;
+        }
     }
 </style>
