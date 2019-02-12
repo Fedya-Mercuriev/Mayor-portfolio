@@ -1,13 +1,17 @@
 <template lang="pug">
-    div.cv-item-wrapper(v-bind:style="customStyles")
-        h3.cv-item-title {{ info.title }}
-        p(v-if="info.description").cv-item-description {{ info.description }}
-        template(v-if="getItemType(info.data) === 'text'")
-            TextField(:data="info.data" :state="'light'")
-        template(v-else)
-            CellList(v-if="pickAppropriateList(info) === 'cell'" :data="info.data")
-            ListWithButtons(v-else-if="pickAppropriateList(info) === 'with-buttons'" :data="info.data")
-            OrdinaryList(v-else :data="info.data")
+    div.cv-item-container(v-bind:style="customStyles")
+        div.cv-item-wrapper
+            div.cv-item
+                div.cv-item-body
+                div.cv-item-content
+                    h3.cv-item-title {{ info.title }}
+                    p(v-if="info.description").cv-item-description {{ info.description }}
+                    template(v-if="getItemType(info.data) === 'text'")
+                        TextField(:data="info.data" :state="'light'")
+                    template(v-else)
+                        CellList(v-if="pickAppropriateList(info) === 'cell'" :data="info.data")
+                        ListWithButtons(v-else-if="pickAppropriateList(info) === 'with-buttons'" :data="info.data")
+                        OrdinaryList(v-else :data="info.data")
 </template>
 
 <script>
@@ -65,7 +69,7 @@
                         width: element.clientWidth,
                         height: element.clientHeight
                     },
-                    Xgap = 10,
+                    Xgap = 5,
                     Ygap = 30;
 
                 // Добавим стили
@@ -95,7 +99,7 @@
 
                 if (!this.customStyles.width && !this.customStyles.height) {
                     this.customStyles.width = `${width}px`;
-                    this.customStyles.height = `${height}px`;
+                    // this.customStyles.height = `${height}px`;
                     return {width: width, height: height}
                 } else {
                     width = parseInt(this.customStyles.width);
@@ -113,16 +117,10 @@
 
 <style lang="scss" scoped>
 
-    .cv-item-wrapper {
-        padding-bottom: 20px;
-        @include border-radius(10px);
-        margin-bottom: 20px;
-        background-color: #ffffff;
-        @include box-shadow(
-                        0 11px 15px -7px rgba(0,0,0,0.2),
-                        0 24px 38px 3px rgba(0,0,0,0.14),
-                        0 9px 46px 8px rgba(0,0,0,0.12)
-        );
+    .cv-item-container {
+        position: relative;
+        padding: 0 5px;
+        margin-bottom: 35px;
         @include transition(transform);
 
         &:nth-last-child(1) {
@@ -135,19 +133,64 @@
             }
         }
 
-
         @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-            flex-basis: 47%;
-
+            box-sizing: border-box;
+            width: 47%;
+            padding: 0;
+            /*flex-basis: 47%;*/
         }
 
-        @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
+        @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
             /*float: left;*/
             width: 33%;
+            /*padding: 0 7px 15px 7px;*/
             /*margin-right: 3px;*/
             margin-bottom: 0;
         }
 
+    }
+
+    .cv-item-wrapper {
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            padding: 0 7px 15px 7px;
+        }
+
+    }
+    
+    .cv-item {
+        position: relative;
+
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            padding-bottom: 10px;
+        }
+    }
+
+    .cv-item-body {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding-bottom: 20px;
+        @include border-radius(10px);
+        background-color: #ffffff;
+        @include box-shadow(
+                        0 11px 15px -7px rgba(0,0,0,0.2),
+                        0 24px 38px 3px rgba(0,0,0,0.14),
+                        0 9px 46px 8px rgba(0,0,0,0.12)
+        );
+
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            padding-bottom: 0;
+        }
+    }
+
+    .cv-item-content {
+        position: relative;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
     }
 
     .cv-item-title {
@@ -158,6 +201,11 @@
         text-align: center;
         font-size: 1.8em;
         color: $cv-item-text-color;
+
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
+            padding: 10px 10px;
+            margin: 0;
+        }
     }
 
     .cv-item-description {
