@@ -1,13 +1,12 @@
 <template lang="pug">
     //include ../../../../pug-files/mixins/mixins.pug
-    nav.page-navigation(v-show="isShown")
-        ul.navigation-menu(@highlight-item="updateActiveMenuItems", @click="")
+    nav.page-navigation(ref="page-navigation")
+        ul.navigation-menu(@highlight-item="updateActiveMenuItems")
             //- Обычные элементы меню
             li(
-                v-for="(item, index) in menuItems"
-                :class="{'navigation-menu__menu-item': true, 'navigation-menu__menu-item--is-current': item.isCurrent}"
-                :key="index"
-                v-on:click="updateActiveMenuItems"
+                v-for="(item, propName) in menuItems"
+                :class="{'navigation-menu__menu-item': true,'navigation-menu__menu-item--is-current': item.isCurrent}"
+                :key="propName"
             )
                 a.navigation-menu__menu-link(:href="item.hash")
                     span {{ item.text }}
@@ -21,6 +20,7 @@
                             option(disabled value="") "Пожалуйста, выберите язык"
                             option(v-for="option in availableLanguages" :value="option.data") {{ option.text }}
             //- Конец пункта меню для выбора языка (для мобильных устройств)
+
             li.secondary-menu-wrapper
                 a.trigger-additional-menu-btn(
                     :class="{'trigger-additional-menu-btn--is-clicked': secondaryMenuOpened}"
@@ -30,45 +30,49 @@
                     i.icon-dot
                     i.icon-dot
                 PickLanguageBlock(:displayChooseLangButton="secondaryMenuOpened")
-                //- SecondaryNavbarMenu(v-show="secondaryMenuOpened")
-                //- ul.secondary-navbar-menu(v-show="secondaryMenuOpened")
-                    //- li.secondary-navbar-menu__menu-item
-                            // - Этот блок показывается на десктопной верси
 
 </template>
 
 <script>
     import PickLanguageBlock from '../pick-language-block/index.vue';
+    import { EventBus } from './../../../../event-bus.js';
 
     export default {
         name: 'page-navigation',
         components: {
             PickLanguageBlock
         },
-        props: ['isShown'],
+        mounted() {
+            EventBus.$on('highlight-li', (event) => {
+                this.updateActiveMenuItems(event);
+            });
+        },
         data() {
             return {
                 menuBaseClass: 'navigation-menu',
 
-                menuItems: [
-                    {
-                        text: "Рассуждение",
-                        hash: "#make-cn-sites-better",
-                        isCurrent: true
-                    }, {
+                menuItems: {
+                    design: {
+                        text: "Дизайн",
+                        hash: "#design",
+                        isCurrent: false
+                    },
+                    portfolio: {
                         text: "Портфолио",
                         hash: "#portfolio",
                         isCurrent: false
-                    }, {
+                    },
+                    cv: {
                         text: "Резюме",
                         hash: "#cv",
                         isCurrent: false
-                    }, {
+                    },
+                    contacts: {
                         text: "Контакты",
                         hash: "#contacts",
                         isCurrent: false
                     }
-                ],
+                },
                 availableLanguages: [
                     {
                         text: "Русский",
@@ -88,16 +92,17 @@
             }
         },
         methods: {
-            updateActiveMenuItems(event) {
-                this.menuItems.forEach((item) => {
-                    if (item.text === event.target.textContent) {
-                        item.isCurrent = true;
+            scrollToSection(item) {
+                console.log(item);
+            },
+            updateActiveMenuItems(propName) {
+                for (let prop in this.menuItems) {
+                    if (prop === propName) {
+                        this.menuItems[prop].isCurrent = true;
                     } else {
-                        if (item.isCurrent) {
-                            item.isCurrent = false;
-                        }
+                        this.menuItems[prop].isCurrent = false;
                     }
-                })
+                }
             },
             displaySecondaryMenu() {
                 this.secondaryMenuOpened = !this.secondaryMenuOpened
@@ -167,6 +172,10 @@
             margin: 0 auto;
             color: $menu-link-color;
 
+            @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) and (max-width: map-deep-get($devices, 'tablet')) {
+                padding: 25px 0;
+            }
+
             @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
                 display: flex;
                 flex-direction: row;
@@ -196,11 +205,15 @@
             @include transition(color 0.4s);
 
             @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) and (max-width: map-deep-get($devices, 'tablet')) {
-                font-size: 1.2em;
+                font-size: $menu-item-font-size-mobile;
 
                 &:hover {
                     color: lighten($menu-link-color, 50%);
                 }
+            }
+
+            @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) and (max-width: map-deep-get($devices, 'desktop')) {
+                font-size: $menu-item-font-size-tablet;
             }
         }
     }
@@ -213,12 +226,17 @@
         padding: 23px 0;
         color: $menu-link-color;
 
-        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+        @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
             display: none;
         }
 
         label {
             position: relative;
+            font-size: $menu-item-font-size-mobile;
+
+            @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+                font-size: $menu-item-font-size-tablet;
+            }
         }
     }
     
@@ -330,7 +348,7 @@
             color: #ffffff;
             text-decoration: none;
 
-            @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+            @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
                 color: #000000;
                 font-size: 0.9em;
             }
