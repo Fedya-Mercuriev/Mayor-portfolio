@@ -1,5 +1,4 @@
 <template lang="pug">
-    //include ../../../../pug-files/mixins/mixins.pug
     nav.page-navigation(ref="page-navigation")
         ul.navigation-menu(@highlight-item="updateActiveMenuItems")
             //- Обычные элементы меню
@@ -25,11 +24,15 @@
                 a.trigger-additional-menu-btn(
                     :class="{'trigger-additional-menu-btn--is-clicked': secondaryMenuOpened}"
                     @click.stop="displaySecondaryMenu"
+                    v-click-outside="hideSecondaryMenu"
                 )
                     i.icon-dot
                     i.icon-dot
                     i.icon-dot
-                PickLanguageBlock(:displayChooseLangButton="secondaryMenuOpened")
+                PickLanguageBlock(
+                    :chooseLangBtnShown="secondaryMenuOpened"
+                    v-on:hide-secondary-menu="displaySecondaryMenu"
+                )
 
 </template>
 
@@ -50,7 +53,6 @@
         data() {
             return {
                 menuBaseClass: 'navigation-menu',
-
                 menuItems: {
                     design: {
                         text: "Дизайн",
@@ -91,10 +93,38 @@
                 secondaryMenuOpened: false
             }
         },
+        directives: {
+            'click-outside': {
+                bind: function(el, binding, vNode) {
+                    // Provided expression must evaluate to a function.
+                    if (typeof binding.value !== 'function') {
+                        const compName = vNode.context.name;
+                        let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`;
+                        if (compName) { warn += `Found in component '${compName}'` }
+
+                        console.warn(warn)
+                    }
+                    // Define Handler and cache it on the element
+                    const bubble = binding.modifiers.bubble;
+                    const handler = (e) => {
+                        if (bubble || (!el.contains(e.target) && el !== e.target)) {
+                            binding.value(e)
+                        }
+                    };
+                    el.__vueClickOutside__ = handler;
+
+                    // add Event Listeners
+                    document.addEventListener('click', handler)
+                },
+
+                unbind: function(el, binding) {
+                    // Remove Event Listeners
+                    document.removeEventListener('click', el.__vueClickOutside__);
+                    el.__vueClickOutside__ = null
+                }
+            }
+        },
         methods: {
-            scrollToSection(item) {
-                console.log(item);
-            },
             updateActiveMenuItems(propName) {
                 for (let prop in this.menuItems) {
                     if (prop === propName) {
@@ -104,8 +134,12 @@
                     }
                 }
             },
-            displaySecondaryMenu() {
-                this.secondaryMenuOpened = !this.secondaryMenuOpened
+            displaySecondaryMenu(state = null) {
+                this.secondaryMenuOpened = (typeof state === 'boolean') ? state : !this.secondaryMenuOpened;
+                // this.secondaryMenuOpened = !this.secondaryMenuOpened
+            },
+            hideSecondaryMenu() {
+                this.secondaryMenuOpened = false;
             }
         }
     }
@@ -202,7 +236,7 @@
             text-decoration: none;
             color: inherit;
             text-shadow: inherit;
-            @include transition(color 0.4s);
+            @include transition(color 0.27s);
 
             @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) and (max-width: map-deep-get($devices, 'tablet')) {
                 font-size: $menu-item-font-size-mobile;

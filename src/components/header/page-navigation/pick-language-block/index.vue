@@ -1,8 +1,8 @@
 <template lang="pug">
     div
         a.trigger-pick-language-block(
-        v-show="displayChooseLangButton"
-        @click.stop="displayPickLanguageBlock"
+            v-show="chooseLangBtnShown"
+            @click="displayPickLanguageBlock"
         )
             span.trigger-pick-language-block__button-text Язык
         //- Позиционируется фиксированно
@@ -21,8 +21,8 @@
                 h4.pick-language-block__block-title Выберите язык
                 ul.languages-list(@mouseleave="hoveredLang = null")
                     li.languages-list__menu-item(
-                    v-for="item in availableLanguages"
-                    @mouseover="hoveredLang = item.data"
+                        v-for="item in availableLanguages"
+                        @mouseover="hoveredLang = item.data"
                     )
                         a(:href='"https://" + item.data +".mayor-mayor.com"') {{ item.text }}
             div.block-overlay(@click = "secondaryMenuShown = false")
@@ -33,10 +33,15 @@
     import LatinLetter from '../../../../svg/latin-letter.svg'
 
     export default {
-        props: ['displayChooseLangButton'],
         components: {
             ChineseCharacter,
             LatinLetter
+        },
+        props: {
+            chooseLangBtnShown: {
+                type: 'Boolean',
+                required: true
+            }
         },
         data() {
             return {
@@ -69,6 +74,7 @@
 
             },
             displayPickLanguageBlock() {
+                this.$emit('hide-secondary-menu', false);
                 this.secondaryMenuShown = !this.secondaryMenuShown;
             }
         }
