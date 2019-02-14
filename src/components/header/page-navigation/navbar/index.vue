@@ -1,4 +1,4 @@
-<template src="./template.pug" lang="pug">
+<template lang="pug">
     div.navbar
         div.navbar__inner
             a.site-logo(href="https://mayor-mayor.com")
@@ -40,7 +40,7 @@
                   // Нужно скрыть открытые окна
                   EventBus.$emit('close-secondary-menu');
                   ctx.unlockScroll(root);
-                  if (this.innerWidth > 1024) {
+                  if (this.outerWidth > 1024) {
                       ctx.menuIsShown = true;
                   } else {
                       ctx.menuIsShown = false;

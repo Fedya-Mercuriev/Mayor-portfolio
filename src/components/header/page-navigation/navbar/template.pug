@@ -3,7 +3,7 @@ div.navbar
         a.site-logo(href="https://mayor-mayor.com")
             img.site-logo__img(src="" alt="Логотип сайта")
             span.site-title {{ siteTitles[currentIndex] }}
-        page-navigation(v-bind:isShown="menuIsShown")
+        page-navigation(v-show="menuIsShown")
         a.trigger-mobile-menu-btn(role="button" @click.stop="controlMenu()" :class="{'trigger-mobile-menu-btn--active': menuIsShown}")
             i.mobile-menu-icon-stroke
             i.mobile-menu-icon-stroke
