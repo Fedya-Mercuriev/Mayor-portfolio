@@ -15,7 +15,7 @@
             li(class="navigation-menu__menu-item mobile-choose-lang")
                 form
                     label(for="select-language") Язык {{ value }}
-                        select#select-language(v-model="value")
+                        select#select-language( v-on:input="showChosenValue")
                             option(disabled value="") "Пожалуйста, выберите язык"
                             option(v-for="option in availableLanguages" :value="option.data") {{ option.text }}
             //- Конец пункта меню для выбора языка (для мобильных устройств)
@@ -24,7 +24,7 @@
                 a.trigger-additional-menu-btn(
                     :class="{'trigger-additional-menu-btn--is-clicked': secondaryMenuOpened}"
                     @click.stop="displaySecondaryMenu"
-                    v-click-outside="hideSecondaryMenu"
+                    v-click-outside="closeSecondaryMenu"
                 )
                     i.icon-dot
                     i.icon-dot
@@ -48,6 +48,9 @@
         mounted() {
             EventBus.$on('highlight-li', (event) => {
                 this.updateActiveMenuItems(event);
+            });
+            EventBus.$on('close-secondary-menu', () => {
+                this.secondaryMenuOpened = false;
             });
         },
         data() {
@@ -138,8 +141,11 @@
                 this.secondaryMenuOpened = (typeof state === 'boolean') ? state : !this.secondaryMenuOpened;
                 // this.secondaryMenuOpened = !this.secondaryMenuOpened
             },
-            hideSecondaryMenu() {
+            closeSecondaryMenu() {
                 this.secondaryMenuOpened = false;
+            },
+            showChosenValue(event) {
+                console.log(event.target.value);
             }
         }
     }
@@ -275,11 +281,12 @@
     }
     
     .secondary-menu-wrapper {
-        width: 100%;
+        display: none;
 
-        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
+        @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
             position: relative;
-
+            display: block;
+            width: 100%;
 
             &:hover {
                 cursor: pointer;
