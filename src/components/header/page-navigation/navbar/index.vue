@@ -1,7 +1,19 @@
-<template src="./template.pug" lang="pug"></template>
+<template src="./template.pug" lang="pug">
+    div.navbar
+        div.navbar__inner
+            a.site-logo(href="https://mayor-mayor.com")
+                img.site-logo__img(src="" alt="Логотип сайта")
+                span.site-title {{ siteTitles[currentIndex] }}
+            page-navigation(v-show="menuIsShown")
+            a.trigger-mobile-menu-btn(role="button" @click.stop="controlMenu()" :class="{'trigger-mobile-menu-btn--active': menuIsShown}")
+                i.mobile-menu-icon-stroke
+                i.mobile-menu-icon-stroke
+                i.mobile-menu-icon-stroke
+</template>
 
 <script>
     import PageNavigation from '../navbar-menu/index.vue';
+    import { EventBus } from './../../../../event-bus.js';
 
     export default {
         components: {
@@ -16,13 +28,31 @@
             }
         },
         beforeMount: function() {
-            if (window.innerWidth <= 768) {
-                this.menuIsShown = false;
-                return;
+            if (window.innerWidth > 1024) {
+                this.menuIsShown = true;
             }
-            this.menuIsShown = true;
+        },
+        mounted() {
+            let root = this.$parent.$parent,
+                ctx = this;
+          this.$nextTick(function() {
+              window.addEventListener('resize', function() {
+                  // Нужно скрыть открытые окна
+                  EventBus.$emit('close-secondary-menu');
+                  ctx.unlockScroll(root);
+                  if (this.innerWidth > 1024) {
+                      ctx.menuIsShown = true;
+                  } else {
+                      ctx.menuIsShown = false;
+                  }
+              })
+          })
         },
         methods: {
+            unlockScroll(root) {
+                this.blockScroll = false;
+                root.controlScroll(this.blockScroll);
+            },
             controlMenu() {
                 this.menuIsShown = !this.menuIsShown;
                 this.blockScroll = !this.blockScroll;
@@ -63,7 +93,7 @@
         width: 85%;
         height: inherit;
         padding: 0 20px;
-        @include border-radius(12px);
+        @include border-radius($large-component-border-radius);
         @include centrifyBlock();
         background-color: $navbar-bg;
 
@@ -117,7 +147,7 @@
 
     @media only screen and (min-width: map-deep-get($devices, 'tablet'))
     and (max-width: map-deep-get($devices, 'desktop')) {
-        width: 45px;
+        /*width: 45px;*/
         padding: 20px 6px;
     }
 

@@ -29,8 +29,9 @@
 </template>
 
 <script>
-    import ChineseCharacter from '../../../../svg/chinese-character.svg'
-    import LatinLetter from '../../../../svg/latin-letter.svg'
+    import ChineseCharacter from '../../../../svg/chinese-character.svg';
+    import LatinLetter from '../../../../svg/latin-letter.svg';
+    import { EventBus } from './../../../../event-bus.js';
 
     export default {
         components: {
@@ -42,6 +43,11 @@
                 type: 'Boolean',
                 required: true
             }
+        },
+        mounted() {
+            EventBus.$on('close-secondary-menu', () => {
+               this.secondaryMenuShown = false;
+            });
         },
         data() {
             return {
