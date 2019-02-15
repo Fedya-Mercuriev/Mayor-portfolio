@@ -1,5 +1,5 @@
 <template lang="pug">
-    div#portfolio
+    section#portfolio
         h2.block-title Портфолио
         p.block-description Здесь собрана часть моих работ, которыми можно покичиться
         div.project-cards-wrapper(@click="processCardClicks")
@@ -8,13 +8,13 @@
                 key="key"
                 :projectData="project"
                 @checkout-project="openProject(project)"
+                v-click-outside-card="closeCard"
             )
         project-view(
             v-show="projectWindowShown"
             :projectInfo="currentlyOpenedProjectData"
             @hide-window="closeProject"
         )
-        a.root-link(href="https://github.com/Fedya-Mercuriev?tab=repositories" target="_blank") Больше проектов
 </template>
 
 <script>
@@ -96,7 +96,6 @@
                 // Заблокируем пролистывание
                 let blockScroll = this.$parent.controlScroll;
                 blockScroll(true);
-                // document.body.classList.push('block-scroll');
             },
             closeProject() {
                 this.projectWindowShown = false;
@@ -123,32 +122,6 @@
         flex-direction: column;
         align-items: center;
     }
-
-    .block-title {
-        @include reset-pad-marg();
-        margin-top: 20px;
-        margin-bottom: 16px;
-        color: $block-title-color;
-
-        @media screen and (max-width: map-deep-get($devices, 'mobile-l')) {
-            font-size: 2em;
-        }
-
-        @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-            font-size: 3.3em;
-        }
-    }
-
-    .block-description {
-        @include reset-pad-marg();
-        margin-bottom: 30px;
-        color: $block-description-color;
-        text-align: center;
-
-        @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-            font-size: 1.2em;
-        }
-    }
     
     .project-cards-wrapper {
         position: relative;
@@ -164,10 +137,6 @@
         }
 
         @media screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
-            /*flex-direction: row;*/
-            /*flex-wrap: wrap;*/
-            /*align-items: flex-end;*/
-            /*justify-content: space-between;*/
             display: block;
             box-sizing: border-box;
             max-width: 1024px;

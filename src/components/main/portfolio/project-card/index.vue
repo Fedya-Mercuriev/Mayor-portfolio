@@ -41,14 +41,14 @@
         },
         methods: {
             setLinkMsg() {
-                if (window.outerWidth <= 768) {
+                if (window.outerWidth <= 1024) {
                     this.linkMsg = "Кликните еще раз"
                 } else {
                     this.linkMsg = "Подробнее";
                 }
             },
             processClicks() {
-                if (window.outerWidth <= 768) {
+                if (window.outerWidth <= 1024) {
                     if (this.isClicked) {
                         this.isClicked = false;
                         this.$emit('checkout-project', this.key);
@@ -76,8 +76,8 @@
         flex-direction: column;
         align-items: center;
         width: 80%;
-        @include border-radius(5px);
-        margin-bottom: 15px;
+        @include border-radius($large-component-border-radius);
+        margin-bottom: 30px;
         overflow: hidden;
         background-color: $project-card-bg;
         @include box-shadow(
@@ -87,48 +87,32 @@
         );
         @include transform(scale(1));
         @include transition(all 0.27s);
-
-        /*&:nth-last-child(-n+1) {}*/
-
-        // Правила для последней карточки
+        will-change: transform;
 
         @media screen and (min-width: map-deep-get($devices, 'mobile-m') + 1px) {
             width: 75%;
-            margin-bottom: 20px;
         }
 
         @media screen and (max-width: map-deep-get($devices, 'mobile-l')) {
-            @include border-radius(7px);
+            //@include border-radius(7px);
         }
 
         // Правила для планшета для карточек
-
         @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             width: 45%;
-            @include border-radius(12px);
 
-            /*
-                Стили для последних двух карточек
-            */
-
+            //Стили для последних двух карточек
             &:nth-last-child(-n+2) {
                 width: 93%;
 
-                // При клике ссылка смезается на 20px
-
+                // При клике ссылка смещается на 20px
                 &::after {
                     padding-bottom: 20%;
                 }
-
-                //&--is-clicked {
-
-                  //  #{$componentBaseClass}__checkout-project-link {
-                    //    @include transform(translateY(-40px));
-                    //}
-                //}
             }
         }
 
+        // Правила для больших планшетов и для ПК
         @media screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
             float: left;
             width: 20%;
@@ -183,7 +167,7 @@
                 }
             }
         }
-
+        // Конец правил для больших планшетов и для ПК
         &::after {
             content: "";
             display: block;
@@ -196,8 +180,9 @@
             z-index: 10;
             @include transform(translateY(-50%));
             @include reset-pad-marg();
-            font-size: 1.8em;
+            font-size: 1.6em;
             color: $project-card-color;
+            -webkit-font-smoothing: subpixel-antialiased;
             text-align: center;
             @include transition(all 0.3s);
 
@@ -233,10 +218,17 @@
 
         &__checkout-project-link {
             position: absolute;
-            bottom: -20px;
+            bottom: 0;
+            left: 0;
+            @include transform(translateY(40px));
+            display: block;
+            width: 100%;
+            text-align: center;
             font-size: 1.15em;
+            -webkit-font-smoothing: subpixel-antialiased;
             color: $checkout-project-link-color;
             @include transition(all 0.3s cubic-bezier(0.250, 0.250, 0.130, 0.910));
+            will-change: transform;
         }
 
         /*
@@ -250,8 +242,9 @@
                 background-color: rgba(0, 0, 0, 0.5);
             }
 
+            // Правила для состояния ссылки "кликните еще раз" или "Подробнее" при клике на карточку
             .#{$componentBaseClass}__checkout-project-link {
-                @include transform(translateY(-80px));
+                @include transform(translateY(-40px));
             }
 
             @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
@@ -262,7 +255,7 @@
                     }
 
                     .#{$componentBaseClass}__checkout-project-link {
-                        @include transform(translateY(-40px));
+                        @include transform(translateY(-20px));
                     }
                 }
             }
