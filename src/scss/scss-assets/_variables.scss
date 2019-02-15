@@ -1,10 +1,26 @@
-$site-bg: #1e1e1e;
-$menu-link-color: #868585;
+// Base styles for the website start here
+$site-bg: #ecf0f2;
+$large-component-border-radius: 12px;
+$medium-component-border-radius: 5px;
+$small-component-border-radius: 30px;
+$primary-bg-color: #f9aa33;
+$primary-text-color:#232f34; //800
+$primary-color: #344955; //700
+// Base styles for the website end here
+
+// Header variables start here
+$navbar-bg: #232f34;
+$menu-link-color: #ffffff;
+$menu-item-font-size-mobile: 1.2em;
+$menu-item-font-size-tablet: 1.4em;
+$active-menu-link-color: #f9aa33;
 $secondary-menu-bg: #ffffff;
-$pick-lang-block-min-width: 230px;
+$pick-lang-block-min-width: 250px;
 $dialog-font-color: rgba(0,0,0,.6);
 $inactive-icon-color: #77777796;
 $active-icon-color: #000000;
+// Header variables end here
+
 $block-title-color: #ffffff;
 $block-description-color: #ffffff;
 $project-card-bg: #ffffff;
