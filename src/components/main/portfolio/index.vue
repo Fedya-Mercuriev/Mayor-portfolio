@@ -8,7 +8,6 @@
                 key="key"
                 :projectData="project"
                 @checkout-project="openProject(project)"
-                v-click-outside-card="closeCard"
             )
         project-view(
             v-show="projectWindowShown"
