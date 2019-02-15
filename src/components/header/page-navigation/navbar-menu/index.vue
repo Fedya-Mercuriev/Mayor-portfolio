@@ -13,11 +13,18 @@
 
             //- Пункт меню для выбора языка (для мобильных устройств)
             li(class="navigation-menu__menu-item mobile-choose-lang")
-                form
-                    label(for="select-language") Язык {{ value }}
-                        select#select-language( v-on:input="showChosenValue")
-                            option(disabled value="") "Пожалуйста, выберите язык"
-                            option(v-for="option in availableLanguages" :value="option.data") {{ option.text }}
+                form.choose-lang-form
+                    label(for="select-language") Язык
+                        select#select-language(@input="setChosenLanguage")
+                            option(disabled value="") -- Выберите язык --
+                            option(
+                                v-for="option in availableLanguages"
+                                :value="option.data"
+                            ) {{ option.text }}
+                    LocalePageLink(
+                        :langChosen="langChosen"
+                        :language="language"
+                    )
             //- Конец пункта меню для выбора языка (для мобильных устройств)
 
             li.secondary-menu-wrapper
@@ -38,12 +45,17 @@
 
 <script>
     import PickLanguageBlock from '../pick-language-block/index.vue';
+    import LocalePageLink from './../go-to-page-link/index.vue';
     import { EventBus } from './../../../../event-bus.js';
 
     export default {
         name: 'page-navigation',
         components: {
-            PickLanguageBlock
+            PickLanguageBlock,
+            LocalePageLink
+        },
+        created() {
+            // this.language = this.currentLanguage;
         },
         mounted() {
             EventBus.$on('highlight-li', (event) => {
@@ -92,6 +104,8 @@
                         data: "zh"
                     }
                 ],
+                language: "",
+                langChosen: false,
                 menuItemClass: `${this.menuBaseClass}__menu-item`,
                 secondaryMenuOpened: false
             }
@@ -127,6 +141,27 @@
                 }
             }
         },
+        computed: {
+            currentLanguage: {
+                get() {
+                    let domain = "mayor-mayor.com";
+                    let host = domain.split('.');
+                    host.splice(host.indexOf('com'), 1);
+                    if (host.length > 1) {
+                        return host[0];
+                    } else {
+                        return "zh";
+                    }
+                },
+                set(event) {
+                    let value = event.target.value;
+                    this.language = value;
+                }
+            },
+            pageLink() {
+                return `${this.currentLanguage}`;
+            }
+        },
         methods: {
             updateActiveMenuItems(propName) {
                 for (let prop in this.menuItems) {
@@ -137,15 +172,25 @@
                     }
                 }
             },
+
             displaySecondaryMenu(state = null) {
                 this.secondaryMenuOpened = (typeof state === 'boolean') ? state : !this.secondaryMenuOpened;
                 // this.secondaryMenuOpened = !this.secondaryMenuOpened
             },
+
             closeSecondaryMenu() {
                 this.secondaryMenuOpened = false;
             },
-            showChosenValue(event) {
-                console.log(event.target.value);
+
+            setChosenLanguage(event) {
+                let value = event.target.value;
+
+                if (value !== this.currentLanguage) {
+                    this.langChosen = true;
+                    this.language = value;
+                } else {
+                    this.langChosen = false;
+                }
             }
         }
     }
@@ -240,17 +285,10 @@
             flex-direction: row;
             align-items: center;
             text-decoration: none;
+            font-size: $menu-item-font-size-mobile;
             color: inherit;
             text-shadow: inherit;
             @include transition(color 0.27s);
-
-            @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) and (max-width: map-deep-get($devices, 'tablet')) {
-                font-size: $menu-item-font-size-mobile;
-
-                &:hover {
-                    color: lighten($menu-link-color, 50%);
-                }
-            }
 
             @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) and (max-width: map-deep-get($devices, 'desktop')) {
                 font-size: $menu-item-font-size-tablet;
@@ -278,6 +316,10 @@
                 font-size: $menu-item-font-size-tablet;
             }
         }
+    }
+
+    .choose-lang-form {
+        position: relative;
     }
     
     .secondary-menu-wrapper {
@@ -406,4 +448,6 @@
         color: transparent;
         outline: transparent;
     }
+
+
 </style>
