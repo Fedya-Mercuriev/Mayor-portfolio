@@ -1,4 +1,5 @@
 <template lang="pug">
+transition(name="show-hide-menu")
     nav.page-navigation(ref="page-navigation")
         ul.navigation-menu(@highlight-item="updateActiveMenuItems")
             //- Обычные элементы меню
@@ -200,7 +201,7 @@
 
     .page-navigation {
         position: fixed;
-        top: 7px;
+        top: 0;
         left: 0;
         z-index: 999;
         width: 100%;
@@ -220,7 +221,6 @@
             width: auto;
             border-radius: 0;
             padding: 0;
-            /*background-color: #000000;*/
         }
     }
 
@@ -449,5 +449,21 @@
         outline: transparent;
     }
 
+    // Стили для Vue Transitions
+    .show-hide-menu-enter-active {
+        @include transition(all 0.3s cubic-bezier(.54,1.06,.77,.97));
+    }
+
+    .show-hide-menu-leave-active {
+        @include transition(all 0.3s cubic-bezier(.54,1.06,.77,.97));
+    }
+
+    .show-hide-menu-enter {
+        @include transform(translateX(0px) translateY(999px));
+    }
+
+    .show-hide-menu-leave-to {
+        @include transform(translateX(0px) translateY(999px));
+    }
 
 </style>
