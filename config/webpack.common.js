@@ -1,8 +1,7 @@
 const webpack = require("webpack");
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const nodeExternals = require('webpack-node-externals');
-
+// const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     entry: "./src/main.js",
@@ -13,9 +12,12 @@ module.exports = {
         modules: [
             'node_modules',
             path.resolve(__dirname, 'src/svg')
-        ]
+        ],
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js',
+            '@': path.resolve(__dirname, 'src/')
+        }
     },
-    externals: [nodeExternals()],
     module: {
         rules: [
             {
@@ -61,7 +63,6 @@ module.exports = {
                 use: [
                     'vue-style-loader',
                     'css-loader',
-                    // 'sass-loader',
                     {
                         loader: 'sass-loader',
                         options: {
