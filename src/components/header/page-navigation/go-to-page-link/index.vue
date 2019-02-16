@@ -1,7 +1,7 @@
 <template lang="pug">
     div
         transition(name="slide-fade")
-            a.link-to-locale-page(:href="language" v-show="langChosen") Перейти
+            a.link-to-locale-page(:href="language") Перейти
 </template>
 
 <script>
@@ -22,7 +22,7 @@
 <style lang="scss" scoped>
 
     .link-to-locale-page {
-        position: absolute;
+        position: relative;
         top: 0;
         left: 50%;
         @include transform(translateX(-50%) translateY(50px));

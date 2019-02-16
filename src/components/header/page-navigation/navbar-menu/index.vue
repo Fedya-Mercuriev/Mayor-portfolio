@@ -22,10 +22,10 @@ transition(name="show-hide-menu")
                                 v-for="option in availableLanguages"
                                 :value="option.data"
                             ) {{ option.text }}
-                    LocalePageLink(
-                        :langChosen="langChosen"
-                        :language="language"
-                    )
+                LocalePageLink(
+                    v-show="langChosen"
+                    :language="language"
+                )
             //- Конец пункта меню для выбора языка (для мобильных устройств)
 
             li.secondary-menu-wrapper
