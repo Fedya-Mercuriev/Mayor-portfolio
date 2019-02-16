@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const nodeExternals = require('webpack-node-externals');
 
 
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
             path.resolve(__dirname, 'src/svg')
         ]
     },
+    externals: [nodeExternals()],
     module: {
         rules: [
             {
@@ -82,7 +84,7 @@ module.exports = {
                 }]
             },
             {
-                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [{
                     loader: 'file-loader',
                     options: {
