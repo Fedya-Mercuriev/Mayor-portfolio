@@ -206,10 +206,11 @@ transition(name="show-hide-menu")
         z-index: 999;
         width: 100%;
         height: 100%;
-        padding-top: 60px;
+        /*padding-top: 60px;*/
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
         background-color: $navbar-bg;
+        will-change: transform;
 
         @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
             position: static;
@@ -226,11 +227,20 @@ transition(name="show-hide-menu")
 
     .navigation-menu {
         /*display: none;*/
+        position: absolute;
+        top: 60px;
+        left: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        list-style-type: none;
+        width: 100%;
+        height: 100%;
         @include reset-pad-marg();
+        /* The main point: */
+        overflow-y: auto;
+        /* Optional but highly reccomended: enables momentum scrolling on iOS */
+        -webkit-overflow-scrolling: touch;
+        list-style-type: none;
 
         @media only screen and (max-width: map-deep-get($devices, 'desktop')) {
             display: flex;
@@ -459,7 +469,7 @@ transition(name="show-hide-menu")
     }
 
     .show-hide-menu-enter {
-        @include transform(translateX(0px) translateY(999px));
+        @include transform(translateX(0px) translateY(7px));
     }
 
     .show-hide-menu-leave-to {
