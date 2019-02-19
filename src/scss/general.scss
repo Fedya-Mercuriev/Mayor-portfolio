@@ -50,3 +50,47 @@ body {
     padding: 0 35px;
   }
 }
+
+.telegram-link {
+  $telegram-link-color: #00a4e4;
+  color: #ffffff;
+  background-color: $telegram-link-color;
+
+  &:hover {
+    background-color: darken($telegram-link-color, 10%);
+  }
+
+  &:active {
+    background-color: darken($telegram-link-color, 18%);
+  }
+}
+
+.pinterest-link {
+  $pinterest-link-color: #c8232c;
+
+  color: #ffffff;
+  background-color: $pinterest-link-color;
+
+  &:hover {
+    background-color: darken($pinterest-link-color, 10%);
+  }
+
+  &:active {
+    background-color: darken($pinterest-link-color, 18%);
+  }
+}
+
+.github-link {
+  $github-link-color: #333333;
+
+  color: #ffffff;
+  background-color: $github-link-color;
+
+  &:hover {
+    background-color: darken($github-link-color, 10%);
+  }
+
+  &:active {
+    background-color: darken($github-link-color, 18%);
+  }
+}
