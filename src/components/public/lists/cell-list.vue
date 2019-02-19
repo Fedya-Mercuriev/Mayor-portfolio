@@ -72,7 +72,7 @@
             flex-direction: row;
             align-self: center;
             padding: 8px 15px;
-            @include border-radius(5px);
+            @include border-radius($medium-component-border-radius);
             margin-right: 15px;
             white-space: nowrap;
             background-color: $cell-list-item-bg;

@@ -31,10 +31,8 @@
             display: flex;
             flex-direction: column;
             padding: 10px 10px;
-            @include border-radius(5px);
+            @include border-radius($medium-component-border-radius);
             margin-bottom: 10px;
-            /*align-items: center;*/
-            /*justify-content: space-between;*/
             color: $cv-list-item-color;
             background-color: $cv-list-item-bg;
         }

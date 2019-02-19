@@ -18,7 +18,7 @@
         
         &__item {
             padding: 10px 10px;
-            @include border-radius(5px);
+            @include border-radius($medium-component-border-radius);
             margin-bottom: 10px;
             text-align: center;
             color: #000000;
