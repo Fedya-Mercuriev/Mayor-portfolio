@@ -1,7 +1,7 @@
 <template lang="pug">
     section#portfolio
-        h2.block-title Портфолио
-        p.block-description Здесь собрана часть моих работ, которыми можно покичиться
+        H2(:appearance="appearance") {{ blockTitle }}
+        BlockDescription(:appearance="appearance") {{ blockDescription }}
         div.project-cards-wrapper(@click="processCardClicks")
             project-card(
                 v-for="(project, key) in projects"
@@ -17,16 +17,25 @@
 </template>
 
 <script>
+    import H2 from 'Components/public/text-components/titles/level-2.vue';
+    import BlockDescription from 'Components/public/text-components/block-description.vue';
     import ProjectCard from './project-card/index.vue';
     import ProjectView from './project-view/index.vue';
 
     export default {
         components: {
+            H2,
+            BlockDescription,
             ProjectCard,
             ProjectView
         },
+        props: {
+            appearance: String
+        },
         data() {
             return {
+                blockTitle: "Портфолио",
+                blockDescription: "Здесь собрана часть моих работ, которыми можно покичиться",
                 projects: {
                     bot: {
                         // BF-Bot
@@ -120,6 +129,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 60px;
     }
     
     .project-cards-wrapper {
