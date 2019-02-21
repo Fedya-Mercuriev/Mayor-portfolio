@@ -2,11 +2,48 @@
 $site-bg: #ecf0f2;
 $large-component-border-radius: 12px;
 $medium-component-border-radius: 5px;
-$small-component-border-radius: 30px;
+$small-component-border-radius: 13px;
 $primary-bg-color: #f9aa33;
-$primary-text-color:#232f34; //800
+$primary-text-color: #232f34; //800
 $primary-color: #344955; //700
 // Base styles for the website end here
+
+// Text styles start here
+$title-light-color: #232f34;
+$title-dark-color: #ecf0f2;
+$block-description-light-color: #324247;
+$block-description-dark-color: #bbbfc1;
+// Text styles end here
+
+//Card styles start here
+$card-bg-light: #ffffff;
+$card-bg-dark: #344955;
+$card-title-color-light: #232f34;
+$card-title-color-dark: #ecf0f2;
+$card-description-color-dark: #bdc3c5;
+//Card styles end here
+
+// List styles start here
+$list-item-dark-bg: #232f34;
+$list-item-light-bg: #f1f1f1;
+$list-item-dark-color: #f1f1f1;
+$list-item-dark-color: #232f34;
+
+// List styles end here
+
+// Contained-button styles start here
+$contained-button-light-bg: #ffffff;
+$contained-button-dark-bg: $primary-color;
+$contained-button-dark-color: #ffffff;
+$contained-button-clicked-color: #f9aa33;
+// Contained-button styles end here
+
+// Text-button styles start here
+$text-button-light-color: #bbbbbb;
+$text-button-light-color-hover: #ffffff;
+$text-button-dark-color: #232f34;
+$text-button-clicked-color: #f9aa33;
+// Text-button styles end here
 
 // Header variables start here
 $navbar-bg: #232f34;
@@ -52,3 +89,6 @@ $sketchapp-color: #ffd600;
 $sketchapp-bg: #ffffff;
 $figma-bg: #282828;
 $figma-color: #d0d0d0;
+
+//social links bg
+$github-social-link-bg: #24292e;

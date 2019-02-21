@@ -53,3 +53,15 @@
     background-color: $bg;
   }
 }
+
+@mixin button-style($border-radius, $color, $bg: null, $shadow...) {
+  @include border-radius($border-radius);
+  padding: 10px 15px;
+  color: $color;
+  @if ($bg != null) {
+    background-color: $bg;
+  }
+  @if ($shadow != null) {
+    @include box-shadow($shadow);
+  }
+}
