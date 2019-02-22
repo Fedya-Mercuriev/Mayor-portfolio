@@ -69,21 +69,21 @@
             margin-top: 10px;
             background-color: $cv-item-dumb-link-bg;
         }
+    }
 
-        .list-with-buttons-light {
+    .list-with-buttons-light {
 
-            #{$list-class-name}__list-item {
-                color: $list-item-light-color;
-                background-color: $list-item-light-bg;
-            }
+        .#{$list-class-name}__list-item {
+            color: $list-item-light-color;
+            background-color: $list-item-light-bg;
         }
+    }
 
-        .list-with-buttons-dark {
+    .list-with-buttons-dark {
 
-            #{$list-class-name}__list-item {
-                color: $list-item-dark-color;
-                background-color: $list-item-dark-bg;
-            }
+        .#{$list-class-name}__list-item {
+            color: $list-item-dark-color;
+            background-color: $list-item-dark-bg;
         }
     }
 </style>
