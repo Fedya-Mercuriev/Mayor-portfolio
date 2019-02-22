@@ -1,53 +1,103 @@
 <template lang="pug">
-    div#cv
+    section#cv
         h2.block-title Резюме
         p.block-description А это резюме. Да
-        div.cv-content-wrapper(ref="cvItemsContainer")
+        //- div.cv-content-wrapper(ref="cvItemsContainer")
+        ContentWrapper(:data="cvData" :appearance="appearance")
 
 
 </template>
 
 <script>
 
-    import Vue from 'vue';
-    import CVItemWrapper from './item-wrapper/index.vue';
+    // import Vue from 'vue';
+    // import CVItemWrapper from './item-wrapper/contacts.vue';
+    import ContentWrapper from './content-wrapper/content-wrapper.vue';
 
-    function buildCvItemsSection() {
-        // let positionChildrenMap = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
-        //     childrenInstances = [],
-        //     childNumInMap = 0,
-        //     index = 0,
-        //     Xgap = 10,
-        //     Ygap = 30;
+    // function buildCvItemsSection(containerWidth) {
+    //     // let positionChildrenMap = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
+    //     //     childrenInstances = [],
+    //     //     childNumInMap = 0,
+    //     //     index = 0,
+    //     //     Xgap = 10,
+    //     //     Ygap = 30;
+    //     let positioningConfig = this.getPositioningConfig(containerWidth);
+    //
+    //     if (this.defineIfHasItems()) {
+    //         // this.positionChildrenMap = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}];
+    //         this.index = 0;
+    //         this.childNumInMap = 0;
+    //         this.defineIfNeedsGrid()
+    //             .then(result => {
+    //                 if (result) {
+    //                     this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
+    //                     this.positionItems(positioningConfig)
+    //                 } else {
+    //                     this.clearItemsStyles();
+    //                 }
+    //             });
+    //     } else {
+    //         this.placeItems()
+    //             .then(() => {
+    //                 return this.defineIfNeedsGrid();
+    //             })
+    //             .then(result => {
+    //                 if (result) {
+    //                     let width = result;
+    //                     this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
+    //                     // таймаут нужен для того, чтоб отрисовались шрифты и рассчиталась реальная высота
+    //                     this.childrenInstances.forEach(item => {
+    //                         item.$forceUpdate();
+    //                     });
+    //                     setTimeout(this.positionItems.bind(this, positioningConfig), 800);
+    //                     // this.positionItems(positioningConfig);
+    //                 } else {
+    //                     this.clearItemsStyles();
+    //                 }
+    //             })
+    //     }
+    // }
 
-        if (this.defineIfHasItems()) {
-            // this.positionChildrenMap = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}];
-            this.index = 0;
-            this.childNumInMap = 0;
-            this.defineIfNeedsGrid()
-                .then(result => {
-                    if (result) {
-                        let width = result;
-                        this.positionChildrenMap = (width === 768) ? this.makePositionMap(2) : this.makePositionMap(3);
-                        this.positionItems()
-                    } else {
-                        this.clearItemsStyles();
-                    }
-                });
-        } else {
-            this.placeItems();
-            this.defineIfNeedsGrid()
-                .then(result => {
-                    if (result) {
-                        let width = result;
-                        this.positionChildrenMap = (width === 768) ? this.makePositionMap(2) : this.makePositionMap(3);
-                        this.positionItems();
-                    } else {
-                        this.clearItemsStyles();
-                    }
-                })
-        }
-    }
+    // function debounce(func, wait, immediate) {
+    //     var timeout;
+    //
+    //     // This is the function that is actually executed when
+    //     // the DOM event is triggered.
+    //     return function executedFunction() {
+    //         // Store the context of this and any
+    //         // parameters passed to executedFunction
+    //         var context = this;
+    //         var args = arguments;
+    //
+    //         // The function to be called after
+    //         // the debounce time has elapsed
+    //         var later = function() {
+    //             // null timeout to indicate the debounce ended
+    //             timeout = null;
+    //
+    //             // Call function now if you did not on the leading end
+    //             if (!immediate) func.apply(context, args);
+    //         };
+    //
+    //         // Determine if you should call the function
+    //         // on the leading or trail end
+    //         var callNow = immediate && !timeout;
+    //
+    //         // This will reset the waiting every function execution.
+    //         // This is the step that prevents the function from
+    //         // being executed because it will never reach the
+    //         // inside of the previous setTimeout
+    //         clearTimeout(timeout);
+    //
+    //         // Restart the debounce waiting period.
+    //         // setTimeout returns a truthy value (it differs in web vs node)
+    //         timeout = setTimeout(later, wait);
+    //
+    //         // Call immediately if you're dong a leading
+    //         // end execution
+    //         if (callNow) func.apply(context, args);
+    //     };
+    // };
 
     // function defineIfHasItems(children) {
     //     return (children.length !== 0);
@@ -160,15 +210,19 @@
 
     export default {
         components: {
-            CVItemWrapper
+            // CVItemWrapper
+            ContentWrapper
+        },
+        props: {
+            appearance: String
         },
         data() {
             return {
                 // positionChildrenMap: [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
-                positionChildrenMap: [],
-                childrenInstances: [],
-                childNumInMap: 0,
-                index: 0,
+                // positionChildrenMap: [],
+                // childrenInstances: [],
+                // childNumInMap: 0,
+                // index: 0,
                 cvData: {
                     education: {
                         title: "Высшее образование",
@@ -263,152 +317,175 @@
                 }
             }
         },
-        mounted() {
-            let ctx = this,
-                buildCvItems = buildCvItemsSection.bind(ctx);
-            this.$nextTick(function() {
-                window.addEventListener('resize', function() {
-                    buildCvItems();
-                })
-            });
-            buildCvItems();
-            // if (this.childrenInstances.length === 0) {
-            //     let ItemWrapperComponent = Vue.extend(CVItemWrapper),
-            //         updatedCoordinates;
-            //     for (let item in this.cvData) {
-            //         let itemWrapper = new ItemWrapperComponent({
-            //             propsData: {
-            //                 info: this.cvData[item]
-            //             }
-            //         });
-            //         itemWrapper.$mount();
-            //         this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
-            //         this.childrenInstances.push(itemWrapper);
-            //         updatedCoordinates = itemWrapper.positionSelf(this.getPositionCoordinates());
-            //         this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
-            //         this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
-            //         this.incrementSection();
-            //     }
-            // }
-        },
-        methods: {
-            getItemType(item) {
-                if (!Array.isArray(item)) {
-                    return 'text';
-                } else if (item && !Array.isArray(item) && typeof item === 'object') {
-                    return 'object';
-                } else {
-                    return 'array';
-                }
-            },
-            defineIfHasItems() {
-                return (this.childrenInstances.length !== 0);
-                // if (this.childrenInstances.length === 0) {
-                //     return false;
-                // }
-                // return true;
-            },
-            defineIfNeedsGrid() {
-                return new Promise(resolve => {
-                    let width = window.outerWidth;
-                    if (width >= 768) {
-                        // Данный результат затем будет передан другой функции, которая исходя из
-                        // результата решит нужно ли позиционировать элементы резюме
-                        resolve(width);
-                    } else {
-                        resolve(false);
-                    }
-                });
-            },
-            makePositionMap(length) {
-                let result = [];
-                for (let i = 0; i < length; i++) {
-                    result.push({x: 0, y: 0});
-                }
-                return result;
-            },
-            placeItems() {
-                let itemWrapperComponent = Vue.extend(CVItemWrapper);
-                for (let item in this.cvData) {
-                    let itemWrapper = new itemWrapperComponent({
-                        propsData: {
-                            info: this.cvData[item]
-                        }
-                    });
-                    itemWrapper.$mount();
-                    this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
-                    this.childrenInstances.push(itemWrapper);
-                }
-            },
-            positionItems() {
-                let updatedCoordinates;
-                // if (this.childrenInstances.length === 0) {
-                //     for (let item in this.cvData) {
-                //         let itemWrapper = new itemWrapperComponent({
-                //             propsData: {
-                //                 info: this.cvData[item]
-                //             }
-                //         });
-                //         itemWrapper.$mount();
-                //         this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
-                //         this.childrenInstances.push(itemWrapper);
-                //         updatedCoordinates = itemWrapper.positionSelf(this.getPositionCoordinates());
-                //         this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
-                //         this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
-                //         this.incrementSection();
-                //     }
-                // }
-                this.childrenInstances.forEach(item => {
-                    updatedCoordinates = item.positionSelf(this.getPositionCoordinates());
-                    this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
-                    this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
-                    this.incrementSection();
-                })
-            },
-            getPositionCoordinates() {
-                let Xgap = 10,
-                    Ygap = 30;
-                if (this.childNumInMap > this.positionChildrenMap.length - 1) {
-                    this.childNumInMap = 0;
-                    this.positionChildrenMap.forEach((item) => {
-                        item.x = 0;
-                    })
-                }
-                if (this.index === 0) {
-                    // this.positionChildrenMap[this.childNumInMap].x = width + Xgap;
-                    // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
-                    return {hor: 0, ver: 0, CSSPosition: 'absolute'};
-
-                } else if (this.index <= this.positionChildrenMap.length - 1) {
-                    let transformHoriz = this.positionChildrenMap[this.childNumInMap - 1].x;
-                    // Тут при позиционировании смотрит только на значение x у предыдущего элемента
-                    // this.positionChildrenMap[this.childNumInMap].x = this.positionChildrenMap[this.childNumInMap - 1].x + width + Xgap;
-                    // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
-                    return {hor: transformHoriz, ver: 0, CSSPosition: 'absolute'}
-
-                } else if (this.index === Object.keys(this.cvData).length - 1) {
-                    let transformVert = this.positionChildrenMap[this.childNumInMap].y + Ygap;
-                    return {hor: 0, ver: transformVert, CSSPosition: 'static'}
-
-                } else {
-                    let transformHoriz = (this.childNumInMap === 0) ? 0 : this.positionChildrenMap[this.childNumInMap - 1].x,
-                        transformVert = this.positionChildrenMap[this.childNumInMap].y;
-                    // Тут при позиционировании смотрит на значение у предыдущего элемента
-                    // this.positionChildrenMap[this.childNumInMap].x = transformHoriz + width + Xgap;
-                    // this.positionChildrenMap[this.childNumInMap].y = this.positionChildrenMap[this.childNumInMap].y + height + Ygap;
-                    return {hor: transformHoriz, ver: transformVert, CSSPosition: 'absolute'};
-                }
-            },
-            incrementSection() {
-                this.childNumInMap++;
-                this.index++;
-            },
-            clearItemsStyles() {
-                this.childrenInstances.forEach(item => {
-                    item.removeCustomStyles();
-                });
-            }
-        }
+        // mounted() {
+        //     let ctx = this,
+        //         buildCvItems = debounce(buildCvItemsSection, 300),
+        //         containerWidth = this.$refs.cvItemsContainer.clientWidth;
+        //
+        //     buildCvItems = buildCvItems.bind(this);
+        //
+        //     this.$nextTick(function() {
+        //         window.addEventListener('resize', function() {
+        //             containerWidth = ctx.$refs.cvItemsContainer.clientWidth;
+        //             buildCvItems(containerWidth);
+        //         });
+        //             // buildCvItems(containerWidth);
+        //     });
+        //     buildCvItems(containerWidth);
+        //     // if (this.childrenInstances.length === 0) {
+        //     //     let ItemWrapperComponent = Vue.extend(CVItemWrapper),
+        //     //         updatedCoordinates;
+        //     //     for (let item in this.cvData) {
+        //     //         let itemWrapper = new ItemWrapperComponent({
+        //     //             propsData: {
+        //     //                 info: this.cvData[item]
+        //     //             }
+        //     //         });
+        //     //         itemWrapper.$mount();
+        //     //         this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
+        //     //         this.childrenInstances.push(itemWrapper);
+        //     //         updatedCoordinates = itemWrapper.positionSelf(this.getPositionCoordinates());
+        //     //         this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
+        //     //         this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
+        //     //         this.incrementSection();
+        //     //     }
+        //     // }
+        // },
+        // methods: {
+        //     getItemType(item) {
+        //         if (!Array.isArray(item)) {
+        //             return 'text';
+        //         } else if (item && !Array.isArray(item) && typeof item === 'object') {
+        //             return 'object';
+        //         } else {
+        //             return 'array';
+        //         }
+        //     },
+        //     defineIfHasItems() {
+        //         return (this.childrenInstances.length !== 0);
+        //         // if (this.childrenInstances.length === 0) {
+        //         //     return false;
+        //         // }
+        //         // return true;
+        //     },
+        //     defineIfNeedsGrid() {
+        //         return new Promise(resolve => {
+        //             let width = window.outerWidth;
+        //             if (width >= 768) {
+        //                 // Данный результат затем будет передан другой функции, которая исходя из
+        //                 // результата решит нужно ли позиционировать элементы резюме
+        //                 resolve(true);
+        //             } else {
+        //                 resolve(false);
+        //             }
+        //         });
+        //     },
+        //     makePositionMap(length) {
+        //         let result = [];
+        //         for (let i = 0; i < length; i++) {
+        //             result.push({x: 0, y: 0});
+        //         }
+        //         return result;
+        //     },
+        //     getPositioningConfig(containerWidth) {
+        //         let result = {itemWidth: 0, rowLength: 0};
+        //         result.rowLength = (containerWidth < 1024) ? 2 : 3;
+        //         result.itemWidth = containerWidth / result.rowLength;
+        //         // result.Xgap = (containerWidth - (result.itemWidth * result.rowLength)) / result.rowLength - 1;
+        //         return result;
+        //     },
+        //     placeItems() {
+        //         return new Promise(resolve => {
+        //             let itemWrapperComponent = Vue.extend(CVItemWrapper);
+        //             for (let item in this.cvData) {
+        //                 let itemWrapper = new itemWrapperComponent({
+        //                     propsData: {
+        //                         info: this.cvData[item]
+        //                     }
+        //                 });
+        //                 itemWrapper.$mount();
+        //                 this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
+        //                 this.childrenInstances.push(itemWrapper);
+        //             }
+        //             resolve(true);
+        //         });
+        //     },
+        //     positionItems(config) {
+        //         // config содердит ширину карточки, расстояние между ними и длину ряда
+        //         let updatedCoordinates;
+        //         // if (this.childrenInstances.length === 0) {
+        //         //     for (let item in this.cvData) {
+        //         //         let itemWrapper = new itemWrapperComponent({
+        //         //             propsData: {
+        //         //                 info: this.cvData[item]
+        //         //             }
+        //         //         });
+        //         //         itemWrapper.$mount();
+        //         //         this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
+        //         //         this.childrenInstances.push(itemWrapper);
+        //         //         updatedCoordinates = itemWrapper.positionSelf(this.getPositionCoordinates());
+        //         //         this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
+        //         //         this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
+        //         //         this.incrementSection();
+        //         //     }
+        //         // }
+        //         this.childrenInstances.forEach(item => {
+        //             updatedCoordinates = item.positionSelf(this.getPositionCoordinates(), config.itemWidth);
+        //             this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
+        //             this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
+        //             this.incrementSection();
+        //         })
+        //     },
+        //     getPositionCoordinates() {
+        //         // let Xgap = 10,
+        //         //     Ygap = 30;
+        //         if (this.childNumInMap > this.positionChildrenMap.length - 1) {
+        //             this.childNumInMap = 0;
+        //             this.positionChildrenMap.forEach((item) => {
+        //                 item.x = 0;
+        //             })
+        //         }
+        //         if (this.index === 0) {
+        //             // this.positionChildrenMap[this.childNumInMap].x = width + Xgap;
+        //             // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
+        //             return {hor: 0, ver: 0, CSSPosition: 'absolute'};
+        //
+        //         } else if (this.index <= this.positionChildrenMap.length - 1) {
+        //             let transformHoriz = this.positionChildrenMap[this.childNumInMap - 1].x,
+        //                 width = this.positionChildrenMap[0].x;
+        //
+        //             if (this.index === this.positionChildrenMap.length - 1) {
+        //                 width = width * this.positionChildrenMap.length;
+        //                 console.log(width);
+        //             }
+        //             // Тут при позиционировании смотрит только на значение x у предыдущего элемента
+        //             // this.positionChildrenMap[this.childNumInMap].x = this.positionChildrenMap[this.childNumInMap - 1].x + width + Xgap;
+        //             // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
+        //             return {hor: transformHoriz, ver: 0, CSSPosition: 'absolute'}
+        //
+        //         } else if (this.index === Object.keys(this.cvData).length - 1) {
+        //             let transformVert = this.positionChildrenMap[this.childNumInMap].y;
+        //             return {hor: 0, ver: transformVert, CSSPosition: 'static'}
+        //
+        //         } else {
+        //             let transformHoriz = (this.childNumInMap === 0) ? 0 : this.positionChildrenMap[this.childNumInMap - 1].x,
+        //                 transformVert = this.positionChildrenMap[this.childNumInMap].y;
+        //             // Тут при позиционировании смотрит на значение у предыдущего элемента
+        //             // this.positionChildrenMap[this.childNumInMap].x = transformHoriz + width + Xgap;
+        //             // this.positionChildrenMap[this.childNumInMap].y = this.positionChildrenMap[this.childNumInMap].y + height + Ygap;
+        //             return {hor: transformHoriz, ver: transformVert, CSSPosition: 'absolute'};
+        //         }
+        //     },
+        //     incrementSection() {
+        //         this.childNumInMap++;
+        //         this.index++;
+        //     },
+        //     clearItemsStyles() {
+        //         this.childrenInstances.forEach(item => {
+        //             item.removeCustomStyles();
+        //         });
+        //     }
+        // }
     }
 </script>
 
@@ -420,57 +497,5 @@
         align-items: center;
     }
 
-    .block-title {
-        @include reset-pad-marg();
-        margin-top: 20px;
-        margin-bottom: 16px;
-        color: $block-title-color;
-
-        @media screen and (max-width: map-deep-get($devices, 'mobile-l')) {
-            font-size: 2em;
-        }
-
-        @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-            font-size: 3.3em;
-        }
-    }
-
-    .block-description {
-        @include reset-pad-marg();
-        margin-bottom: 30px;
-        color: $block-description-color;
-        text-align: center;
-
-        @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-            font-size: 1.2em;
-        }
-    }
-
-    .cv-content-wrapper {
-        display: flex;
-        flex-direction: column;
-        max-width: 1024px;
-        padding: 0 15px;
-
-        @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
-            position: relative;
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            justify-content: space-around;
-            width: 90%;
-        }
-
-        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
-            position: relative;
-            display: block;
-            padding: 0 5px;
-        }
-
-        @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
-            width: 1024px;
-        }
-    }
-
-    // ТУТ БЫЛИ СТИЛИ ДЛЯ ВРАППЕРА КОНТЕНТА
+    // Тут были стли идля .cv-content-wrapper
 </style>
