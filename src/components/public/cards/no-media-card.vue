@@ -16,51 +16,12 @@
 
 <script>
     import Vue from 'vue';
-    import TextComponent from 'Components/public/text-components/paragraph.vue';
-    import CellList from 'Components/public/lists/cell-list.vue';
-    import ListWithButtons from 'Components/public/lists/list-with-buttons.vue';
-    import List from 'Components/public/lists/ordinary-list.vue';
-
-    function getItemType(item) {
-        if (!Array.isArray(item)) {
-            return 'text';
-        } else if (item && !Array.isArray(item) && typeof item === 'object') {
-            return 'object';
-        } else {
-            return 'array';
-        }
-    }
 
     export default {
         name: "no-media-card",
         props: {
             appearance: String,
             cardData: Object
-        },
-        mounted() {
-            let component,
-                prop = this.cardData.data;
-
-            if (getItemType(prop) === 'text') {
-                let ComponentConstructor = Vue.extend(TextComponent);
-                component = new ComponentConstructor({
-                    propsData: {
-                        data: prop
-                    }
-                });
-            } else if (getItemType(prop) === 'array') {
-                let ComponentConstructor;
-                ComponentConstructor = (typeof prop[0] === 'object') ? ((prop[0].hasOwnProperty('hasCertificate')) ? ListWithButtons : List) : CellList;
-                ComponentConstructor = Vue.extend(ComponentConstructor);
-                component = new ComponentConstructor({
-                    propsData: {
-                        data: prop
-                    }
-                });
-            }
-            component.$mount();
-            this.$refs['card-content'].appendChild(component.$el);
-
         }
     }
 </script>
