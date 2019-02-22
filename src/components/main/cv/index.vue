@@ -2,14 +2,12 @@
     section#cv
         h2.block-title Резюме
         p.block-description А это резюме. Да
-        //- div.cv-content-wrapper(ref="cvItemsContainer")
         ContentWrapper(:data="cvData" :appearance="appearance")
 
 
 </template>
 
 <script>
-
     // import Vue from 'vue';
     // import CVItemWrapper from './item-wrapper/contacts.vue';
     import ContentWrapper from './content-wrapper/content-wrapper.vue';
@@ -496,6 +494,4 @@
         flex-direction: column;
         align-items: center;
     }
-
-    // Тут были стли идля .cv-content-wrapper
 </style>

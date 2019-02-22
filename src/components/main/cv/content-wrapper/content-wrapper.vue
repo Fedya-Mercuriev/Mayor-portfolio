@@ -4,8 +4,11 @@
 
 <script>
     import Vue from 'vue';
-    // import CVItemWrapper from './../item-wrapper/portfolio.vue';
     import NoMediaCard from 'Components/public/cards/no-media-card.vue';
+    import TextComponent from 'Components/public/text-components/paragraph.vue';
+    import CellList from 'Components/public/lists/cell-list.vue';
+    import ListWithButtons from 'Components/public/lists/list-with-buttons.vue';
+    import List from 'Components/public/lists/ordinary-list.vue';
 
     function buildCvItemsSection(containerWidth) {
         // let positionChildrenMap = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
@@ -92,6 +95,16 @@
         };
     };
 
+    function getItemType(item) {
+        if (!Array.isArray(item)) {
+            return 'text';
+        } else if (item && !Array.isArray(item) && typeof item === 'object') {
+            return 'object';
+        } else {
+            return 'array';
+        }
+    }
+
     export default {
         props: {
             appearance: String,
@@ -153,10 +166,6 @@
             },
             defineIfHasItems() {
                 return (this.childrenInstances.length !== 0);
-                // if (this.childrenInstances.length === 0) {
-                //     return false;
-                // }
-                // return true;
             },
             defineIfNeedsGrid() {
                 return new Promise(resolve => {
@@ -186,8 +195,11 @@
             },
             placeItems() {
                 return new Promise(resolve => {
-                    let CardComponent = Vue.extend(NoMediaCard);
+                    let CardComponent = Vue.extend(NoMediaCard),
+                        listComponent,
+                        listProp;
                     for (let item in this.data) {
+                        listProp = this.data[item].data;
                         // Создадаим обертку для компонента
                         let componentWrapper = document.createElement('div');
                         // Добавим ему класс
@@ -198,9 +210,33 @@
                                 cardData: this.data[item],
                                 appearance: this.appearance
                             }
-                            // Еще сюда нужно поместить подходящий тип списка
+
                         });
+                        // Определим какой список вставить
+                        if (getItemType(listProp) === 'text') {
+                            let ComponentConstructor = Vue.extend(TextComponent);
+                            // Добавим данные в список
+                            listComponent = new ComponentConstructor({
+                                propsData: {
+                                    data: listProp
+                                }
+                            });
+                        } else if (getItemType(listProp) === 'array') {
+                            let ComponentConstructor;
+                            ComponentConstructor = (typeof listProp[0] === 'object') ? ((listProp[0].hasOwnProperty('hasCertificate')) ? ListWithButtons : List) : CellList;
+                            ComponentConstructor = Vue.extend(ComponentConstructor);
+                            // Добавим данные в список
+                            listComponent = new ComponentConstructor({
+                                propsData: {
+                                    data: listProp,
+                                    appearance: this.appearance,
+                                }
+                            });
+                        }
+                        listComponent.$mount();
                         card.$mount();
+                        // Подставим список в конец карточки
+                        card.$refs['card-content'].appendChild(listComponent.$el);
                         componentWrapper.appendChild(card.$el);
                         this.childrenInstances.push(card);
                     }
