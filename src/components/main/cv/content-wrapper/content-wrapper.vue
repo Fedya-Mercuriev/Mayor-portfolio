@@ -4,25 +4,21 @@
 
 <script>
     import Vue from 'vue';
+    import H3 from 'Components/public/text-components/titles/level-3.vue';
+    import Paragraph from 'Components/public/text-components/paragraph.vue';
     import NoMediaCard from 'Components/public/cards/no-media-card.vue';
-    import TextComponent from 'Components/public/text-components/paragraph.vue';
     import CellList from 'Components/public/lists/cell-list.vue';
     import ListWithButtons from 'Components/public/lists/list-with-buttons.vue';
     import List from 'Components/public/lists/ordinary-list.vue';
 
     function buildCvItemsSection(containerWidth) {
-        // let positionChildrenMap = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}],
-        //     childrenInstances = [],
-        //     childNumInMap = 0,
-        //     index = 0,
-        //     Xgap = 10,
-        //     Ygap = 30;
-        let positioningConfig = this.getPositioningConfig(containerWidth);
+        let positioningConfig = this.getPositioningConfig(containerWidth),
+            setHeight = setContainerHeight(this.$el);
 
         if (this.defineIfHasItems()) {
-            // this.positionChildrenMap = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}];
             this.index = 0;
             this.childNumInMap = 0;
+            // Определим нужно ли выстраивать элементы в сетку (для паншетов и ПК)
             this.defineIfNeedsGrid()
                 .then(result => {
                     if (result) {
@@ -41,12 +37,11 @@
                     if (result) {
                         let width = result;
                         this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
-                        // таймаут нужен для того, чтоб отрисовались шрифты и рассчиталась реальная высота
+                        // таймаут нужен для того, чтоб отрисовались шрифты и рассчиталась реальная высота карточки
                         this.childrenInstances.forEach(item => {
                             item.$forceUpdate();
                         });
                         setTimeout(this.positionItems.bind(this, positioningConfig), 800);
-                        // this.positionItems(positioningConfig);
                     } else {
                         this.clearItemsStyles();
                     }
@@ -95,6 +90,7 @@
         };
     };
 
+    // Функция определит какого типа нужен список
     function getItemType(item) {
         if (!Array.isArray(item)) {
             return 'text';
@@ -103,6 +99,21 @@
         } else {
             return 'array';
         }
+    }
+
+    // Эта функция устанавливает высоту для контейнера с карточками,
+    // так как карточки спозиционированы абсолютно, надо установить высоту вручную
+    function setContainerHeight(container) {
+        return function (positionMap) {
+            let maxYValue = 0;
+            // Проходимся в текущему ряду, находим максимальное значение y и устанавливаем его как высоту
+            for (let item of positionMap) {
+                if (item.y >= maxYValue) {
+                    maxYValue = item.y;
+                    container.style.height = `${maxYValue}px`;
+                }
+            }
+        };
     }
 
     export default {
@@ -127,6 +138,7 @@
                 containerWidth = this.$refs.cvItemsContainer.clientWidth;
 
             buildCvItems = buildCvItems.bind(this);
+            this.setHeight = setContainerHeight(this.$el);
 
             this.$nextTick(function() {
                 window.addEventListener('resize', function() {
@@ -135,24 +147,6 @@
                 });
             });
             buildCvItems(containerWidth);
-            // if (this.childrenInstances.length === 0) {
-            //     let ItemWrapperComponent = Vue.extend(CVItemWrapper),
-            //         updatedCoordinates;
-            //     for (let item in this.cvData) {
-            //         let itemWrapper = new ItemWrapperComponent({
-            //             propsData: {
-            //                 info: this.cvData[item]
-            //             }
-            //         });
-            //         itemWrapper.$mount();
-            //         this.$refs.cvItemsContainer.appendChild(itemWrapper.$el);
-            //         this.childrenInstances.push(itemWrapper);
-            //         updatedCoordinates = itemWrapper.positionSelf(this.getPositionCoordinates());
-            //         this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
-            //         this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
-            //         this.incrementSection();
-            //     }
-            // }
         },
         methods: {
             getItemType(item) {
@@ -167,6 +161,7 @@
             defineIfHasItems() {
                 return (this.childrenInstances.length !== 0);
             },
+            setHeight: undefined,
             defineIfNeedsGrid() {
                 return new Promise(resolve => {
                     let width = window.outerWidth;
@@ -190,55 +185,92 @@
                 let result = {itemWidth: 0, rowLength: 0};
                 result.rowLength = (containerWidth < 1024) ? 2 : 3;
                 result.itemWidth = containerWidth / result.rowLength;
-                // result.Xgap = (containerWidth - (result.itemWidth * result.rowLength)) / result.rowLength - 1;
                 return result;
             },
             placeItems() {
                 return new Promise(resolve => {
                     let CardComponent = Vue.extend(NoMediaCard),
                         listComponent,
-                        listProp;
+                        componentData;
                     for (let item in this.data) {
-                        listProp = this.data[item].data;
-                        // Создадаим обертку для компонента
-                        let componentWrapper = document.createElement('div');
-                        // Добавим ему класс
-                        componentWrapper.classList.add('card-container');
-                        this.$el.appendChild(componentWrapper);
-                        let card = new CardComponent({
-                            propsData: {
-                                cardData: this.data[item],
-                                appearance: this.appearance
-                            }
+                        componentData = this.data[item].data;
+                        // // Создадим обертку для карточки
+                        // let componentWrapper = document.createElement('div');
+                        // // Добавим ей класс
+                        // componentWrapper.classList.add('card-container');
+                        // this.$el.appendChild(componentWrapper);
+                        // let card = new CardComponent({
+                        //     propsData: {
+                        //         cardData: this.data[item],
+                        //         appearance: this.appearance
+                        //     }
+                        //
+                        // });
 
-                        });
-                        // Определим какой список вставить
-                        if (getItemType(listProp) === 'text') {
-                            let ComponentConstructor = Vue.extend(TextComponent);
-                            // Добавим данные в список
-                            listComponent = new ComponentConstructor({
+                        // Определим какой компонент вставить
+                        if (getItemType(componentData) === 'text') {
+                            // Если в текущем объекте текстовые данные, тогда просто создадим текстовый блок,
+                            // а не карточку
+                            let TitleConstructor = Vue.extend(H3),
+                                ParagraphConstructor = Vue.extend(Paragraph),
+                                textBlock = document.createElement('div');
+
+                            textBlock.classList.add('text-block');
+                            this.$parent.$el.appendChild(textBlock);
+
+                            let blockTitle = new TitleConstructor({
+                                    propsData: {
+                                        appearance: this.appearance
+                                    }
+                            }),
+                                blockText = new ParagraphConstructor({
+                                    propsData: {
+                                        appearance: this.appearance
+                                    }
+                                });
+
+                            blockTitle.$slots.default = this.data[item].title;
+                            blockText.$slots.default = this.data[item].data;
+
+                            blockTitle.$mount();
+                            blockText.$mount();
+
+                            textBlock.appendChild(blockTitle.$el);
+                            textBlock.appendChild(blockText.$el);
+
+                        } else {
+                            // Создадим обертку для карточки
+                            let componentWrapper = document.createElement('div');
+                            // Добавим ей класс
+                            componentWrapper.classList.add('card-container');
+                            this.$el.appendChild(componentWrapper);
+                            let card = new CardComponent({
                                 propsData: {
-                                    data: listProp
+                                    cardData: this.data[item],
+                                    appearance: this.appearance
                                 }
+
                             });
-                        } else if (getItemType(listProp) === 'array') {
+
                             let ComponentConstructor;
-                            ComponentConstructor = (typeof listProp[0] === 'object') ? ((listProp[0].hasOwnProperty('hasCertificate')) ? ListWithButtons : List) : CellList;
+                            // Определим требуемый тип списка
+                            ComponentConstructor = (typeof componentData[0] === 'object') ? ((componentData[0].hasOwnProperty('hasCertificate')) ? ListWithButtons : List) : CellList;
                             ComponentConstructor = Vue.extend(ComponentConstructor);
                             // Добавим данные в список
                             listComponent = new ComponentConstructor({
                                 propsData: {
-                                    data: listProp,
+                                    data: componentData,
                                     appearance: this.appearance,
                                 }
                             });
+
+                            listComponent.$mount();
+                            card.$mount();
+                            // Подставим список в конец карточки
+                            card.$refs['card-content'].appendChild(listComponent.$el);
+                            componentWrapper.appendChild(card.$el);
+                            this.childrenInstances.push(card);
                         }
-                        listComponent.$mount();
-                        card.$mount();
-                        // Подставим список в конец карточки
-                        card.$refs['card-content'].appendChild(listComponent.$el);
-                        componentWrapper.appendChild(card.$el);
-                        this.childrenInstances.push(card);
                     }
                     resolve(true);
                 });
@@ -246,16 +278,36 @@
             positionItems(config) {
                 // config содердит ширину карточки, расстояние между ними и длину ряда
                 let updatedCoordinates;
-                this.childrenInstances.forEach(item => {
-                    updatedCoordinates = item.positionSelf(this.getPositionCoordinates(), config.itemWidth);
+                this.childrenInstances.forEach((item, index) => {
+                    updatedCoordinates = this.positionItem(index, this.getPositionCoordinates(), config.itemWidth, item);
                     this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
                     this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
+                    if (index + 1 % this.positionChildrenMap.length > 0) {
+                        this.setHeight(this.positionChildrenMap);
+                    }
                     this.incrementSection();
                 })
             },
+            positionItem(itemNum, position, width) {
+                let element = document.querySelectorAll('.card-container')[itemNum],
+                    { hor, ver, CSSPosition } = position,
+                    blockStyles = {
+                        width: width,
+                        height: element.clientHeight
+                    };
+
+                // Применим inline-стили к текущей карточке
+                element.style.position = CSSPosition;
+                element.style.top = 0;
+                element.style.left = 0;
+                element.style.transform = `translateX(${hor}px) translateY(${ver}px)`;
+
+                return {
+                    hor: hor + blockStyles.width,
+                    ver: ver + blockStyles.height
+                };
+            },
             getPositionCoordinates() {
-                // let Xgap = 10,
-                //     Ygap = 30;
                 if (this.childNumInMap > this.positionChildrenMap.length - 1) {
                     this.childNumInMap = 0;
                     this.positionChildrenMap.forEach((item) => {
@@ -263,8 +315,6 @@
                     })
                 }
                 if (this.index === 0) {
-                    // this.positionChildrenMap[this.childNumInMap].x = width + Xgap;
-                    // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
                     return {hor: 0, ver: 0, CSSPosition: 'absolute'};
 
                 } else if (this.index <= this.positionChildrenMap.length - 1) {
@@ -276,8 +326,6 @@
                         console.log(width);
                     }
                     // Тут при позиционировании смотрит только на значение x у предыдущего элемента
-                    // this.positionChildrenMap[this.childNumInMap].x = this.positionChildrenMap[this.childNumInMap - 1].x + width + Xgap;
-                    // this.positionChildrenMap[this.childNumInMap].y = height + Ygap;
                     return {hor: transformHoriz, ver: 0, CSSPosition: 'absolute'}
 
                 } else if (this.index === Object.keys(this.data).length - 1) {
@@ -288,8 +336,6 @@
                     let transformHoriz = (this.childNumInMap === 0) ? 0 : this.positionChildrenMap[this.childNumInMap - 1].x,
                         transformVert = this.positionChildrenMap[this.childNumInMap].y;
                     // Тут при позиционировании смотрит на значение у предыдущего элемента
-                    // this.positionChildrenMap[this.childNumInMap].x = transformHoriz + width + Xgap;
-                    // this.positionChildrenMap[this.childNumInMap].y = this.positionChildrenMap[this.childNumInMap].y + height + Ygap;
                     return {hor: transformHoriz, ver: transformVert, CSSPosition: 'absolute'};
                 }
             },
@@ -297,10 +343,14 @@
                 this.childNumInMap++;
                 this.index++;
             },
+            removeItemStyles(item) {
+                item.style = "";
+            },
             clearItemsStyles() {
-                this.childrenInstances.forEach(item => {
-                    item.removeCustomStyles();
-                });
+                for (let item of this.$el.children) {
+                    this.removeItemStyles(item);
+                }
+                this.$el.style = "";
             }
         }
     }
@@ -343,11 +393,6 @@
         &:nth-last-child(1) {
             @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
                 flex-basis: 100%;
-
-            }
-
-            @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
-                /*width: 100%*/
             }
         }
 
@@ -356,14 +401,10 @@
             width: 47%;
             padding: 0;
             margin-bottom: 0;
-            /*flex-basis: 47%;*/
         }
 
         @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
-            /*float: left;*/
             width: 33%;
-            /*padding: 0 7px 15px 7px;*/
-            /*margin-right: 3px;*/
             margin-bottom: 0;
         }
     }
