@@ -371,6 +371,7 @@
             justify-content: space-around;
             width: 90%;
             padding: 0;
+            margin-bottom: 20px;
         }
 
         @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
