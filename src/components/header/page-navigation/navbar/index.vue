@@ -2,7 +2,8 @@
     div.navbar
         div.navbar__inner
             a.site-logo(href="https://mayor-mayor.com")
-                img.site-logo__img(src="" alt="Логотип сайта")
+                div.site-logo-wrapper
+                    Logo
                 span.site-title {{ siteTitles[currentIndex] }}
             page-navigation(v-show="menuIsShown")
             a.trigger-mobile-menu-btn(role="button" @click.stop="controlMenu()" :class="{'trigger-mobile-menu-btn--active': menuIsShown}")
@@ -13,15 +14,17 @@
 
 <script>
     import PageNavigation from '../navbar-menu/index.vue';
+    import Logo from 'Root/svg/site-logo.svg';
     import { EventBus } from './../../../../event-bus.js';
 
     export default {
         components: {
+            Logo,
             PageNavigation
         },
         data() {
             return {
-                siteTitles: ["майор-майор", "mayor-mayor", "马约尔–马约尔"],
+                siteTitles: ["майор-майор", "mayor-mayor", "馬藥爾–馬藥爾"],
                 currentIndex: 0,
                 menuIsShown: false,
                 blockScroll: false
@@ -46,7 +49,14 @@
                       ctx.menuIsShown = false;
                   }
               })
-          })
+          });
+          setInterval(() => {
+              if (this.currentIndex >= this.siteTitles.length - 1) {
+                  this.currentIndex = 0;
+              } else {
+                  this.currentIndex++;
+              }
+          }, 1500);
         },
         methods: {
             unlockScroll(root) {
@@ -107,12 +117,18 @@
     }
 }
 
+.site-logo-wrapper {
+    width: 50px;
+    height: 50px;
+}
+
 .site-logo {
     position: relative;
     z-index: 1000;
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-left: 15px;
     text-decoration: none;
 
     &__img {
@@ -126,7 +142,8 @@
 
     @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
         display: inline-block;
-        margin-left: 20px;
+        margin-left: 15px;n
+        font-size: 1.2em;
         color: #ffffff;
     }
 }
