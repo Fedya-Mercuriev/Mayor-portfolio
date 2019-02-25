@@ -17,8 +17,16 @@
         @include reset-pad-marg();
         margin-top: 20px;
         margin-bottom: 16px;
-        color: #232f34;
         text-align: center;
+        font-size: 1.5em;
         line-height: 1.4;
+    }
+
+    .block-title-light {
+        color: $title-light-color;
+    }
+
+    .block-title-dark {
+        color: $title-dark-color;
     }
 </style>

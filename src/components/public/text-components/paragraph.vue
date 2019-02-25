@@ -1,5 +1,6 @@
 <template lang="pug">
-    p(:class="{'paragraph-light': appearance === 'light', 'paragraph-dark': appearance === 'dark'}") {{ text }}
+    p(:class="{'paragraph-light': appearance === 'light', 'paragraph-dark': appearance === 'dark'}")
+        slot
 </template>
 
 <script>
@@ -20,10 +21,10 @@
     }
 
     .paragraph-light {
-        //color: $paragraph-light-color;
+        color: $block-description-light-color;
     }
 
     .paragraph-dark {
-        //color: $paragraph-dark-color;
+        color: $block-description-dark-color;
     }
 </style>

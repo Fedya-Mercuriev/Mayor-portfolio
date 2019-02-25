@@ -6,25 +6,23 @@
 <script>
     export default {
         props: {
-            // text: String,
             appearance: String
         }
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
     h2 {
-
-    }
-
-    .block-title-light {
         @include reset-pad-marg();
         margin-top: 20px;
         margin-bottom: 10px;
-        color: $title-light-color;
         text-align: center;
         line-height: 1.4;
+    }
+
+    .block-title-light {
+        color: $title-light-color;
 
         @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             padding: 0 20px;
@@ -38,12 +36,7 @@
     }
 
     .block-title-dark {
-        @include reset-pad-marg();
-        margin-top: 20px;
-        margin-bottom: 10px;
         color: $title-dark-color;
-        text-align: center;
-        line-height: 1.4;
 
         @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             padding: 0 20px;
