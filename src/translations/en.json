@@ -1,0 +1,14 @@
+{
+  "menu": {
+    "design": "Design",
+    "portfolio": "Portfolio",
+    "cv": "CV",
+    "contacts": "Contacts",
+    "chooseLanguage": {
+      "btnText": "Language",
+      "inputDummyText": "Choose language",
+      "changeLangBtnText": "Change language",
+      "blockTitle": "Choose language"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "menu": {
+    "design": "關於設計",
+    "portfolio": "投資組合",
+    "cv": "摘要",
+    "contacts": "聯繫方式",
+    "chooseLanguage": {
+      "btnText": "语言",
+      "inputDummyText": "選擇語言",
+      "changeLangBtnText": "安置語言",
+      "blockTitle": "選擇語言"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "menu": {
+    "design": "Дизайн",
+    "portfolio": "Портфолио",
+    "cv": "Резюме",
+    "contacts": "Контакты",
+    "chooseLanguage": {
+      "btnText": "Язык",
+      "inputDummyText": "Выберите язык",
+      "changeLangBtnText": "Изменить язык",
+      "blockTitle": "Выберите язык"
+    }
+  }
+}
