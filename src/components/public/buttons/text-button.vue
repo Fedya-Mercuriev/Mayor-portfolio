@@ -13,10 +13,10 @@
 
 <script>
     import Vue from 'vue';
-    import TelegramIcon from './../../svg/telegram-icon.svg';
-    import PinterestIcon from './../../svg/pinterest-icon.svg';
+    import TelegramIcon from '../../../svg/telegram-icon.svg';
+    import PinterestIcon from '../../../svg/pinterest-icon.svg';
     import GithubIcon from './../../svg/github-logo.svg';
-    import MailIcon from './../../svg/mail-logo.svg';
+    import MailIcon from '../../../svg/mail-logo.svg';
 
     export default {
         props: {
@@ -42,11 +42,6 @@
                 // Допустиые значения: "left", "right"
                 type: "String",
                 required: false
-            }
-        },
-        data() {
-            return {
-                classList: []
             }
         },
         computed: {
@@ -88,11 +83,11 @@
     }
 
     .text-btn-light {
-        color: $text-button-light-color-mobile;
+        color: $text-button-light-color;
+        letter-spacing: 1px;
         @include transition(all 0.3s);
 
         @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
-            color: $text-button-light-color-desktop;
 
             &:hover {
                 color: $text-button-light-color-hover;
@@ -109,6 +104,6 @@
     }
 
     .text-btn-dark {
-
+        color: $text-button-dark-color;
     }
 </style>
