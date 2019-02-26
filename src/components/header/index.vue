@@ -1,6 +1,6 @@
 <template lang="pug">
     header.page-header
-        page-navigation
+        page-navigation(:appearance="appearance")
         div.page-header__inner
 </template>
 
@@ -8,11 +8,8 @@
     import PageNavigation from './page-navigation/navbar/index.vue';
 
     export default {
-        // name: "header",
-        data() {
-            return {
-
-            }
+        props: {
+            appearance: String
         },
         components: {
             'page-navigation': PageNavigation
