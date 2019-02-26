@@ -5,34 +5,75 @@
                 div.site-logo-wrapper
                     Logo
                 span.site-title {{ siteTitles[currentIndex] }}
-            page-navigation(v-show="menuIsShown")
-            a.trigger-mobile-menu-btn(role="button" @click.stop="controlMenu()" :class="{'trigger-mobile-menu-btn--active': menuIsShown}")
+            page-navigation( :menuItems="menuItems")
+            MobileMenu(:appearance="appearance" :menuItems="menuItems" :availableLanguages="availableLanguages" :menuVisible="mobileMenuIsShown")
+            a.trigger-mobile-menu-btn(
+                role="button"
+                @click.stop="controlMenu()"
+                :class="{'trigger-mobile-menu-btn--active': mobileMenuIsShown}"
+            )
                 i.mobile-menu-icon-stroke
                 i.mobile-menu-icon-stroke
                 i.mobile-menu-icon-stroke
 </template>
 
 <script>
-    import PageNavigation from '../navbar-menu/index.vue';
     import Logo from 'Root/svg/site-logo.svg';
+    import PageNavigation from '../navbar-menu/index.vue';
+    import MobileMenu from '../mobile-menu/mobile-menu.vue';
     import { EventBus } from './../../../../event-bus.js';
 
     export default {
         components: {
             Logo,
-            PageNavigation
+            PageNavigation,
+            MobileMenu
+        },
+        props: {
+            appearance: String
         },
         data() {
             return {
                 siteTitles: ["майор-майор", "mayor-mayor", "馬藥爾–馬藥爾"],
                 currentIndex: 0,
-                menuIsShown: false,
-                blockScroll: false
-            }
-        },
-        beforeMount: function() {
-            if (window.innerWidth > 1024) {
-                this.menuIsShown = true;
+                mobileMenuIsShown: false,
+                blockScroll: false,
+                menuItems: {
+                    design: {
+                        text: "Дизайн",
+                        hash: "#design",
+                        isCurrent: false
+                    },
+                    portfolio: {
+                        text: "Портфолио",
+                        hash: "#portfolio",
+                        isCurrent: false
+                    },
+                    cv: {
+                        text: "Резюме",
+                        hash: "#cv",
+                        isCurrent: false
+                    },
+                    contacts: {
+                        text: "Контакты",
+                        hash: "#contacts",
+                        isCurrent: false
+                    }
+                },
+                availableLanguages: [
+                    {
+                        text: "Русский",
+                        data: "ru"
+                    },
+                    {
+                        text: "English",
+                        data: "en"
+                    },
+                    {
+                        text: "简体中文",
+                        data: "zh"
+                    }
+                ]
             }
         },
         mounted() {
@@ -43,11 +84,6 @@
                   // Нужно скрыть открытые окна
                   EventBus.$emit('close-secondary-menu');
                   ctx.unlockScroll(root);
-                  if (this.outerWidth > 1024) {
-                      ctx.menuIsShown = true;
-                  } else {
-                      ctx.menuIsShown = false;
-                  }
               })
           });
           setInterval(() => {
@@ -64,7 +100,7 @@
                 root.controlScroll(this.blockScroll);
             },
             controlMenu() {
-                this.menuIsShown = !this.menuIsShown;
+                this.mobileMenuIsShown = !this.mobileMenuIsShown;
                 this.blockScroll = !this.blockScroll;
                 let root = this.$parent.$parent;
                 root.controlScroll(this.blockScroll);
@@ -128,7 +164,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-left: 15px;
+    margin-left: 15px;
     text-decoration: none;
 
     &__img {
@@ -142,7 +178,7 @@
 
     @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
         display: inline-block;
-        margin-left: 15px;n
+        margin-left: 15px;
         font-size: 1.2em;
         color: #ffffff;
     }
@@ -172,10 +208,6 @@
         display: none;
     }
 
-    //@media only screen and (min-width: map-deep-get($devices, 'tablet')) {
-     //   padding: 20px 6px;
-    //}
-
     &--active {
         .mobile-menu-icon-stroke {
             background-color: #f9aa33;
@@ -203,5 +235,6 @@
     opacity: 1;
     @include transform(translateY(0) rotate(0deg));
     @include transition(all 0.3s);
+
 }
 </style>

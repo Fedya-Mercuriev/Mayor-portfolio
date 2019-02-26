@@ -1,7 +1,8 @@
 <template lang="pug">
-transition(name="show-hide-menu")
+
     nav.page-navigation(ref="page-navigation")
         ul.navigation-menu(@highlight-item="updateActiveMenuItems")
+
             //- Обычные элементы меню
             li(
                 v-for="(item, propName) in menuItems"
@@ -12,22 +13,7 @@ transition(name="show-hide-menu")
                     span {{ item.text }}
             //- Конец обычных элементов меню
 
-            //- Пункт меню для выбора языка (для мобильных устройств)
-            li(class="navigation-menu__menu-item mobile-choose-lang")
-                form.choose-lang-form
-                    label(for="select-language") Язык
-                        select#select-language(@input="setChosenLanguage")
-                            option(disabled value="") -- Выберите язык --
-                            option(
-                                v-for="option in availableLanguages"
-                                :value="option.data"
-                            ) {{ option.text }}
-                LocalePageLink(
-                    v-show="langChosen"
-                    :language="language"
-                )
-            //- Конец пункта меню для выбора языка (для мобильных устройств)
-
+            //- Начало блока для меню с кнопкой выбора языка
             li.secondary-menu-wrapper
                 a.trigger-additional-menu-btn(
                     :class="{'trigger-additional-menu-btn--is-clicked': secondaryMenuOpened}"
@@ -41,22 +27,21 @@ transition(name="show-hide-menu")
                     :chooseLangBtnShown="secondaryMenuOpened"
                     v-on:hide-secondary-menu="displaySecondaryMenu"
                 )
+            //- Конец блока для меню с кнопкой выбора языка
 
 </template>
 
 <script>
     import PickLanguageBlock from '../pick-language-block/index.vue';
-    import LocalePageLink from './../go-to-page-link/index.vue';
     import { EventBus } from './../../../../event-bus.js';
 
     export default {
         name: 'page-navigation',
         components: {
-            PickLanguageBlock,
-            LocalePageLink
+            PickLanguageBlock
         },
-        created() {
-            // this.language = this.currentLanguage;
+        props: {
+            menuItems: Object
         },
         mounted() {
             EventBus.$on('highlight-li', (event) => {
@@ -69,44 +54,44 @@ transition(name="show-hide-menu")
         data() {
             return {
                 menuBaseClass: 'navigation-menu',
-                menuItems: {
-                    design: {
-                        text: "Дизайн",
-                        hash: "#design",
-                        isCurrent: false
-                    },
-                    portfolio: {
-                        text: "Портфолио",
-                        hash: "#portfolio",
-                        isCurrent: false
-                    },
-                    cv: {
-                        text: "Резюме",
-                        hash: "#cv",
-                        isCurrent: false
-                    },
-                    contacts: {
-                        text: "Контакты",
-                        hash: "#contacts",
-                        isCurrent: false
-                    }
-                },
-                availableLanguages: [
-                    {
-                        text: "Русский",
-                        data: "ru"
-                    },
-                    {
-                        text: "English",
-                        data: "en"
-                    },
-                    {
-                        text: "简体中文",
-                        data: "zh"
-                    }
-                ],
+                // menuItems: {
+                //     design: {
+                //         text: "Дизайн",
+                //         hash: "#design",
+                //         isCurrent: false
+                //     },
+                //     portfolio: {
+                //         text: "Портфолио",
+                //         hash: "#portfolio",
+                //         isCurrent: false
+                //     },
+                //     cv: {
+                //         text: "Резюме",
+                //         hash: "#cv",
+                //         isCurrent: false
+                //     },
+                //     contacts: {
+                //         text: "Контакты",
+                //         hash: "#contacts",
+                //         isCurrent: false
+                //     }
+                // },
+                // availableLanguages: [
+                //     {
+                //         text: "Русский",
+                //         data: "ru"
+                //     },
+                //     {
+                //         text: "English",
+                //         data: "en"
+                //     },
+                //     {
+                //         text: "简体中文",
+                //         data: "zh"
+                //     }
+                // ],
                 language: "",
-                langChosen: false,
+                langIsChosen: false,
                 menuItemClass: `${this.menuBaseClass}__menu-item`,
                 secondaryMenuOpened: false
             }
@@ -183,7 +168,7 @@ transition(name="show-hide-menu")
                 this.secondaryMenuOpened = false;
             },
 
-            setChosenLanguage(event) {
+            chooseLanguage(event) {
                 let value = event.target.value;
 
                 if (value !== this.currentLanguage) {
@@ -200,20 +185,20 @@ transition(name="show-hide-menu")
 <style lang="scss" scoped>
 
     .page-navigation {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 999;
-        width: 100%;
-        height: 100%;
+        /*position: fixed;*/
+        /*top: 0;*/
+        /*left: 0;*/
+        /*z-index: 999;*/
+        /*width: 100%;*/
+        /*height: 100%;*/
         /*padding-top: 60px;*/
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
-        background-color: $navbar-bg;
-        will-change: transform;
+        /*border-top-left-radius: 20px;*/
+        /*border-top-right-radius: 20px;*/
+        //background-color: $navbar-bg;
+        /*will-change: transform;*/
 
         @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
-            position: static;
+            /*position: static;*/
             /*top: 0;*/
             /*left: 0;*/
             display: flex;
@@ -226,63 +211,28 @@ transition(name="show-hide-menu")
     }
 
     .navigation-menu {
-        /*display: none;*/
-        position: absolute;
-        top: 60px;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        @include reset-pad-marg();
-        /* The main point: */
-        overflow-y: auto;
-        /* Optional but highly reccomended: enables momentum scrolling on iOS */
-        -webkit-overflow-scrolling: touch;
-        list-style-type: none;
-
-        @media only screen and (max-width: map-deep-get($devices, 'desktop')) {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            list-style-type: none;
-            @include reset-pad-marg();
-        }
+        display: none;
 
         @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
             position: relative;
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
+            align-items: center;
             justify-content: stretch;
+            @include reset-pad-marg();
         }
 
         &__menu-item {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            padding: 23px 0;
-            margin: 0 auto;
+            flex-direction: row;
+            justify-content: stretch;
+            height: 100%;
+            padding: 0 20px;
             color: $menu-link-color;
 
-            @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) and (max-width: map-deep-get($devices, 'tablet')) {
-                padding: 25px 0;
-            }
-
-            @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
-                display: flex;
-                flex-direction: row;
-                justify-content: stretch;
-                height: 100%;
-                padding: 0 20px;
-                color: #bbbbbb;
-                /*@include transition(text-shadow 0.4s);*/
-                
-                &:hover {
-                    color: #ffffff;
-                }
+            &:hover {
+                color: #ffffff;
             }
 
             &--is-current {
@@ -297,32 +247,9 @@ transition(name="show-hide-menu")
             text-decoration: none;
             font-size: $menu-item-font-size-mobile;
             color: inherit;
-            text-shadow: inherit;
             @include transition(color 0.27s);
 
             @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) and (max-width: map-deep-get($devices, 'desktop')) {
-                font-size: $menu-item-font-size-tablet;
-            }
-        }
-    }
-
-    .mobile-choose-lang {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        padding: 23px 0;
-        color: $menu-link-color;
-
-        @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
-            display: none;
-        }
-
-        label {
-            position: relative;
-            font-size: $menu-item-font-size-mobile;
-
-            @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
                 font-size: $menu-item-font-size-tablet;
             }
         }
@@ -446,34 +373,6 @@ transition(name="show-hide-menu")
                 font-size: 0.9em;
             }
         }
-    }
-
-    #select-language {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%);
-        background-color: transparent;
-        border: 0px;
-        color: transparent;
-        outline: transparent;
-    }
-
-    // Стили для Vue Transitions
-    .show-hide-menu-enter-active {
-        @include transition(all 0.3s cubic-bezier(.54,1.06,.77,.97));
-    }
-
-    .show-hide-menu-leave-active {
-        @include transition(all 0.3s cubic-bezier(.54,1.06,.77,.97));
-    }
-
-    .show-hide-menu-enter {
-        @include transform(translateX(0px) translateY(7px));
-    }
-
-    .show-hide-menu-leave-to {
-        @include transform(translateX(0px) translateY(999px));
     }
 
 </style>
