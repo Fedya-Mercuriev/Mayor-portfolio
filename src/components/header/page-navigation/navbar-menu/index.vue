@@ -10,7 +10,7 @@
                 :key="propName"
             )
                 a.navigation-menu__menu-link(:href="item.hash")
-                    span {{ item.text }}
+                    span {{ $t(item.text) }}
             //- Конец обычных элементов меню
 
             //- Начало блока для меню с кнопкой выбора языка
@@ -50,46 +50,11 @@
             EventBus.$on('close-secondary-menu', () => {
                 this.secondaryMenuOpened = false;
             });
+            console.log(this.$i18n);
         },
         data() {
             return {
                 menuBaseClass: 'navigation-menu',
-                // menuItems: {
-                //     design: {
-                //         text: "Дизайн",
-                //         hash: "#design",
-                //         isCurrent: false
-                //     },
-                //     portfolio: {
-                //         text: "Портфолио",
-                //         hash: "#portfolio",
-                //         isCurrent: false
-                //     },
-                //     cv: {
-                //         text: "Резюме",
-                //         hash: "#cv",
-                //         isCurrent: false
-                //     },
-                //     contacts: {
-                //         text: "Контакты",
-                //         hash: "#contacts",
-                //         isCurrent: false
-                //     }
-                // },
-                // availableLanguages: [
-                //     {
-                //         text: "Русский",
-                //         data: "ru"
-                //     },
-                //     {
-                //         text: "English",
-                //         data: "en"
-                //     },
-                //     {
-                //         text: "简体中文",
-                //         data: "zh"
-                //     }
-                // ],
                 language: "",
                 langIsChosen: false,
                 menuItemClass: `${this.menuBaseClass}__menu-item`,
@@ -127,27 +92,6 @@
                 }
             }
         },
-        computed: {
-            currentLanguage: {
-                get() {
-                    let domain = "mayor-mayor.com";
-                    let host = domain.split('.');
-                    host.splice(host.indexOf('com'), 1);
-                    if (host.length > 1) {
-                        return host[0];
-                    } else {
-                        return "zh";
-                    }
-                },
-                set(event) {
-                    let value = event.target.value;
-                    this.language = value;
-                }
-            },
-            pageLink() {
-                return `${this.currentLanguage}`;
-            }
-        },
         methods: {
             updateActiveMenuItems(propName) {
                 for (let prop in this.menuItems) {
@@ -161,7 +105,6 @@
 
             displaySecondaryMenu(state = null) {
                 this.secondaryMenuOpened = (typeof state === 'boolean') ? state : !this.secondaryMenuOpened;
-                // this.secondaryMenuOpened = !this.secondaryMenuOpened
             },
 
             closeSecondaryMenu() {
@@ -247,6 +190,7 @@
             text-decoration: none;
             font-size: $menu-item-font-size-mobile;
             color: inherit;
+            white-space: nowrap;
             @include transition(color 0.27s);
 
             @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) and (max-width: map-deep-get($devices, 'desktop')) {

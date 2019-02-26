@@ -9,15 +9,18 @@
                     :key="propName"
                 )
                     a.mobile-menu__menu-link(:href="item.hash")
-                        span {{ item.text }}
+                        span {{ $t(item.text) }}
                 //- Конец обычных элементов меню
 
                 //- Начало пункта меню для выбора языка
                 li(class="navigation-menu__menu-item mobile-choose-lang")
                     form.choose-lang-form
-                        label(for="select-language") {{ pickLanguageFormData.labelText }}
-                            select#select-language(@input="chooseLanguage")
-                                option(disabled value="") {{ pickLanguageFormData.selectFormDummyText }}
+                        label(for="select-language") {{ $t(pickLanguageFormData.labelText) }}
+                            select#select-language(
+                                v-model="chosenLanguage"
+                                @input="chooseLanguage"
+                            )
+                                option(disabled value="") {{ `-- ${$t(pickLanguageFormData.selectFormDummyText)} --` }}
                                 option(
                                     v-for="option in availableLanguages"
                                     :value="option.data"
@@ -26,9 +29,9 @@
                         ContainedButton(
                             v-show="langIsChosen"
                             :appearance="appearance"
-                            :text="pickLanguageFormData.changeLangBtnText"
+                            :text="$t(pickLanguageFormData.changeLangBtnText)"
                             :additionalClass="'change-lang-btn'"
-                            v-on:click="setAppLanguage()"
+                            @click.prevent="setLocale()"
                         )
                 //- Конец пункта меню для выбора языка
 </template>
@@ -51,11 +54,11 @@
         data() {
             return {
                 langIsChosen: false,
-                language: "zh",
+                chosenLanguage: null,
                 pickLanguageFormData: {
-                    labelText: "Язык",
-                    selectFormDummyText: "-- Выберите язык --",
-                    changeLangBtnText: "Сменить язык"
+                    labelText: 'menu.chooseLanguage.btnText',
+                    selectFormDummyText: 'menu.chooseLanguage.inputDummyText',
+                    changeLangBtnText: 'menu.chooseLanguage.changeLangBtnText'
                 }
             }
         },
@@ -72,20 +75,17 @@
 
             chooseLanguage(event) {
                 let value = event.target.value;
-                console.log(`Выбранный язык: ${value}`);
 
-                if (value !== this.currentLanguage) {
+                if (value !== this.$i18n.locale) {
                     this.langIsChosen = true;
-                    this.language = value;
                 } else {
                     this.langIsChosen = false;
                 }
             },
 
-            setAppLanguage() {
-                // Установим язык для i18n
-                // Функция будет написана, когда накачу vi18n
+            setLocale() {
                 console.log(`Установим этот язык: ${this.language}`);
+                this.$i18n.locale = this.chosenLanguage;
             }
         }
     }

@@ -40,22 +40,22 @@
                 blockScroll: false,
                 menuItems: {
                     design: {
-                        text: "Дизайн",
+                        text: 'menu.design',
                         hash: "#design",
                         isCurrent: false
                     },
                     portfolio: {
-                        text: "Портфолио",
+                        text: 'menu.portfolio',
                         hash: "#portfolio",
                         isCurrent: false
                     },
                     cv: {
-                        text: "Резюме",
+                        text: 'menu.cv',
                         hash: "#cv",
                         isCurrent: false
                     },
                     contacts: {
-                        text: "Контакты",
+                        text: 'menu.contacts',
                         hash: "#contacts",
                         isCurrent: false
                     }

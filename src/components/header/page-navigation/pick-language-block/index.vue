@@ -4,7 +4,7 @@
             v-show="chooseLangBtnShown"
             @click="displayPickLanguageBlock"
         )
-            span.trigger-pick-language-block__button-text Язык
+            span.trigger-pick-language-block__button-text {{ $t('menu.chooseLanguage.btnText') }}
         //- Позиционируется фиксированно
         div(v-show="secondaryMenuShown")
             div.pick-language-block
@@ -18,13 +18,16 @@
                     LatinLetter.latin-letter(
                         :class="{'latin-letter--is-active': hoveredLang === 'ru' || hoveredLang === 'en'}"
                     )
-                h4.pick-language-block__block-title Выберите язык
+                h4.pick-language-block__block-title {{ $t(blockTitle) }}
                 ul.languages-list(@mouseleave="hoveredLang = null")
                     li.languages-list__menu-item(
                         v-for="item in availableLanguages"
                         @mouseover="hoveredLang = item.data"
                     )
-                        a(:href='"https://" + item.data +".mayor-mayor.com"') {{ item.text }}
+                        a(
+                            :language="item.data"
+                            @click.prevent="setLocale(item.data)"
+                        ) {{ item.text }}
             div.block-overlay(@click = "secondaryMenuShown = false")
 </template>
 
@@ -51,6 +54,7 @@
         },
         data() {
             return {
+                blockTitle: 'menu.chooseLanguage.blockTitle',
                 availableLanguages: [
                     {
                         text: "Русский",
@@ -61,11 +65,10 @@
                         data: "en"
                     },
                     {
-                        text: "简体中文",
+                        text: "繁體中文",
                         data: "zh"
                     }
                 ],
-                // pickLanguageBlockShown: null,
                 secondaryMenuShown: false,
                 hoveredLang: null
             }
@@ -73,6 +76,9 @@
         methods: {
             pickLanguage(event) {
                 this.$emit('click', event.target.language);
+            },
+            setLocale(locale) {
+                this.$i18n.locale = locale;
             },
             hideModalWindow() {
                 this.pickLanguageBlockShown = false;
@@ -89,22 +95,6 @@
 
 <style lang="scss" scoped>
 
-    .pick-language-block-wrapper {
-        display: none;
-
-        @media only screen and (min-width: map-deep-get($devices, 'tablet') + 1px) {
-            /*position: absolute;*/
-            /*top: 15px;*/
-            /*right: 0;*/
-            /*box-sizing: border-box;*/
-            /*display: block;*/
-            /*width: 100px;*/
-            /*height: 100%;*/
-            /*padding: 20px 0;*/
-            /*background-color: #ffffff;*/
-        }
-    }
-
     .trigger-pick-language-block {
         display: none;
 
@@ -117,6 +107,7 @@
             width: 150px;
             padding: 15px 0;
             @include border-radius(7px);
+            color: $primary-text-color;
             background-color: #ffffff;
             @include transition(background-color 0.3s, color 0.3s);
 
@@ -160,6 +151,7 @@
                 margin-top: 20px;
                 font-size: 24px;
                 text-align: center;
+                color: $primary-text-color;
             }
         }
     }
@@ -228,24 +220,10 @@
 
             &:hover {
                 background-color: #86858524;
-                color: opacify($dialog-font-color, 1);
+                color: $primary-text-color;
             }
         }
     }
-
-    /*<!--.modal-window {-->*/
-        /*<!--position: fixed;-->*/
-        /*<!--top: 50%;-->*/
-        /*<!--left: 50%;-->*/
-        /*<!--z-index: 10000;-->*/
-        /*<!-- -webkit-transform: translate(-50%);-->*/
-        /*<!-- -moz-transform: translate(-50%);-->*/
-        /*<!-- -ms-transform: translate(-50%);-->*/
-        /*<!-- -o-transform: translate(-50%);-->*/
-        /*<!--transform: translate(-50%);-->*/
-        /*<!--border-radius: 5px;-->*/
-        /*<!--background-color: #ffffff;-->*/
-    /*<!--}-->*/
 
     .close-block-btn {
         position: absolute;
