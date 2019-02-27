@@ -25,13 +25,13 @@
                                     v-for="option in availableLanguages"
                                     :value="option.data"
                                 ) {{ option.text }}
-                    div.change-lang-btn-wrapper
+                    div.change-lang-btn-wrapper(v-on:click.prevent="setLocale()")
                         ContainedButton(
                             v-show="langIsChosen"
                             :appearance="appearance"
-                            :text="$t(pickLanguageFormData.changeLangBtnText)"
+                            :href="'#'"
+                            :text="$t(pickLanguageFormData.changeLangBtnText) + `(${chosenLanguage})`"
                             :additionalClass="'change-lang-btn'"
-                            @click.prevent="setLocale()"
                         )
                 //- Конец пункта меню для выбора языка
 </template>
@@ -86,6 +86,8 @@
             setLocale() {
                 console.log(`Установим этот язык: ${this.language}`);
                 this.$i18n.locale = this.chosenLanguage;
+                // Спрячем кнопку после клика
+                this.langIsChosen = false;
             }
         }
     }
@@ -234,6 +236,7 @@
     }
 
     .change-lang-btn-wrapper {
+        min-width: 190px;
         margin-top: 30px;
     }
 
