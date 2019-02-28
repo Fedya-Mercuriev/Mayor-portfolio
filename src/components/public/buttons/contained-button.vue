@@ -7,7 +7,7 @@
     )
         div.contained-btn__link-icon-wrapper(v-if="slotHasContent" :class="positionIcon")
             slot
-        span.contained-btn__btn-text {{ text }}
+        span.contained-btn__btn-text {{ $t(text) }}
 </template>
 
 <script>

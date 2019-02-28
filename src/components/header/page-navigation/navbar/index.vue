@@ -70,7 +70,7 @@
                         data: "en"
                     },
                     {
-                        text: "简体中文",
+                        text: "繁體中文",
                         data: "zh"
                     }
                 ]

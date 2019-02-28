@@ -3,14 +3,14 @@
         :class="classList",
         @click="processClicks"
     )
-        h3.dominant-media-card__title {{ projectData.title }}
+        h3.dominant-media-card__title {{ $t(projectData.title) }}
         template(v-if="projectData.img")
             div.dominant-media-card__img-wrapper
                 img.dominant-media-card__img(:src="projectData.img")
             div.dominant-media-card__overlay
         template(v-else)
             div.dominant-media-card__overlay
-        span.dominant-media-card__hint-message {{ hintMessage }}
+        span.dominant-media-card__hint-message {{ $t(hintMessage) }}
 </template>
 
 <script>
@@ -26,7 +26,7 @@
             return {
                 isClicked: false,
                 screenSize: null,
-                hintMessage: "Подробнее"
+                hintMessage: 'projectCard.viewMoreTxtDesktop'
             }
         },
         beforeMount() {
@@ -50,9 +50,9 @@
         methods: {
             setLinkMsg() {
                 if (window.outerWidth <= 1024) {
-                    this.hintMessage = "Кликните еще раз"
+                    this.hintMessage = 'projectCard.viewMoreTxtMobile'
                 } else {
-                    this.hintMessage = "Подробнее";
+                    this.hintMessage = 'projectCard.viewMoreTxtDesktop';
                 }
             },
             processClicks() {
@@ -111,7 +111,7 @@
             @include reset-pad-marg();
             font-size: 1.6em;
             color: $project-card-color;
-            -webkit-font-smoothing: subpixel-antialiased;
+            //-webkit-font-smoothing: antialiased;
             text-align: center;
             @include transition(all 0.3s);
 
@@ -153,7 +153,7 @@
             width: 100%;
             text-align: center;
             font-size: 1.15em;
-            -webkit-font-smoothing: subpixel-antialiased;
+            //-webkit-font-smoothing: antialiased;
             color: $checkout-project-link-color;
             @include transition(transform 0.3s cubic-bezier(0.250, 0.250, 0.130, 0.910));
             will-change: transform;
