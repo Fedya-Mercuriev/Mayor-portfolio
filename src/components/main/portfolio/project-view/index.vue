@@ -13,11 +13,11 @@ div
             // Начало блока с информацией о проекте (заголовок, описание)
             div.project-info
                 header.project-info-header
-                    h4.project-info__title {{ projectInfo.title }}
-                p.project-info__description {{ projectInfo.description }}
+                    h4.project-info__title {{ $t(projectInfo.title) }}
+                p.project-info__description {{ $t(projectInfo.description) }}
                 template(v-if="projectInfo.stack")
                     div.tech-stack-block
-                        h5.tech-stack-block__title Стэк технологий:
+                        h5.tech-stack-block__title {{ `${$t(techStackBlockTitle)}:` }}
                         ul.tech-stack-list
                             li.tech-stack-list__item(v-for="item in projectInfo.stack") {{ item }}
             // Конец блока с информацией о проекте (заголовок, описание)
@@ -26,7 +26,7 @@ div
 
             // Начало блока с ссылками на проект
             div.project-links
-                h5.project-links__title Ссылки на проекты:
+                h5.project-links__title {{ `${$t(projectLinksTitle)}:` }}
                 template(v-if="projectInfo.links.checkout")
                     div.project-links__btn-wrapper
                         ContainedButton(
@@ -70,7 +70,9 @@ div
         },
         data() {
             return {
-                btnText: "Посмотреть"
+                techStackBlockTitle: 'projectViewBlock.techStackBlockTitle',
+                projectLinksTitle: 'projectViewBlock.projectLinksTitle',
+                btnText: 'projectViewBlock.btnText'
             }
         },
         computed: {
