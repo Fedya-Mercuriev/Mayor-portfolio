@@ -10,5 +10,34 @@
       "changeLangBtnText": "Change language",
       "blockTitle": "Choose language"
     }
+  },
+  "portfolio": {
+    "blockTitle": "Portfolio",
+    "blockDescription": "Here are a few projects worth showing off"
+  },
+  "projectCard": {
+    "viewMoreTxtDesktop": "Expand card",
+    "viewMoreTxtMobile": "Click again please"
+  },
+  "bfBot": {
+    "title": "Flower shop Telegram bot",
+    "description": "A Telegram bot for my auntie’s flower shop, that lets the customer check out goods in stock, get company info and order a desired bouquet. Order process comprises the following steps: date input, time input, choosing shipping method, choosing a desired bouquet. The customer can either pay in the shop during the reception or right inside Telegram using Telegram Payments"
+  },
+  "cards": {
+    "title": "Cards for displaying goods",
+    "description": "It was a test assignment for one local company. The objective was to get a list of goods via AJAX and display it according to an intrinsic sense of beauty. I chose cards to display the received data for they’re vivid, independent and elaborate. The visual implementation was driven by the inspiration of iOS smooth-moving elements, thus every tiny arrow, every list, title on this page appear, rotate as smooth as possible."
+  },
+  "calculator": {
+    "title": "JS-made \"Calculator\" game",
+    "description": "It was the first serious project I’ve ever made – not just static page layouts, but also functionality implemented with js. I had a game on my cellphone where you were given a target number, that you should get, initial number, a number of steps and available mathematical operations (\"+2\", \"/3\" etc.). Your goal was to get the target number using mathematical operations at a restricted number of steps.\nI wrote down the game features and implemented It using the programming language I was learning at that time. Unfortunately, not all features I managed to implement (ex: \"level switch\"). I’m planning to add level constructor in the near future."
+  },
+  "thisApp": {
+    "title": "Portfolio",
+    "description": "Gotta show what I’m capable of. I came up the portfolio-site, that stores my projects, CV not like the one with a *.docx extension and my contact info. In order to get additional points for my competence I’ve learned Vue.js framework and used it to implement the site behavior and logic. Material Design guide was used as a basis for component construction."
+  },
+  "projectViewBlock": {
+    "projectLinksTitle": "Project links",
+    "techStackBlockTitle": "Tech stack",
+    "btnText": "Checkout"
   }
 }

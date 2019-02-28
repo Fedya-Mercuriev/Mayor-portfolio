@@ -1,8 +1,8 @@
 {
   "menu": {
     "design": "關於設計",
-    "portfolio": "投資組合",
-    "cv": "摘要",
+    "portfolio": "作品集",
+    "cv": "簡歷",
     "contacts": "聯繫方式",
     "chooseLanguage": {
       "btnText": "语言",
@@ -10,5 +10,34 @@
       "changeLangBtnText": "安置語言",
       "blockTitle": "選擇語言"
     }
+  },
+  "portfolio": {
+    "blockTitle": "作品集",
+    "blockDescription": "這裡有一些讓我顯示自己的設計"
+  },
+  "projectCard": {
+    "viewMoreTxtDesktop": "更多",
+    "viewMoreTxtMobile": "再點擊一遍"
+  },
+  "bfBot": {
+    "title": "花點自動程序",
+    "description": "我姑姑花點自動程序。本程序讓顧客獲得公司信息，花束種類信息，而且讓顧客訂花束。訂花束過程包含：選擇日期，選擇時間，選擇快遞方式，選擇花束。顧客在花束付款，或者在Telegram裡用著Telegram Payments能付款"
+  },
+  "cards": {
+    "title": "顯示產品的卡片",
+    "description": "這個設計是一個對我城市公司做的測試任務。本任務的目的是用著AJAX收到數據清單，然後用著自己美感把這些數據顯示。我決定使用卡片把數據顯示，因為卡片很簡單，又獨立又雅緻。\nApple鼓舞我把卡片要素轉動很流利。"
+  },
+  "calculator": {
+    "title": "以JS為編程語言做的\"计算器\"游戏",
+    "description": "本作品是我第一重大設計，不但靜止頁而且以JS為程序語言實現的網站必然性。我在手機裡有一個遊戲。那个游戏里你有目的数，原始数，步数，一些数学运算（\"+2\", \"/3\"等等）。你的目的是用著數學運算和一定步數獲得目的數。\n我看著遊戲必然性寫到遊戲必然性，然後用著我那時候學的程序語言實現這個遊戲必然性。遺憾的是我沒有實現所有遊戲作用（例如：關卡轉換）。將會實現關卡構造函數。"
+  },
+  "thisApp": {
+    "title": "作品集",
+    "description": "為了表現我的編程成立我我創作網站收藏我的作品集。本網站不但收藏我的作品集而且收藏我的簡歷和聯繫方式。為此表現更多能力我學會Vue.js程序庫，用這個程序庫編程這個網站。我使用以Material Design規程為基礎創作界面成分。"
+  },
+  "projectViewBlock": {
+    "projectLinksTitle": "設計鏈接",
+    "techStackBlockTitle": "科技",
+    "btnText": "查看設計"
   }
 }
