@@ -117,5 +117,9 @@
   "email": {
     "title": "電子郵件",
     "writeLetterBtnText": "聯繫我"
+  },
+  "footer": {
+    "text": "圖形設計與編程",
+    "authorNick": "馬藥爾"
   }
 }

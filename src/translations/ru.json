@@ -117,5 +117,9 @@
   "email": {
     "title": "По почте",
     "writeLetterBtnText": "Написать письмо"
+  },
+  "footer": {
+    "text": "",
+    "authorNick": "Майор"
   }
 }

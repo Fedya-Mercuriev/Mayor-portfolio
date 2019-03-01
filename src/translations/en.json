@@ -117,5 +117,9 @@
   "email": {
     "title": "Via e-mail",
     "writeLetterBtnText": "Compose a letter"
+  },
+  "footer": {
+    "text": "Designed and developed",
+    "authorNick": "Mayor"
   }
 }
