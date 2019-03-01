@@ -39,5 +39,68 @@
     "projectLinksTitle": "設計鏈接",
     "techStackBlockTitle": "科技",
     "btnText": "查看設計"
+  },
+  "cvBlock": {
+    "title": "簡歷",
+    "description": "招聘信息"
+  },
+  "checkoutCertificateBtnText": "畢業證書",
+  "education": {
+    "title": "高等教育",
+    "description": "畢業證書",
+    "data": {
+      "univ1": "托木斯克理工大學 (2013 - 2018)",
+      "univ2": "哈爾濱理工大學 (2017)"
+    }
+  },
+  "spokenLanguages": {
+    "title": "會說的語言",
+    "description": "會讀外語技術文件和用外語在酒吧聊天",
+    "data": {
+      "lang1": "英語 (流利: IELTS 6.9)",
+      "lang2": "漢語 (流利: HSK5)"
+    }
+  },
+  "courses": {
+    "title": "訓練班",
+    "description": "喜歡學習收費和免費"
+  },
+  "techStack": {
+    "title": "掌握的技術",
+    "description": "使用這些技術編程"
+  },
+  "graphicSoftware": {
+    "title": "掌握的圖形編輯程序",
+    "description": "能從模板取出圖簽和體字"
+  },
+  "coreSkills": {
+    "title": "實用的技能",
+    "description": "編程的時候實用這些技能",
+    "data": {
+      "skill1": "適應版樣",
+      "skill2": "跨瀏覽器版樣",
+      "skill3": "UI/UX基礎"
+    }
+  },
+  "nonCoreSkills": {
+    "title": "非實用的技能",
+    "description": "生命中實用這些技能",
+    "data": {
+      "skill1": "美感",
+      "skill2": "適中的至善主義"
+    }
+  },
+  "extra": {
+    "title": "其餘信息",
+    "description": "其餘品質",
+    "data": {
+      "extra1": "在中國住和學習 (2017 - 2018)",
+      "extra2": "教中國人和俄羅斯人英語",
+      "extra3": "遙程地教中國人英文 (2017 – 至今為止)"
+    }
+  },
+  "about": {
+    "title": "關於我",
+    "data": "喜歡解答不庸俗的習題，創造實用的軟件。作品的內容不有意義。本作品也許花點自動程序，中文髒話發生器或者保留座位系統。最重要是這個作品應該是對人類有益處。這個作品也要讓設計人員想來想去。"
   }
 }

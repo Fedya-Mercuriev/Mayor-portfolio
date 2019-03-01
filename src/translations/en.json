@@ -39,5 +39,68 @@
     "projectLinksTitle": "Project links",
     "techStackBlockTitle": "Tech stack",
     "btnText": "Checkout"
+  },
+  "cvBlock": {
+    "title": "CV",
+    "description": "Useful information for hiring me"
+  },
+  "checkoutCertificateBtnText": "Certificate",
+  "education": {
+    "title": "Higher education",
+    "description": "have the following diplomas",
+    "data": {
+      "univ1": "Tomsk Polytechnic University (2013 - 2018)",
+      "univ2": "Harbin Institute of Science and Technology (2017)"
+    }
+  },
+  "spokenLanguages": {
+    "title": "Spoken languages",
+    "description": "Can read docs in these languages are have a chat with a glass of beer",
+    "data": {
+      "lang1": "English (fluent: IELTS 6.9)",
+      "lang2": "Mandarin (fluent: HSK5)"
+    }
+  },
+  "courses": {
+    "title": "Courses",
+    "description": "Keen on learning, for free and for money"
+  },
+  "techStack": {
+    "title": "Technology stack",
+    "description": "Can operate with the following tech"
+  },
+  "graphicSoftware": {
+    "title": "Graphic software skills",
+    "description": "Can extract and icon and a typeface from the file unless it has a *.docx extension"
+  },
+  "coreSkills": {
+    "title": "Core skills",
+    "description": "Use them at work",
+    "data": {
+      "skill1": "Adaptive layouting",
+      "skill2": "Crossbrowser layouting",
+      "skill3": "UI/UX basics"
+    }
+  },
+  "nonCoreSkills": {
+    "title": "Non-core skills",
+    "description": "Use them in life",
+    "data": {
+      "skill1": "sense of beauty",
+      "skill2": "Moderate perfectionism"
+    }
+  },
+  "extra": {
+    "title": "Other",
+    "description": "What else can I demonstrate",
+    "data": {
+      "extra1": "Lived and studied in China (2017 - 2018)",
+      "extra2": "Teaching English in Russia and China",
+      "extra3": "Teaching the Chinese English remotely (2017 – настоящее время)"
+    }
+  },
+  "about": {
+    "title": "About me",
+    "data": "Love solving untrivial tasks and creating applicative products. It doesn’t matter what the project is about. It can be a bot or a flower shop, Chinese swearing generator or table booking system – most import is that the product must be beneficial to people and it’s implementation would require blowing one’s brains."
   }
 }

@@ -1,7 +1,7 @@
 <template lang="pug">
     section#cv
-        H2(:appearance="appearance") Резюме
-        BlockDescription(:appearance="appearance") А это резюме. Да
+        H2(:appearance="appearance") {{ $t(title) }}
+        BlockDescription(:appearance="appearance") {{ $t(description) }}
         ContentWrapper(:data="cvData" :appearance="appearance")
         template(v-for="cvItem in cvData")
             template(v-if="typeof cvItem.data === 'string'")
@@ -30,6 +30,8 @@
         },
         data() {
             return {
+                title: 'cvBlock.title',
+                description: 'cvBlock.description',
                 cvData: {
                     education: {
                         title: 'education.title',
