@@ -102,5 +102,20 @@
   "about": {
     "title": "About me",
     "data": "Love solving untrivial tasks and creating applicative products. It doesn’t matter what the project is about. It can be a bot or a flower shop, Chinese swearing generator or table booking system – most import is that the product must be beneficial to people and it’s implementation would require blowing one’s brains."
+  },
+  "contactInfo": {
+    "title": "Contact info",
+    "description": {
+      "line1": "My name is",
+      "line2": "and here's how you can contact me",
+      "name": "Gleb"
+    }
+  },
+  "socialNetworks": {
+    "title": "Via social networks"
+  },
+  "email": {
+    "title": "Via e-mail",
+    "writeLetterBtnText": "Compose a letter"
   }
 }

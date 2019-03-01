@@ -1,16 +1,16 @@
 <template lang="pug">
     section#contacts
-        h2.block-title Будем знакомы
-        p.block-description
-            |Меня зовут
+        H2(:appearance="appearance") {{ $t(contactInfo.blockTitle) }}
+        BlockDescription(:appearance="appearance")
+            |{{ $t(contactInfo.blockDescription.line1) }}
             span.applicant-name
-                span.applicant-name__text {{ contactInfo.name }}
+                span.applicant-name__text {{ $t(contactInfo.name) }}
                 div.applicant-name__highlighter
-            |и вот как можно со мной связаться:
+            |{{ `${$t(contactInfo.blockDescription.line2)}:` }}
 
         // - Ссылки на социальные сети начинаются здесь
         div.social-networks
-            p.social-networks__title В социальных сетях
+            p.social-networks__title {{ $t(contactInfo.socialNetworksBlockTitle) }}
             div.buttons-container
                 div.social-button-wrapper(v-for="item in contactInfo.socialNetworks")
                  ContainedButton(
@@ -30,7 +30,7 @@
         // - Ссылки на социальные сети заканчиваются здесь
 
         div.email
-            p.email__title По почте
+            p.email__title {{ $t(contactInfo.email.blockTitle) }}
                 span.email__email-text (gleb.gorkoltsev@yandex.ru)
             div.buttons-container
                 div.mail-button-wrapper
@@ -46,75 +46,13 @@
 
 <script>
     import Vue from 'vue';
+    import H2 from 'Components/public/text-components/titles/level-2.vue';
+    import BlockDescription from 'Components/public/text-components/block-description.vue';
     import ContainedButton from 'Components/public/buttons/contained-button.vue';
     import TelegramIcon from 'Root/svg/telegram-icon.svg';
     import PinterestIcon from 'Root/svg/pinterest-icon.svg';
     import GithubIcon from 'Root/svg/github-icon.svg';
     import MailIcon from 'Root/svg/mail-logo.svg';
-
-    // function* getCurrentComponentData(dataObj) {
-    //     for (let item in dataObj) {
-    //         yield dataObj[item];
-    //     }
-    // }
-
-    // function placeComponentsIntoWrappers(wrappers, component, assignPropsDataFunc, componentDataObj) {
-    //     let componentData = getCurrentComponentData(componentDataObj);
-    //         // Если оберток несколько
-    //         wrappers.forEach(wrapper => {
-    //             let buttonText,
-    //                 buttonLink,
-    //                 dataObj = {};
-    //
-    //             if (wrappers.length > 1) {
-    //                 let { text, link } = componentData.next().value;
-    //                 buttonText = text;
-    //                 buttonLink = link;
-    //             } else {
-    //                 let { text, link } = componentDataObj;
-    //                 buttonText = text;
-    //                 buttonLink = link;
-    //             }
-    //
-    //             dataObj.text = buttonText;
-    //             dataObj.link = buttonLink;
-    //
-    //
-    //             // Создадим сущность компонента
-    //             let button = new component({
-    //                 propsData: assignPropsDataFunc(dataObj),
-    //             });
-    //
-    //             button.$slots.default = insertIcon(buttonText);
-    //
-    //             button.$mount();
-    //             wrapper.appendChild(button.$el);
-    //         });
-    // }
-
-    // function assignProps(dataObj) {
-    //     let { text, link } = dataObj;
-    //     return {
-    //         text: text,
-    //         href: link,
-    //         goToNewPage: true,
-    //         appearance: 'light',
-    //         iconPosition: 'left',
-    //         additionalClass: [`${text}-link`]
-    //     }
-    // }
-
-    // function insertIcon(iconName) {
-    //     let icons = {
-    //         'telegram': TelegramIcon,
-    //         'pinterest': PinterestIcon,
-    //         'github': GithubIcon
-    //     };
-    //     // let Icon = Vue.extend(icons[iconName]),
-    //     // result = new Icon();
-    //
-    //     return icons[iconName];
-    // }
 
     export default {
         props: {
@@ -130,11 +68,10 @@
 
             mailInfo.wrappers = document.querySelectorAll('.mail-button-wrapper');
             mailInfo.dataObj = this.contactInfo.email;
-
-            // placeComponentsIntoWrappers(socialNetowrksInfo.wrappers, containedButton, assignProps, socialNetowrksInfo.dataObj);
-            // placeComponentsIntoWrappers(mailInfo.wrappers, containedButton, assignProps, mailInfo.dataObj);
         },
         components: {
+            H2,
+            BlockDescription,
             ContainedButton,
             TelegramIcon,
             PinterestIcon,
@@ -144,7 +81,13 @@
         data() {
             return {
                 contactInfo: {
-                    name: "Глеб",
+                    blockTitle: 'contactInfo.title',
+                    blockDescription: {
+                        line1: 'contactInfo.description.line1',
+                        line2: 'contactInfo.description.line2'
+                    },
+                    name: 'contactInfo.description.name',
+                    socialNetworksBlockTitle: 'socialNetworks.title',
                     socialNetworks: {
                         telegram: {
                             text: "telegram",
@@ -160,7 +103,8 @@
                         }
                     },
                     email: {
-                        text: "написать письмо",
+                        blockTitle: 'email.title',
+                        text: 'email.writeLetterBtnText',
                         link: "mailto:gleb.gorkoltsev@yandex.ru?subject=Держите тестовое!"
                     }
                 }
@@ -171,6 +115,10 @@
 
 <style lang="scss" scoped>
 
+    #contacts {
+        margin-bottom: 40px;
+    }
+
     .applicant-name {
         position: relative;
         display: inline-block;
@@ -180,7 +128,7 @@
 
         &__text {
             position: absolute;
-            top: 50%;
+            top: 45%;
             left: 0;
             z-index: 1;
             @include transform(translateY(-50%));
