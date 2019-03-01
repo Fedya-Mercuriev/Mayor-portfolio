@@ -1,7 +1,7 @@
 <template lang="pug">
     section#design
-        H2(:appearance="appearance") {{ blockTitle }}
-        BlockDescription(:appearance="appearance") {{ blockDescription }}
+        H2(:appearance="appearance") {{ $t(blockTitle) }}
+        BlockDescription(:appearance="appearance") {{ $t(blockDescription) }}
 </template>
 
 <script>
@@ -17,12 +17,22 @@
         },
         data() {
             return {
-                blockTitle: "Дизайн китайских сайтов",
-                blockDescription: "Маленькое описание для раздела про дизайн китайских сайтов"
+                blockTitle: 'design.title',
+                blockDescription: 'design.description'
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
+    #design {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 30px;
+
+        @media screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
+            margin-bottom: 60px;
+        }
+    }
 </style>

@@ -1,4 +1,8 @@
 {
+  "design": {
+    "title": "Chinese websites design",
+    "description": "A few simple ideas that should make chinese websites more beautiful."
+  },
   "menu": {
     "design": "Design",
     "portfolio": "Portfolio",

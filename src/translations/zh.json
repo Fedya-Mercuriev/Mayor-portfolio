@@ -1,4 +1,8 @@
 {
+  "design": {
+    "title": "中國網站設計",
+    "description": "有一些讓中國網站弄美的思想。"
+  },
   "menu": {
     "design": "關於設計",
     "portfolio": "作品集",
