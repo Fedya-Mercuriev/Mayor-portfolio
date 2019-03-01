@@ -1,19 +1,21 @@
 <template lang="pug">
     div#app(ref="app")
-        Header
+        Header(:appearance="appearance")
         main.main
-            Design
-            Portfolio
-            CV
-            Contacts
+            Design(:appearance="appearance")
+            Portfolio(:appearance="appearance")
+            CV(:appearance="appearance")
+            Contacts(:appearance="appearance")
+        Footer(:appearance="appearance")
 </template>
 
 <script>
     import Header from './header/index.vue';
     import Design from './main/design/index.vue';
-    import Portfolio from './main/portfolio/index.vue';
+    import Portfolio from './main/portfolio/portfolio.vue';
     import CV from './main/cv/index.vue';
-    import Contacts from './main/contacts/index.vue';
+    import Contacts from './main/contacts/contacts.vue';
+    import Footer from './footer/footer.vue';
     import { EventBus } from './../event-bus.js';
 
     function debounce(func, wait, immediate) {
@@ -80,25 +82,38 @@
             Design,
             Portfolio,
             CV,
-            Contacts
+            Contacts,
+            Footer
         },
         data() {
             return {
-                // currentSection: ""
+                appearance: 'light'
             }
         },
         mounted() {
-            window.scrollBy(0,0);
             let ctx = this,
                 handleScroll = debounce(handler, 200);
+
             window.addEventListener('scroll', handleScroll.bind(ctx));
+
+            if (this.$i18n.locale === 'zh') {
+                document.body.classList.add('zh');
+            }
+
+            EventBus.$on('change-language', (language) => {
+                if (!document.body.classList.contains('zh') && language === 'zh') {
+                    document.body.classList.add('zh');
+                } else {
+                    document.body.classList.remove('zh');
+                }
+            })
         },
         methods: {
             controlScroll(block) {
                 if (block) {
-                    document.body.classList.add('block-scroll');
+                    document.documentElement.classList.add('block-scroll');
                 } else {
-                    document.body.classList.remove('block-scroll');
+                    document.documentElement.classList.remove('block-scroll');
                 }
             }
         }
