@@ -5,10 +5,10 @@ div
         :style="styles"
         :class="[{'project-view-light': appearance === 'light'}, {'project-view-dark': appearance === 'dark'}]"
     )
+        a.close-block-btn(role="button" @click="hideWindow")
+            i.close-block-btn__stroke
+            i.close-block-btn__stroke
         div.project-block(v-if="projectInfo")
-            a.close-block-btn(role="button" @click="hideWindow")
-                i.close-block-btn__stroke
-                i.close-block-btn__stroke
 
             // Начало блока с информацией о проекте (заголовок, описание)
             div.project-info
