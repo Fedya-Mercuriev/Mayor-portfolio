@@ -307,6 +307,7 @@ div
             display: flex;
             padding: 5px 10px;
             @include border-radius(5px);
+            margin-bottom: 12px;
         }
     }
 
