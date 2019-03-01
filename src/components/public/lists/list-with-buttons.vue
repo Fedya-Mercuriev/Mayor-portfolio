@@ -1,6 +1,6 @@
 <template lang="pug">
     ul.list-with-buttons(:class="appearanceClassList")
-        li.list-with-buttons__list-item(v-for="item in data") {{ item.text }}
+        li.list-with-buttons__list-item(v-for="item in data") {{ $t(item.text) }}
             template(v-if="item.hasCertificate && typeof item.hasCertificate === 'object'")
                 div.list-with-buttons__button-wrapper
                     ContainedButton(
@@ -10,25 +10,21 @@
                         :appearance="'light'"
                         :iconPosition="'left'"
                     )
-                        PhotoIcon
-                        //icon
+                        slot
 
 
 </template>
 
 <script>
     import ContainedButton from 'Components/public/buttons/contained-button.vue';
-    import PhotoIcon from 'Root/svg/photo-icon.svg';
 
     export default {
         props: {
             data: Object,
             appearance: String,
-            //icon: Object
         },
         components: {
-            ContainedButton,
-            PhotoIcon
+            ContainedButton
         },
         computed: {
             appearanceClassList() {

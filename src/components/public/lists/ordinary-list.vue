@@ -1,6 +1,6 @@
 <template lang="pug">
     ul.ordinary-list(:class="appearanceClassList")
-        li.ordinary-list__item(v-for="item in data") {{ item.text }}
+        li.ordinary-list__item(v-for="item in data") {{ $t(item.text) }}
 </template>
 
 <script>

@@ -11,14 +11,14 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
     h3 {
         @include reset-pad-marg();
         margin-top: 20px;
         margin-bottom: 16px;
         text-align: center;
-        font-size: 1.5em;
+        font-size: 1.8em;
         line-height: 1.4;
     }
 

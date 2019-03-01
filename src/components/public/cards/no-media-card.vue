@@ -8,8 +8,8 @@
                 ref="card-content"
                 :class="{'card-content-dark': appearance === 'dark', 'card-content-light': appearance === 'light'}"
             )
-                h3.card-content__card-title {{ cardData.title }}
-                p.card-content__description(v-if="cardData.description") {{ cardData.description }}
+                h3.card-content__card-title {{ $t(cardData.title) }}
+                p.card-content__description(v-if="cardData.description") {{ $t(cardData.description) }}
                 slot
 
 </template>
@@ -22,6 +22,9 @@
         props: {
             appearance: String,
             cardData: Object
+        },
+        mounted() {
+            console.log(this);
         }
     }
 </script>
