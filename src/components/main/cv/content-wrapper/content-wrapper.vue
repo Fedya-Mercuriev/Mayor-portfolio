@@ -1,5 +1,24 @@
 <template lang="pug">
     div.cv-content-wrapper(ref="cvItemsContainer")
+        template(v-for="cvItem in data")
+            // Формируем список с плитками
+            template(v-if="getItemType(cvItem.data) === 'array' && getItemType(cvItem.data[0]) === 'text'")
+                div.card-container
+                    NoMediaCard(:cardData="wrapTextData(cvItem)" :appearance="appearance")
+                        CellList(:data="cvItem.data")
+
+            // Формируем список с ссылками
+            template(v-else-if="getItemType(cvItem.data[0]) === 'object' && cvItem.data[0].hasOwnProperty('hasCertificate')")
+                div.card-container
+                    NoMediaCard(:cardData="wrapTextData(cvItem)" :appearance="appearance")
+                        ListWithButtons(:data="cvItem.data" :appearance="appearance")
+                            PhotoIcon
+
+            // Формируем обычный список
+            template(v-else-if="getItemType(cvItem.data) === 'array' && getItemType(cvItem.data[0]) === 'object'")
+                div.card-container
+                    NoMediaCard(:cardData="wrapTextData(cvItem)" :appearance="appearance")
+                        List(:data="cvItem.data" :appearance="appearance")
 </template>
 
 <script>
@@ -10,43 +29,43 @@
     import CellList from 'Components/public/lists/cell-list.vue';
     import ListWithButtons from 'Components/public/lists/list-with-buttons.vue';
     import List from 'Components/public/lists/ordinary-list.vue';
+    import PhotoIcon from 'Root/svg/photo-icon.svg';
+    import { EventBus } from 'Root/event-bus';
 
     function buildCvItemsSection(containerWidth) {
         let positioningConfig = this.getPositioningConfig(containerWidth),
             setHeight = setContainerHeight(this.$el);
 
-        if (this.defineIfHasItems()) {
-            this.index = 0;
-            this.childNumInMap = 0;
-            // Определим нужно ли выстраивать элементы в сетку (для паншетов и ПК)
-            this.defineIfNeedsGrid()
-                .then(result => {
-                    if (result) {
-                        this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
-                        this.positionItems(positioningConfig)
-                    } else {
-                        this.clearItemsStyles();
-                    }
-                });
-        } else {
-            this.placeItems()
-                .then(() => {
-                    return this.defineIfNeedsGrid();
-                })
-                .then(result => {
-                    if (result) {
-                        let width = result;
-                        this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
-                        // таймаут нужен для того, чтоб отрисовались шрифты и рассчиталась реальная высота карточки
-                        this.childrenInstances.forEach(item => {
-                            item.$forceUpdate();
-                        });
-                        setTimeout(this.positionItems.bind(this, positioningConfig), 800);
-                    } else {
-                        this.clearItemsStyles();
-                    }
-                })
-        }
+        this.index = 0;
+        this.childNumInMap = 0;
+
+        this.defineIfNeedsGrid()
+            .then(result => {
+                if (result) {
+                    let width = result;
+                    this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
+                    // таймаут нужен для того, чтоб отрисовались шрифты и рассчиталась реальная высота карточки
+                    // this.childrenInstances.forEach(item => {
+                    //     item.$forceUpdate();
+                    // });
+                    setTimeout(this.positionItems.bind(this, positioningConfig), 800);
+                } else {
+                    this.clearItemsStyles();
+                }
+            });
+
+        // if (this.defineIfHasItems()) {
+        //
+        //     // Определим нужно ли выстраивать элементы в сетку (для паншетов и ПК)
+        //     this.defineIfNeedsGrid()
+        //         .then(result => {
+        //             if (result) {
+        //                 this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
+        //                 this.positionItems(positioningConfig)
+        //             } else {
+        //                 this.clearItemsStyles();
+        //             }
+        //         });
     }
 
     function debounce(func, wait, immediate) {
@@ -117,6 +136,14 @@
     }
 
     export default {
+        components: {
+            NoMediaCard,
+            ListWithButtons,
+            CellList,
+            List,
+            Paragraph,
+            PhotoIcon
+        },
         props: {
             appearance: String,
             data: {
@@ -129,39 +156,54 @@
                 positionChildrenMap: [],
                 childrenInstances: [],
                 childNumInMap: 0,
-                index: 0
+                index: 0,
+                containerWidth: 0,
+                localisation: this.$root.$i18n.locale
             }
         },
         mounted() {
             let ctx = this,
-                buildCvItems = debounce(buildCvItemsSection, 300),
-                containerWidth = this.$refs.cvItemsContainer.clientWidth;
+                buildCvItems = debounce(buildCvItemsSection, 300);
 
-            buildCvItems = buildCvItems.bind(this);
+            this.containerWidth = this.$refs.cvItemsContainer.clientWidth;
+
+            this.buildCvItems = buildCvItems.bind(this);
             this.setHeight = setContainerHeight(this.$el);
 
             this.$nextTick(function() {
                 window.addEventListener('resize', function() {
-                    containerWidth = ctx.$refs.cvItemsContainer.clientWidth;
-                    buildCvItems(containerWidth);
+                    ctx.containerWidth = ctx.$refs.cvItemsContainer.clientWidth;
+                    ctx.buildCvItems(ctx.containerWidth);
                 });
             });
-            buildCvItems(containerWidth);
+
+            this.buildCvItems(this.containerWidth);
+
+            // При изменении языка сетка карточек будет пересобираться
+            EventBus.$on('change-language', () => {
+                this.buildCvItems(this.containerWidth);
+            })
         },
         methods: {
             getItemType(item) {
-                if (!Array.isArray(item)) {
-                    return 'text';
+                if (Array.isArray(item)) {
+                    return 'array';
                 } else if (item && !Array.isArray(item) && typeof item === 'object') {
                     return 'object';
                 } else {
-                    return 'array';
+                    return 'text';
                 }
             },
-            defineIfHasItems() {
-                return (this.childrenInstances.length !== 0);
+
+            wrapTextData(item) {
+                let { title, description } = item;
+                return {title: title, description: description};
             },
+
+            buildCvItems: undefined,
+
             setHeight: undefined,
+
             defineIfNeedsGrid() {
                 return new Promise(resolve => {
                     let width = window.outerWidth;
@@ -174,6 +216,7 @@
                     }
                 });
             },
+
             makePositionMap(length) {
                 let result = [];
                 for (let i = 0; i < length; i++) {
@@ -181,12 +224,14 @@
                 }
                 return result;
             },
+
             getPositioningConfig(containerWidth) {
                 let result = {itemWidth: 0, rowLength: 0};
                 result.rowLength = (containerWidth < 1024) ? 2 : 3;
                 result.itemWidth = containerWidth / result.rowLength;
                 return result;
             },
+            // ЭТУ ФУНКЦИЯ ПО ХОДУ НЕ НУЖНА
             placeItems() {
                 return new Promise(resolve => {
                     let CardComponent = Vue.extend(NoMediaCard),
@@ -194,18 +239,6 @@
                         componentData;
                     for (let item in this.data) {
                         componentData = this.data[item].data;
-                        // // Создадим обертку для карточки
-                        // let componentWrapper = document.createElement('div');
-                        // // Добавим ей класс
-                        // componentWrapper.classList.add('card-container');
-                        // this.$el.appendChild(componentWrapper);
-                        // let card = new CardComponent({
-                        //     propsData: {
-                        //         cardData: this.data[item],
-                        //         appearance: this.appearance
-                        //     }
-                        //
-                        // });
 
                         // Определим какой компонент вставить
                         if (getItemType(componentData) === 'text') {
@@ -275,10 +308,12 @@
                     resolve(true);
                 });
             },
+
             positionItems(config) {
                 // config содердит ширину карточки, расстояние между ними и длину ряда
-                let updatedCoordinates;
-                this.childrenInstances.forEach((item, index) => {
+                let updatedCoordinates,
+                    cards = document.querySelectorAll('.card-container');
+                cards.forEach((item, index) => {
                     updatedCoordinates = this.positionItem(index, this.getPositionCoordinates(), config.itemWidth, item);
                     this.positionChildrenMap[this.childNumInMap].x = updatedCoordinates.hor;
                     this.positionChildrenMap[this.childNumInMap].y = updatedCoordinates.ver;
@@ -288,25 +323,26 @@
                     this.incrementSection();
                 })
             },
-            positionItem(itemNum, position, width) {
-                let element = document.querySelectorAll('.card-container')[itemNum],
-                    { hor, ver, CSSPosition } = position,
+
+            positionItem(itemNum, position, width, item) {
+                let { hor, ver, CSSPosition } = position,
                     blockStyles = {
                         width: width,
-                        height: element.clientHeight
+                        height: item.clientHeight
                     };
 
                 // Применим inline-стили к текущей карточке
-                element.style.position = CSSPosition;
-                element.style.top = 0;
-                element.style.left = 0;
-                element.style.transform = `translateX(${hor}px) translateY(${ver}px)`;
+                item.style.position = CSSPosition;
+                item.style.top = 0;
+                item.style.left = 0;
+                item.style.transform = `translateX(${hor}px) translateY(${ver}px)`;
 
                 return {
                     hor: hor + blockStyles.width,
                     ver: ver + blockStyles.height
                 };
             },
+
             getPositionCoordinates() {
                 if (this.childNumInMap > this.positionChildrenMap.length - 1) {
                     this.childNumInMap = 0;
@@ -339,13 +375,16 @@
                     return {hor: transformHoriz, ver: transformVert, CSSPosition: 'absolute'};
                 }
             },
+
             incrementSection() {
                 this.childNumInMap++;
                 this.index++;
             },
+
             removeItemStyles(item) {
                 item.style = "";
             },
+
             clearItemsStyles() {
                 for (let item of this.$el.children) {
                     this.removeItemStyles(item);

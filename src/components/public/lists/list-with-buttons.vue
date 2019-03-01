@@ -4,7 +4,7 @@
             template(v-if="item.hasCertificate && typeof item.hasCertificate === 'object'")
                 div.list-with-buttons__button-wrapper
                     ContainedButton(
-                        :text="'Сертификат'"
+                        :text="'checkoutCertificateBtnText'"
                         :href="item.hasCertificate.link"
                         :goToNewPage="true"
                         :appearance="'light'"
