@@ -65,3 +65,7 @@
     @include box-shadow($shadow);
   }
 }
+
+@mixin set-selection-colour() {
+  background-color: rgba(249, 170, 51, 0.7);
+}

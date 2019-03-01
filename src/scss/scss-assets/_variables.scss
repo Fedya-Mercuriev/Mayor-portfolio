@@ -21,14 +21,14 @@ $card-bg-dark: #344955;
 $card-title-color-light: #232f34;
 $card-title-color-dark: #ecf0f2;
 $card-description-color-dark: #bdc3c5;
+$card-description-color-light: #384c52;
 //Card styles end here
 
 // List styles start here
 $list-item-dark-bg: #232f34;
 $list-item-light-bg: #f1f1f1;
-$list-item-dark-color: #f1f1f1;
-$list-item-dark-color: #232f34;
-
+$list-item-dark-color: #d4d4d4;
+$list-item-light-color: #232f34;
 // List styles end here
 
 // Contained-button styles start here
@@ -47,7 +47,7 @@ $text-button-clicked-color: #f9aa33;
 
 // Header variables start here
 $navbar-bg: #232f34;
-$menu-link-color: #ffffff;
+$menu-link-color: #bbbbbb;
 $menu-item-font-size-mobile: 1.2em;
 $menu-item-font-size-tablet: 1.4em;
 $active-menu-link-color: #f9aa33;
@@ -58,8 +58,7 @@ $inactive-icon-color: #77777796;
 $active-icon-color: #000000;
 // Header variables end here
 
-$block-title-color: #ffffff;
-$block-description-color: #ffffff;
+// Project
 $project-card-bg: #ffffff;
 $project-card-color: #ffffff;
 $checkout-project-link-color: #ffffff;
@@ -72,7 +71,11 @@ $cv-item-dumb-link-bg: #b3b3b35e;
 $cv-list-item-color: #000000;
 $cell-list-item-bg: #e0e0e0;
 
-// CV cells bg
+// Footer styles start here
+$footer-text-color: #bbbbbb;
+// Footer styles end here
+
+// CV cell-list items styles start here
 $html5-bg: #f93200;
 $css3-bg: #0098d8;
 $javascript-bg: #f7e600;
@@ -89,6 +92,7 @@ $sketchapp-color: #ffd600;
 $sketchapp-bg: #ffffff;
 $figma-bg: #282828;
 $figma-color: #d0d0d0;
+// CV cell-list items styles end here
 
 //social links bg
 $github-social-link-bg: #24292e;
