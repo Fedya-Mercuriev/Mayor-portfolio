@@ -133,6 +133,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 60px;
+        margin-bottom: 30px;
+
+        @media screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
+            margin-bottom: 60px;
+        }
     }
 </style>

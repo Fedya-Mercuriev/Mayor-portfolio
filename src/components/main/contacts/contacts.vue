@@ -116,7 +116,11 @@
 <style lang="scss" scoped>
 
     #contacts {
-        margin-bottom: 40px;
+     margin-bottom: 30px;
+
+     @media screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
+      margin-bottom: 40px;
+     }
     }
 
     .applicant-name {
