@@ -38,6 +38,7 @@
 
 <script>
     import ContainedButton from 'Components/public/buttons/contained-button.vue';
+    import { EventBus } from 'Root/event-bus';
 
     export default {
         name: "mobile-menu",
@@ -86,6 +87,9 @@
             setLocale() {
                 console.log(`Установим этот язык: ${this.language}`);
                 this.$i18n.locale = this.chosenLanguage;
+
+                EventBus.$emit('change-language', this.chosenLanguage);
+
                 // Спрячем кнопку после клика
                 this.langIsChosen = false;
             }

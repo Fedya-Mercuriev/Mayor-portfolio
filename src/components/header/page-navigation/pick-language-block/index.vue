@@ -34,7 +34,7 @@
 <script>
     import ChineseCharacter from '../../../../svg/chinese-character.svg';
     import LatinLetter from '../../../../svg/latin-letter.svg';
-    import { EventBus } from './../../../../event-bus.js';
+    import { EventBus } from 'Root/event-bus';
 
     export default {
         components: {
@@ -79,6 +79,7 @@
             },
             setLocale(locale) {
                 this.$i18n.locale = locale;
+                EventBus.$emit('change-language', locale);
             },
             hideModalWindow() {
                 this.pickLanguageBlockShown = false;
