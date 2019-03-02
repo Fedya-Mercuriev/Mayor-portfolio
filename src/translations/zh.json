@@ -60,7 +60,7 @@
   },
   "spokenLanguages": {
     "title": "會說的語言",
-    "description": "會讀外語技術文件和用外語在酒吧聊天",
+    "description": "會讀外語技術文件和聊天",
     "data": {
       "lang1": "英語 (流利: IELTS 6.9)",
       "lang2": "漢語 (流利: HSK5)"

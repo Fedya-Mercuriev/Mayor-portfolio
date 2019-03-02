@@ -7,6 +7,11 @@
             CV(:appearance="appearance")
             Contacts(:appearance="appearance")
         Footer(:appearance="appearance")
+        ModalWindow(
+            :appearance="appearance"
+            v-show="showChooseLangWindow"
+            v-on:close-window="showChooseLangWindow = false"
+        )
 </template>
 
 <script>
@@ -16,6 +21,7 @@
     import CV from './main/cv/index.vue';
     import Contacts from './main/contacts/contacts.vue';
     import Footer from './footer/footer.vue';
+    import ModalWindow from 'Components/public/dialog-window/dialog-window.vue';
     import { EventBus } from './../event-bus.js';
 
     function debounce(func, wait, immediate) {
@@ -83,11 +89,13 @@
             Portfolio,
             CV,
             Contacts,
-            Footer
+            Footer,
+            ModalWindow
         },
         data() {
             return {
-                appearance: 'light'
+                appearance: 'light',
+                showChooseLangWindow: false
             }
         },
         mounted() {
@@ -98,15 +106,23 @@
 
             if (this.$i18n.locale === 'zh') {
                 document.body.classList.add('zh');
+                document.documentElement.lang = 'zh';
+            }
+
+            if (sessionStorage.getItem('showChooseLangWindow') !== 'true') {
+                this.showChooseLangWindow = true;
             }
 
             EventBus.$on('change-language', (language) => {
+                document.documentElement.lang = language;
                 if (!document.body.classList.contains('zh') && language === 'zh') {
                     document.body.classList.add('zh');
                 } else {
                     document.body.classList.remove('zh');
                 }
             })
+
+
         },
         methods: {
             controlScroll(block) {
