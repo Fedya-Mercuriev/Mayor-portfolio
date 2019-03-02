@@ -1,7 +1,8 @@
 {
   "design": {
     "title": "中國網站設計",
-    "description": "有一些讓中國網站弄美的思想。"
+    "description": "有一些讓中國網站弄美的思想。",
+    "blockDummyText": "本分部的才來正在被寫"
   },
   "menu": {
     "design": "關於設計",

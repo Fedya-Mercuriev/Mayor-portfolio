@@ -1,7 +1,14 @@
 {
+  "chooseLangWindow": {
+    "title": "Attention",
+    "text": "Original website language is traditional Chinese, for I deliberately made it from the design point. Scroll in in Chinese at least once. You can then change site language to your mother tongue in menu (last menu item).\nNevertheless if you want to get the understandable information right now, please click the button below.",
+    "setLangBtnText": "View in English",
+    "leaveLangBtnText": "Continue in Chinese"
+  },
   "design": {
     "title": "Chinese websites design",
-    "description": "A few simple ideas that should make chinese websites more beautiful."
+    "description": "A few simple ideas that should make chinese websites more beautiful.",
+    "blockDummyText": "Material for this section is being composed"
   },
   "menu": {
     "design": "Design",
