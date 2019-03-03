@@ -51,7 +51,7 @@
                         description: 'bfBot.description',
                         stack: ['ES6', 'Telegraf', 'Node.js'],
                         links: {
-                            checkout: "https://t-do.ru/blumenfrauBot",
+                            checkout: "https://teleg.run/blumenfrauBot",
                             github: "https://github.com/Fedya-Mercuriev/bf-bot"
                         }
                     },
@@ -87,7 +87,7 @@
                         description: 'thisApp.description',
                         stack: ['Vue.js', 'ES6', 'Pug', 'SCSS', 'Webpack'],
                         links: {
-                            checkout: "#",
+                            checkout: "/",
                             github: "https://github.com/Fedya-Mercuriev/calculator-game"
                         }
                     }
@@ -101,11 +101,11 @@
                 this.currentlyOpenedProjectData = projectData;
                 this.projectWindowShown = true;
                 // Заблокируем пролистывание
-                disableBodyScroll(this.$children[this.$children.length - 1].$el);
+                disableBodyScroll(this.$children[this.$children.length - 1].$el.querySelector('.project-block'));
             },
             closeProject() {
                 this.projectWindowShown = false;
-                enableBodyScroll(this.$children[this.$children.length - 1].$el);
+                enableBodyScroll(this.$children[this.$children.length - 1].$el.querySelector('.project-block'));
 
             },
             processCardClicks(event) {

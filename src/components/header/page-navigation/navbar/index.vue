@@ -1,7 +1,7 @@
 <template lang="pug">
     div.navbar
         div.navbar__inner
-            a.site-logo(href="https://mayor-mayor.com")
+            a.site-logo(href="/")
                 div.site-logo-wrapper
                     Logo
                 span.site-title {{ siteTitles[currentIndex] }}

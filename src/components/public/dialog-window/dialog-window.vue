@@ -73,9 +73,10 @@
                 this.closeWindow();
             },
             closeWindow() {
+                let modalWindowScrollableBlock = document.querySelector('.dialog-window__content-block');
                 this.$emit('close-window');
                 sessionStorage.setItem('showChooseLangWindow', 'true');
-                enableBodyScroll(this.$el);
+                enableBodyScroll(modalWindowScrollableBlock);
             }
         }
     }
@@ -85,11 +86,11 @@
 
     .dialog-window {
         position: fixed;
-        top: 80px;
+        top: 0;
         left: 50%;
         @include transform(translateX(-50%));
         z-index: 1000;
-        width: 85%;
+        width: 93%;
         @include border-radius($large-component-border-radius);
 
         @media only screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
@@ -101,6 +102,7 @@
         }
 
         @media only screen and (min-width: map-deep-get($devices, 'desktop') + 1px) {
+            top: 80px;
             width: 30%;
         }
 
@@ -134,7 +136,7 @@
     .action-btn-wrapper {
         width: 90%;
         margin: 0 auto;
-        font-size: 0.8em;
+        font-size: 0.78em;
 
         @media only screen and (min-width: map-deep-get($devices, 'mobile-s') + 1px) {
             font-size: 1em;

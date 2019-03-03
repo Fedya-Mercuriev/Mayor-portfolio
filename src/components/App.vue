@@ -112,8 +112,9 @@
             }
 
             if (sessionStorage.getItem('showChooseLangWindow') !== 'true') {
+                let modalWindow = document.querySelector('.dialog-window__content-block');
                 this.showChooseLangWindow = true;
-                disableBodyScroll(this.$children[this.$children.length - 1].$el);
+                disableBodyScroll(modalWindow);
             }
 
             EventBus.$on('change-language', (language) => {
