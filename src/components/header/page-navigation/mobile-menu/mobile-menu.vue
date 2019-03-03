@@ -63,6 +63,11 @@
                 }
             }
         },
+        watch: {
+            menuVisible() {
+
+            }
+        },
         methods: {
             updateActiveMenuItems(propName) {
                 for (let prop in this.menuItems) {
@@ -85,7 +90,6 @@
             },
 
             setLocale() {
-                console.log(`Установим этот язык: ${this.language}`);
                 this.$i18n.locale = this.chosenLanguage;
 
                 EventBus.$emit('change-language', this.chosenLanguage);

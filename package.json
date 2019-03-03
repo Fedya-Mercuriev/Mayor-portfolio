@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Fedya-Mercuriev/Mayor-portfolio#readme",
   "dependencies": {
+    "body-scroll-lock": "^2.6.1",
     "normalize-scss": "^7.0.1",
     "svg-url-loader": "^2.3.2",
     "vue": "^2.5.22",
@@ -30,7 +31,6 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "@kazupon/vue-i18n-loader": "^0.3.0",
-    "@vue/test-utils": "^1.0.0-beta.29",
     "babel-loader": "^8.0.5",
     "babel-plugin-istanbul": "^5.1.0",
     "cross-env": "^5.2.0",
@@ -46,26 +46,10 @@
     "pug-plain-loader": "^1.0.0",
     "raw-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
-    "vue-jest": "^3.0.3",
     "vue-svg-loader": "^0.11.0",
     "vue-template-compiler": "^2.5.22",
     "webpack": "^4.29.4",
     "webpack-cli": "^3.2.1",
     "webpack-merge": "^4.2.1"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "vue"
-    ],
-    "transform": {
-      ".*\\.(vue)$": "vue-jest"
-    },
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "**/*.{js,vue}",
-      "!**/node_modules/**"
-    ]
   }
 }

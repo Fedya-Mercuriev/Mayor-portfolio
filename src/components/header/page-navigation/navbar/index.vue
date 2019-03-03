@@ -18,6 +18,7 @@
 </template>
 
 <script>
+    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
     import Logo from 'Root/svg/site-logo.svg';
     import PageNavigation from '../navbar-menu/index.vue';
     import MobileMenu from '../mobile-menu/mobile-menu.vue';
@@ -83,7 +84,7 @@
               window.addEventListener('resize', function() {
                   // Нужно скрыть открытые окна
                   EventBus.$emit('close-secondary-menu');
-                  ctx.unlockScroll(root);
+                  //ctx.unlockScroll(root);
               })
           });
           setInterval(() => {
@@ -95,15 +96,18 @@
           }, 1500);
         },
         methods: {
-            unlockScroll(root) {
-                this.blockScroll = false;
-                root.controlScroll(this.blockScroll);
-            },
+            // unlockScroll(root) {
+            //     this.blockScroll = false;
+            //     root.controlScroll(this.blockScroll);
+            // },
             controlMenu() {
                 this.mobileMenuIsShown = !this.mobileMenuIsShown;
-                this.blockScroll = !this.blockScroll;
-                let root = this.$parent.$parent;
-                root.controlScroll(this.blockScroll);
+                if (this.mobileMenuIsShown) {
+                    disableBodyScroll(this.$children[this.$children.length - 1].$el);
+                } else {
+                    enableBodyScroll(this.$children[this.$children.length - 1].$el);
+                }
+
             }
         }
     }

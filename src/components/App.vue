@@ -10,11 +10,13 @@
         ModalWindow(
             :appearance="appearance"
             v-show="showChooseLangWindow"
+            :windowIsShown="showChooseLangWindow"
             v-on:close-window="showChooseLangWindow = false"
         )
 </template>
 
 <script>
+    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
     import Header from './header/index.vue';
     import Design from './main/design/index.vue';
     import Portfolio from './main/portfolio/portfolio.vue';
@@ -111,6 +113,7 @@
 
             if (sessionStorage.getItem('showChooseLangWindow') !== 'true') {
                 this.showChooseLangWindow = true;
+                disableBodyScroll(this.$children[this.$children.length - 1].$el);
             }
 
             EventBus.$on('change-language', (language) => {
@@ -123,15 +126,6 @@
             })
 
 
-        },
-        methods: {
-            controlScroll(block) {
-                if (block) {
-                    document.documentElement.classList.add('block-scroll');
-                } else {
-                    document.documentElement.classList.remove('block-scroll');
-                }
-            }
         }
     }
 </script>

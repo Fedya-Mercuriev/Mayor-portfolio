@@ -32,8 +32,9 @@
 </template>
 
 <script>
+    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
     import PickLanguageBlock from '../pick-language-block/index.vue';
-    import { EventBus } from './../../../../event-bus.js';
+    import { EventBus } from 'Root/event-bus.js';
 
     export default {
         name: 'page-navigation',
@@ -50,7 +51,6 @@
             EventBus.$on('close-secondary-menu', () => {
                 this.secondaryMenuOpened = false;
             });
-            console.log(this.$i18n);
         },
         data() {
             return {

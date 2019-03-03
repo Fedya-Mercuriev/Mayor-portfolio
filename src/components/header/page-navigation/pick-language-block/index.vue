@@ -5,10 +5,11 @@
             @click="displayPickLanguageBlock"
         )
             span.trigger-pick-language-block__button-text {{ $t('menu.chooseLanguage.btnText') }}
+
         //- Позиционируется фиксированно
         div(v-show="secondaryMenuShown")
             div.pick-language-block
-                a.close-block-btn(@click.stop="secondaryMenuShown = false" role="button")
+                a.close-block-btn(@click="secondaryMenuShown = false" role="button")
                     i.close-block-btn__stroke
                     i.close-block-btn__stroke
                 div.block-icon
@@ -18,6 +19,8 @@
                     LatinLetter.latin-letter(
                         :class="{'latin-letter--is-active': hoveredLang === 'ru' || hoveredLang === 'en'}"
                     )
+
+                //- Блок с кнопками
                 h4.pick-language-block__block-title {{ $t(blockTitle) }}
                 ul.languages-list(@mouseleave="hoveredLang = null")
                     li.languages-list__menu-item(
@@ -28,10 +31,11 @@
                             :language="item.data"
                             @click.prevent="setLocale(item.data)"
                         ) {{ item.text }}
-            div.block-overlay(@click = "secondaryMenuShown = false")
+            div.block-overlay(@click="secondaryMenuShown = false")
 </template>
 
 <script>
+    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
     import ChineseCharacter from '../../../../svg/chinese-character.svg';
     import LatinLetter from '../../../../svg/latin-letter.svg';
     import { EventBus } from 'Root/event-bus';
@@ -73,6 +77,15 @@
                 hoveredLang: null
             }
         },
+        watch: {
+            secondaryMenuShown(val) {
+                if (val) {
+                    disableBodyScroll(this.$el);
+                } else {
+                    enableBodyScroll(this.$el);
+                }
+            }
+        },
         methods: {
             pickLanguage(event) {
                 this.$emit('click', event.target.language);
@@ -85,10 +98,12 @@
                 this.pickLanguageBlockShown = false;
                 this.pickLanguageBlockShown = null;
 
+
             },
             displayPickLanguageBlock() {
                 this.$emit('hide-secondary-menu', false);
                 this.secondaryMenuShown = !this.secondaryMenuShown;
+
             }
         }
     }

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
     import H3 from 'Components/public/text-components/titles/level-3.vue';
     import Paragraph from 'Components/public/text-components/paragraph.vue';
     import ContainedButton from 'Components/public/buttons/contained-button.vue';
@@ -36,7 +37,8 @@
             TextButton
         },
         props: {
-            appearance: String
+            appearance: String,
+            windowIsShown: Boolean
         },
         mounted() {
             // Подберем язык в соответствием с настройками у пользователя
@@ -46,11 +48,14 @@
                 let siteLanguages = Object.keys(this.$i18n.messages);
                 // Если у пользователя в настройках есть один из доступных на сайте языков, тогда выбираем
                 // его для отображения сообщения; иначе берем fallback-язык
-                messageLang = siteLanguages.indexOf(userLanguage) ? userLanguage : this.$i18n.fallbackLocale;
+                messageLang = siteLanguages.indexOf(userLanguage) ? 'ru' : this.$i18n.fallbackLocale;
                 this.suggestedLanguage = messageLang;
             }
+            // Отобразим текст диалогового окна на языке, который определили
             this.blockTitle = this.$i18n.messages[messageLang].chooseLangWindow.title;
             this.blockText = this.$i18n.messages[messageLang].chooseLangWindow.text;
+            this.setLangBtnText = this.$i18n.messages[messageLang].chooseLangWindow.setLangBtnText;
+            this.leaveLangBtnText = this.$i18n.messages[messageLang].chooseLangWindow.leaveLangBtnText;
         },
         data() {
             return {
@@ -70,6 +75,7 @@
             closeWindow() {
                 this.$emit('close-window');
                 sessionStorage.setItem('showChooseLangWindow', 'true');
+                enableBodyScroll(this.$el);
             }
         }
     }
@@ -118,11 +124,21 @@
 
     p {
         margin-bottom: 20px;
+        font-size: 0.9em;
+
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-s') + 1px) {
+            font-size: 1em;
+        }
     }
 
     .action-btn-wrapper {
         width: 90%;
         margin: 0 auto;
+        font-size: 0.8em;
+
+        @media only screen and (min-width: map-deep-get($devices, 'mobile-s') + 1px) {
+            font-size: 1em;
+        }
     }
 
     .dialog-window-light {

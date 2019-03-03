@@ -22,6 +22,7 @@
 </template>
 
 <script>
+    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
     import H2 from 'Components/public/text-components/titles/level-2.vue';
     import BlockDescription from 'Components/public/text-components/block-description.vue';
     import DominantMediaCard from 'Components/public/cards/dominant-media-card.vue';
@@ -100,14 +101,11 @@
                 this.currentlyOpenedProjectData = projectData;
                 this.projectWindowShown = true;
                 // Заблокируем пролистывание
-                let blockScroll = this.$parent.controlScroll;
-                blockScroll(true);
+                disableBodyScroll(this.$children[this.$children.length - 1].$el);
             },
             closeProject() {
                 this.projectWindowShown = false;
-                // Разблокируем пролистывание
-                let blockScroll = this.$parent.controlScroll;
-                blockScroll(false);
+                enableBodyScroll(this.$children[this.$children.length - 1].$el);
 
             },
             processCardClicks(event) {
