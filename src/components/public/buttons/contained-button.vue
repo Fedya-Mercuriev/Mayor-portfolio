@@ -79,6 +79,7 @@
                         0 1px 5px 0 rgba(0,0,0,.12)
         );
         @include transition(all 0.3s);
+        cursor: pointer;
 
         &__link-icon-wrapper {
             display: inline-block;

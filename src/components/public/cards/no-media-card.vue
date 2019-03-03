@@ -22,9 +22,6 @@
         props: {
             appearance: String,
             cardData: Object
-        },
-        mounted() {
-            console.log(this);
         }
     }
 </script>

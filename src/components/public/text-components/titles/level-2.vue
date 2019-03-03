@@ -19,6 +19,7 @@
         margin-bottom: 10px;
         text-align: center;
         line-height: 1.4;
+        font-size: 2em;
     }
 
     .block-title-light {

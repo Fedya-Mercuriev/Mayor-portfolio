@@ -22,8 +22,6 @@
 </template>
 
 <script>
-    import Vue from 'vue';
-    import H3 from 'Components/public/text-components/titles/level-3.vue';
     import Paragraph from 'Components/public/text-components/paragraph.vue';
     import NoMediaCard from 'Components/public/cards/no-media-card.vue';
     import CellList from 'Components/public/lists/cell-list.vue';
@@ -45,27 +43,11 @@
                     let width = result;
                     this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
                     // таймаут нужен для того, чтоб отрисовались шрифты и рассчиталась реальная высота карточки
-                    // this.childrenInstances.forEach(item => {
-                    //     item.$forceUpdate();
-                    // });
                     setTimeout(this.positionItems.bind(this, positioningConfig), 800);
                 } else {
                     this.clearItemsStyles();
                 }
             });
-
-        // if (this.defineIfHasItems()) {
-        //
-        //     // Определим нужно ли выстраивать элементы в сетку (для паншетов и ПК)
-        //     this.defineIfNeedsGrid()
-        //         .then(result => {
-        //             if (result) {
-        //                 this.positionChildrenMap = this.makePositionMap(positioningConfig.rowLength);
-        //                 this.positionItems(positioningConfig)
-        //             } else {
-        //                 this.clearItemsStyles();
-        //             }
-        //         });
     }
 
     function debounce(func, wait, immediate) {
@@ -282,7 +264,6 @@
 
                     if (this.index === this.positionChildrenMap.length - 1) {
                         width = width * this.positionChildrenMap.length;
-                        console.log(width);
                     }
                     // Тут при позиционировании смотрит только на значение x у предыдущего элемента
                     return {hor: transformHoriz, ver: 0, CSSPosition: 'absolute'}

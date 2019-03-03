@@ -3,21 +3,15 @@
         role="button"
         :class="[{'text-btn-light': appearance === 'light'}, {'text-btn-dark': appearance === 'dark'}]"
         :href="href"
-        :target="{'_blank': goToNewPage}"
+        :target="linkTarget"
     )
-        div.link-icon-wrapper(:class="positionIcon()")
+        div.link-icon-wrapper(v-if="slotHasContent" :class="positionIcon")
             slot
-        span.text-btn__btn-text {{ text }}
+        span.text-btn__btn-text {{ $t(text) }}
 
 </template>
 
 <script>
-    import Vue from 'vue';
-    import TelegramIcon from '../../../svg/telegram-icon.svg';
-    import PinterestIcon from '../../../svg/pinterest-icon.svg';
-    import GithubIcon from './../../svg/github-logo.svg';
-    import MailIcon from '../../../svg/mail-logo.svg';
-
     export default {
         props: {
             text: {
@@ -26,7 +20,7 @@
             },
             href: {
                 type: "String",
-                required: true
+                required: false
             },
             // Если true, то ставит target как "_blank"
             goToNewPage: {
@@ -51,6 +45,14 @@
                 } else {
                     return (this.iconPosition === 'left') ? 'icon-left' : 'icon-right';
                 }
+            },
+            linkTarget() {
+                if (this.goToNewPage) {
+                    return '_blank';
+                }
+            },
+            slotHasContent() {
+                return this.$slots.default;
             }
         }
     }
@@ -64,6 +66,7 @@
         flex-wrap: nowrap;
         justify-content: space-around;
         padding: 10px 15px;
+        cursor: pointer;
     }
 
     .link-icon-wrapper {
@@ -83,14 +86,14 @@
     }
 
     .text-btn-light {
-        color: $text-button-light-color;
+        color: $primary-text-color;
         letter-spacing: 1px;
         @include transition(all 0.3s);
 
         @media only screen and (min-width: map-deep-get($devices, 'desktop')) {
 
             &:hover {
-                color: $text-button-light-color-hover;
+                color: lighten($primary-text-color, 10%);
             }
 
             &:active {
