@@ -1,6 +1,5 @@
 <template lang="pug">
 div
-    //- transition(name="project-view-appear")
     div.project-view(
         :style="styles"
         :class="[{'project-view-light': appearance === 'light'}, {'project-view-dark': appearance === 'dark'}]"
@@ -75,18 +74,6 @@ div
                 btnText: 'projectViewBlock.btnText'
             }
         },
-        computed: {
-            styles() {
-                if (this.popUp) {
-                    return {
-                        opacity: 1,
-                        transform: 'translate(-50%) scale(1)'
-                    }
-                } else {
-                    return {}
-                }
-            }
-        },
         methods: {
             hideWindow() {
                 this.$emit('hide-window', this)
@@ -104,12 +91,12 @@ div
 
     .project-view {
         position: fixed;
-        top: 100px;
+        top: 80px;
         left: 50%;
         z-index: 10000;
         width: 90%;
         @include border-radius(7px);
-        @include transform(translate(0) scale(0.8));
+        @include transform(translateX(-50%));
         @include box-shadow(
                         0 11px 15px -7px rgba(0,0,0,.2),
                         0 24px 38px 3px rgba(0,0,0,.14),
@@ -117,8 +104,7 @@ div
         );
         @include transition(all 0.3s);
         will-change: transform;
-        opacity: 0;
-        overflow: hidden;
+        overflow: scroll;
 
         @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             top: 150px;
@@ -138,8 +124,8 @@ div
         flex-direction: column;
         align-items: center;
         height: 450px;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
+        /*overflow-y: scroll;*/
+        /*-webkit-overflow-scrolling: touch;*/
 
         @media screen and (min-width: map-deep-get($devices, 'mobile-l') + 1px) {
             flex-direction: row;
@@ -375,19 +361,6 @@ div
         height: 100%;
         background-color: rgba(0, 0, 0, 0.55);
         cursor: default;
-    }
-
-    .project-view-appear-enter-active {
-        transition: all .3s;
-    }
-
-    .project-view-appear-leave-active {
-        transition: all .3s;
-    }
-
-    .project-view-appear-enter, .project-view-appear-leave-to {
-        @include transform(translateY(0) scale(0.8));
-        opacity: 0;
     }
 
 </style>

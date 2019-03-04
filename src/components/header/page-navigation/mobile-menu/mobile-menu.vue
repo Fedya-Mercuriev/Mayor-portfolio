@@ -63,11 +63,6 @@
                 }
             }
         },
-        watch: {
-            menuVisible() {
-
-            }
-        },
         methods: {
             updateActiveMenuItems(propName) {
                 for (let prop in this.menuItems) {

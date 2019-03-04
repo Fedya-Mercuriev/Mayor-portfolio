@@ -98,14 +98,16 @@
         },
         methods: {
             openProject(projectData) {
+                // let projectViewBlock = document.querySelector('.project-view');
                 this.currentlyOpenedProjectData = projectData;
                 this.projectWindowShown = true;
                 // Заблокируем пролистывание
-                disableBodyScroll(this.$children[this.$children.length - 1].$el.querySelector('.project-block'));
+                disableBodyScroll(this.$children[this.$children.length - 1].$el);
             },
             closeProject() {
+                // let projectViewBlock = document.querySelector('.project-view');
                 this.projectWindowShown = false;
-                enableBodyScroll(this.$children[this.$children.length - 1].$el.querySelector('.project-block'));
+                enableBodyScroll(this.$children[this.$children.length - 1].$el);
 
             },
             processCardClicks(event) {
